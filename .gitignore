@@ -1,0 +1,8 @@
+**/.DS_Store
+**.pyc
+.idea/
+**/downloads/*
+**/__pycache__/
+**/cert/*
+**/logs/*
+**.db
