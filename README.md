@@ -29,22 +29,28 @@ The architecture is broadly defined as follows:
 
 #### <i class="icon-folder-open"></i> Interpreter
 
+##### Description
+
 The Interpreter is the beginning of the pipeline for this project. When a GCode file is uploaded onto the server, the Interpreter first parses the file, ensures that it is valid GCode and then renders it in a form understandable by the Visualizer.
 
-The Interpreter will be written in Python 3.5.
+##### Techonologies
+
+- Python 3.5.
 
 #### <i class="icon-desktop"></i> Website/UI
 
-#### Techonologies
+##### Description
 
- - Flask - the server 
- - Socket.io - the Websockets for realtime communication between server and graphics components
- - Bootstrap 3 - Website UI templating
+##### Techonologies
+
+ - Flask - the server.
+ - Socket.io - the Websockets for realtime communication between server and graphics components.
+ - Bootstrap 3 - Website UI templating.
 
 
 #### <i class="icon-pencil"></i> Graphics Component
-
-#### Techonologies
+##### Description
+##### Techonologies
 
  - three.js - This is the JavaScript plugin that will be used to render the graphics of the 3d printed visualization.
 
