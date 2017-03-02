@@ -5,7 +5,14 @@ from flask_socketio import SocketIO, send, emit
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['SECURITY_PASSWORD_SALT'] = 'secret'
-socketio = SocketIO(app)
+app.debug = True
+
+# Set this variable to "threading", "eventlet" or "gevent" to test the
+# different async modes, or leave it set to None for the application to choose
+# the best option based on installed packages.
+async_mode = None
+
+socketio = SocketIO(app, async_mode=async_mode)
 
 ######################################################################
 #                        User Authentication                         #
@@ -26,15 +33,15 @@ def index():
 #   Documentation @ https://flask-socketio.readthedocs.io/en/latest/ #
 ######################################################################
 
-#Socket IO handler example
-@socketio.on('event')
-def handle_event(message):
-    print('received message: ' + message)
+#Socket IO connection handler
+@socketio.on('connect', namespace='/gcode')
+def connect(sid):
+    print("connected: ", sid)
 
 #Socket IO send example
 @socketio.on('other_event')
 def send_message(message):
-    send(message, namespace='/other_event')
+    send(message, namespace='/gcode')
 
 #Socket IO emit example
 @socketio.on('another_event')
