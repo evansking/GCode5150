@@ -1,8 +1,14 @@
 GCode Interpreter for Dimitri!
 ===================
 
-
-Info about the team etc.
+ - Ramya Babu (rsb357@cornell.edu)
+ - Nerla Jean-Louis (nj99@cornell.edu)
+ - Ishaan Jhaveri (iaj8@cornell.edu)
+ - Evan King (esk79@cornell.edu)
+ - Austin Lin (aml276@cornell.edu)
+ - Kathy Wang (kw496@cornell.edu)
+ - Paul West (paul.west4@gmail.com)
+ - Leezel Zamidar (lz283@cornell.edu)
 
 ----------
 
@@ -21,28 +27,32 @@ The architecture is broadly defined as follows:
 > - Visit the site at http://127.0.0.1:5000/
 
 
-#### <i class="icon-folder-open"></i> Interpret
+#### <i class="icon-folder-open"></i> Interpreter
 
-Some shit here
+##### Description
+
+The Interpreter is the beginning of the pipeline for this project. When a GCode file is uploaded onto the server, the Interpreter first parses the file, ensures that it is valid GCode and then renders it in a form understandable by the Visualizer.
+
+##### Techonologies
+
+- Python 3.5.
 
 #### <i class="icon-desktop"></i> Website/UI
 
-#### Techonologies
+##### Description
 
- - Flask - the server 
- - Socket.io - the Websockets for realtime communication between server and graphics components
- - Bootstrap 3 - Website UI templating
+##### Techonologies
+
+ - Flask - the server.
+ - Socket.io - the Websockets for realtime communication between server and graphics components.
+ - Bootstrap 3 - Website UI templating.
 
 
 #### <i class="icon-pencil"></i> Graphics Component
+##### Description
+##### Techonologies
 
-#### Techonologies
-
- - Three.js - Say something about htis shit Ishaan
- 
-
-You can rename the current document by clicking the document title in the navigation bar.
-
+ - three.js - This is the JavaScript plugin that will be used to render the graphics of the 3d printed visualization.
 
 
 
