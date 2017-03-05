@@ -5,10 +5,13 @@
  */
 sid = "session cookie"
 
-namespace = '/gcode';
-socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, sid);
+namespace = '';
 
-//example of event triggered
-socket.on('event', function (msg) {
-    console.log("event triggered")
-});
+$(document).ready(function () {
+    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, sid);
+
+    //example of event triggered
+    socket.on('event', function (msg) {
+        console.log("event triggered")
+    });
+}

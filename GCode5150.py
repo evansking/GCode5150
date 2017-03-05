@@ -34,7 +34,7 @@ def index():
 ######################################################################
 
 #Socket IO connection handler
-@socketio.on('connect', namespace='/gcode')
+@socketio.on('connect')
 def connect(sid):
     print("connected: ", sid)
 
