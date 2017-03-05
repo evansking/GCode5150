@@ -8,7 +8,7 @@ sid = "session cookie"
 namespace = '/gcode';
 socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, sid);
 
-//new connection received
+//example of event triggered
 socket.on('event', function (msg) {
     console.log("event triggered")
 });
