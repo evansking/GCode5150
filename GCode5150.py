@@ -1,6 +1,6 @@
 import flask
 from flask import request, Flask, render_template, url_for
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -35,18 +35,22 @@ def index():
 
 #Socket IO connection handler
 @socketio.on('connect')
-def connect(sid):
-    print("connected: ", sid)
+def connect():
+    print("[+] New Connection")
 
-#Socket IO send example
-@socketio.on('other_event')
-def send_message(message):
-    send(message, namespace='/gcode')
+@socketio.on('join')
+def on_join(data):
+    room = data['room']
+    join_room(room)
+    print "[+] {} has entered room".format(room)
+    send("You have entered the room!", room=room)
 
-#Socket IO emit example
-@socketio.on('another_event')
-def emit_message(message):
-    emit('my response', message, namespace='/another_event')
+@socketio.on('leave')
+def on_leave(data):
+    room = data['room']
+    leave_room(room)
+    print "[-] {} has left room".format(room)
+    send('You have left the room.', room=room)
 
 
 if __name__ == '__main__':

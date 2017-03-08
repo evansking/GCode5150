@@ -7,11 +7,8 @@ sid = "session cookie"
 
 namespace = '';
 
-$(document).ready(function () {
-    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, sid);
+var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-    //example of event triggered
-    socket.on('event', function (msg) {
-        console.log("event triggered")
-    });
-}
+socket.on('connect', function () {
+    socket.emit("join", {room: sid})
+});
