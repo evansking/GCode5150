@@ -1,7 +1,7 @@
 // Add documentation
 var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
-var FLOOR = -250;
+var FLOOR = 0;
 
 var container;
 
