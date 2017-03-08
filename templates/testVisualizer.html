@@ -7,7 +7,7 @@
 {% include 'nav.html' %}
 
 <!-- Page Content -->
-<div class="container">
+<div id="container">
 
 {#  Ishaan, put your shit here#}
 
@@ -16,7 +16,7 @@
 
 </body>
 
-<!-- Socketio js example -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/dependencies/Detector.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
 
 </html>
