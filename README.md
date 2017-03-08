@@ -21,9 +21,9 @@ The architecture is broadly defined as follows:
 
 > **Startup Notes:**
 
-> - The server requires python 3.5
+> - The server requires python 2.7
 > - Install requirement with `pip install -r requirements`
-> - Run the code with `python3 manage.py runserver`
+> - Run the code with `python GCode5150.py`
 > - Visit the site at http://127.0.0.1:5000/
 
 
@@ -35,7 +35,7 @@ The Interpreter is the beginning of the pipeline for this project. When a GCode 
 
 ##### Techonologies
 
-- Python 3.5.
+- Python 2.7.
 
 #### <i class="icon-desktop"></i> Website/UI
 
