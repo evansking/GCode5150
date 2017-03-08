@@ -27,6 +27,10 @@ socketio = SocketIO(app, async_mode=async_mode)
 def index():
     return flask.make_response(flask.render_template('index.html'))
 
+@app.route('/test')
+def visualizer():
+    return flask.make_response(flask.render_template('testVisualizer.html'))
+
 
 ######################################################################
 #                        SocketIO Logic                              #
