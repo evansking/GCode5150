@@ -23,19 +23,7 @@ function init() {
     // ***** Clipping planes: *****
     var localPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.8),
         globalPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.1);
-    // Geometry
-    var material = new THREE.MeshPhongMaterial({
-            color: 0x80ee10,
-            shininess: 100,
-            side: THREE.DoubleSide,
-            // ***** Clipping setup (material): *****
-            clippingPlanes: [localPlane],
-            clipShadows: true
-        }),
-        geometry = new THREE.Geometry();
-    object = new THREE.Mesh(geometry, material);
-    object.castShadow = true;
-    //scene.add(object);
+
     var ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(9, 9, 1, 1),
         new THREE.MeshPhongMaterial({
@@ -67,12 +55,13 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+
 function animate() {
-
     requestAnimationFrame(animate);
-
     renderer.render(scene, camera);
 }
+
+
 
 $(document).ready(function () {
     init();
