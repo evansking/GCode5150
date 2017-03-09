@@ -60,8 +60,7 @@ function init() {
     var controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 1, 0);
     controls.update();
-    // Start
-    startTime = Date.now();
+
 }
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -69,13 +68,9 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 function animate() {
-    var currentTime = Date.now(),
-        time = ( currentTime - startTime ) / 1000;
+
     requestAnimationFrame(animate);
-    object.position.y = 0.8;
-    object.rotation.x = time * 0.5;
-    object.rotation.y = time * 0.2;
-    object.scale.setScalar(Math.cos(time) * 0.125 + 0.875);
+
     renderer.render(scene, camera);
 }
 
