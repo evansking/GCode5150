@@ -3,7 +3,7 @@ var objects = []
 
 function init() {
     camera = new THREE.PerspectiveCamera(
-        36, window.innerWidth / window.innerHeight, 0.25, 16);
+        FOV, window.innerWidth / window.innerHeight, NEAR, FAR);
     camera.position.set(0, 2.7, 4);
     scene = new THREE.Scene();
     // Lights
