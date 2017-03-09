@@ -20,9 +20,6 @@ function init() {
     dirLight.shadow.mapSize.width = 1024;
     dirLight.shadow.mapSize.height = 1024;
     scene.add(dirLight);
-    // ***** Clipping planes: *****
-    var localPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.8),
-        globalPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.1);
 
     var ground = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(9, 9, 1, 1),
@@ -39,11 +36,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     window.addEventListener('resize', onWindowResize, false);
     document.body.appendChild(renderer.domElement);
-    // ***** Clipping setup (renderer): *****
-    var globalPlanes = [globalPlane],
-        Empty = Object.freeze([]);
-    renderer.clippingPlanes = Empty; // GUI sets it to globalPlanes
-    renderer.localClippingEnabled = true;
+
     // Controls
     var controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 1, 0);
@@ -61,10 +54,20 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-
+function draw(p1, p2) {
+    var material = new THREE.LineBasicMaterial({color: 0x80ee10, linewidth: 10})
+    var geometry = new THREE.Geometry()
+    geometry.vertices.push(new THREE.Vector3(p1.x,p1.y,p1.z))
+    geometry.vertices.push(new THREE.Vector3(p2.x,p2.y,p2.z))
+    var line = new THREE.Line(geometry, material)
+    scene.add(line)
+    renderer.render(scene, camera);
+    return line
+}
 
 $(document).ready(function () {
     init();
     animate();
+    draw({x: -5, y: -5, z: 0}, {x: 5, y: 5, z: 0})
 });
 
