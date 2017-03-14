@@ -58,7 +58,7 @@ class Command:
 		'''
 		return the english description of this command
 		'''
-		return constants.G_descriptions[self.number]
+		return constants.descriptions[self.number]
 
 	#TODO: handle multiple commands on same line
 
