@@ -7,6 +7,38 @@
 {% include 'nav.html' %}
 
 <!-- Page Content -->
+<div id="controls" style="overflow: scroll; height: 100px">
+    <table style="width:100%">
+        <tr>
+            <th><button id="drawLine"> Draw Line </button></th>
+            <th><button id="moveHead"> Move Head </button></th>
+            <th><button id="drawArc"> Animate </button></th>
+        </tr>
+        <tr>
+            <td>X: <input type="number" id="line_x" value=10> </td>
+            <td>X: <input type="number" id="move_x" value=0> </td>
+            <td>CX: <input type="number" id="arc_cx" value=0> </td>
+            <td>X: <input type="number" id="arc_x" value="0"> </td>
+            <td>Dir: <input type="number" id="arc_dir" value="1"> </td>
+        </tr>
+        <tr>
+            <td>Y: <input type="number" id="line_y" value=10> </td>
+            <td>Y: <input type="number" id="move_y" value=0> </td>
+            <td>CY: <input type="number" id="arc_cy" value=0> </td>
+            <td>Y: <input type="number" id="arc_y" value="0"> </td>
+            <td> <p> Current Position: <span id="curr_x"></span>, <span id="curr_y"></span>,
+                <span id="curr_z"></span></p> </td>
+        </tr>
+        <tr>
+            <td>Z: <input type="number" id="line_z" value=10> </td>
+            <td>Z: <input type="number" id="move_z" value=0> </td>
+            <td>CZ: <input type="number" id="arc_cz" value=0> </td>
+            <td>Z: <input type="number" id="arc_z" value="0"> </td>
+        </tr>
+
+    </table>
+
+</div>
 <div id="visualization"></div>
 <!-- /.container -->
 
