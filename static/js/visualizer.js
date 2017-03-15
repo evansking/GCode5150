@@ -23,6 +23,8 @@
 //Three.js rendering variables
 var renderer, scene, camera;
 
+var ambientLight, ground, dirLight;
+
 // Drawing variables
 // If a line is currently being drawn this variable tracks it
 var currentLine;
@@ -113,6 +115,15 @@ function queueFill(path){
 // dir - ARC_CW or ARC_CCW to control direction of arc
 function queueArc(cx, cy, cz, x, y, z, dir){
     animationQueue.push([QUEUE_MEMBERS.ARC, cx, cy, cz, x, y, z, dir]);
+}
+
+function clear(){
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
+    scene.add(ground);
+    scene.add(ambientLight);
+    scene.add(dirLight);
 }
 
 /* Three.js functions */
@@ -240,7 +251,7 @@ function drawArc(cx, cy, cz, x, y, z, dir){
     var dx = currentPosition.x - cx; if (DEBUG_PRINT) console.log('dx', dx);
     var dy = currentPosition.y - cy; if (DEBUG_PRINT) console.log('dy', dy);
     var dz = currentPosition.z - cz; if (DEBUG_PRINT) console.log('dz', dz);
-    var radius = Math.sqrt(dx*dx + dy*dy + dz*dz); if (DEBUG_PRINT) console.log('radius', radius);
+    var radius = Math.sqrt(dx*dx + dy*dy); if (DEBUG_PRINT) console.log('radius', radius);
 
     // find angle of arc (sweep)
     var angle1 = atan3(dy,dx); if (DEBUG_PRINT) console.log('angle1', angle1);
@@ -266,7 +277,7 @@ function drawArc(cx, cy, cz, x, y, z, dir){
         ny = cy + Math.sin(angle3) * radius;
 
         // send it to the planner
-        queueInstantLine({x: nx, y: ny, z: 0});
+        queueInstantLine({x: 0, y: ny, z: nx});
     }
     isAnimating = false;
 }
@@ -313,11 +324,6 @@ function drawArcFunction(){
     queueAnimatedLine({x: 0, y: 10, z: 10});
     queueMoveHead({x: 10, y: 10, z: 10});
     queueAnimatedLine({x: 10, y: 0, z: 10});
-
-    queueMoveHead({x: 10, y: 10, z: 0});
-
-    queueArc(5, 5, 0, 0, 10, 0, 1);
-
 }
 
 function onMouseClick(event) {
@@ -336,8 +342,9 @@ function init() {
     camera.position.set(60, 40, 0);
 
     // Lights
-    scene.add(new THREE.AmbientLight(0x505050));
-    var dirLight = new THREE.DirectionalLight(0x55505a, 2.5);
+    ambientLight = new THREE.AmbientLight(0x505050);
+    scene.add(ambientLight);
+    dirLight = new THREE.DirectionalLight(0x55505a, 2.5);
     dirLight.position.set(0, 3, 0);
     dirLight.castShadow = true;
     dirLight.shadow.camera.near = 1;
@@ -351,7 +358,7 @@ function init() {
     scene.add(dirLight);
 
     // Platform on which to 3d print
-    var ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 50, 1, 1),
+    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 50, 1, 1),
         new THREE.MeshPhongMaterial({
             color: 0xa0adaf, shininess: 150
         }));
@@ -393,7 +400,61 @@ function init() {
     var drawArcButton = $("#drawArc");
     drawArcButton.click(drawArcFunction);
 
+    var clearButton = $("#clear");
+    clearButton.click(clear);
+
+    var lineExampleButton = $("#lineExample");
+    lineExampleButton.click(lineExampleFunction);
+
+
+    var arcExampleButton = $("#arcExample");
+    arcExampleButton.click(arcExampleFunction);
+
+    var fillExampleButton = $("#fillExample");
+    fillExampleButton.click(fillExampleFunction);
+
+
+
+
     if (DEBUG_PRINT) console.log('finished init');
+}
+
+/* Examples - only for demo*/
+
+function lineExampleFunction(){
+    startDrawing();
+    queueMoveHead({x: 0, y: 0, z: 0});
+    queueAnimatedLine({x: 0, y: 10, z: 10});
+    queueMoveHead({x: 0, y: 0, z: 0});
+    queueAnimatedLine({x: 0, y: 10, z: -10});
+    queueMoveHead({x: 0, y: 0, z: 0});
+    queueAnimatedLine({x: 0, y: 12, z: 1});
+    queueMoveHead({x: 0, y: 0, z: 0});
+    queueAnimatedLine({x: -5, y: 1, z: -5});
+    queueMoveHead({x: 0, y: 0, z: 0});
+    queueAnimatedLine({x: 5, y: 1, z: -5});
+}
+
+function arcExampleFunction(){
+    startDrawing();
+    queueMoveHead({x: 0, y: 0, z: 0});
+    drawArc(0,10,0,5,5,0,1);
+    queueMoveHead({x: 0, y: 0, z: 0});
+    drawArc(0,10,0,5,5,0,-1);
+    stopDrawing();
+}
+
+function fillExampleFunction(){
+    startDrawing();
+    queueMoveHead({x: 0, y: 0, z: 0});
+    queueInstantLine({x: 0, y: 10, z: 0});
+    queueInstantLine({x: 0, y: 10, z: 10});
+    queueInstantLine({x: 0, y: 0, z: 10});
+    for (var c = 0; c <= 10; ){
+        queueInstantLine({x: 0, y: c, z: 0});
+        queueInstantLine({x: 0, y: c, z: 10});
+        c += 0.1
+    }
 }
 
 /* ###################################### SCRIPT ######################################*/
