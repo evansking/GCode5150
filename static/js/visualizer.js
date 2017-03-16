@@ -121,6 +121,24 @@ function clear(){
     scene.children.forEach(function(object){
         scene.remove(object);
     });
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
+    scene.children.forEach(function(object){
+        scene.remove(object);
+    });
     scene.add(ground);
     scene.add(ambientLight);
     scene.add(dirLight);
