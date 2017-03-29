@@ -76,6 +76,7 @@
             // Do something with the current line
             var fullLine = doc1.getLine(lineNum)
             console.log(fullLine);
+            
             doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, line);
           }
         }
