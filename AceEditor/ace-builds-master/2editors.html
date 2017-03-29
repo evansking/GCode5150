@@ -26,6 +26,7 @@
 <!-- load ace -->
 <script src="src-min-noconflict/ace.js"></script>
 <script>
+    var Range = ace.require('ace/range').Range;
 
     var editor1 = ace.edit("editor1");
     editor1.setTheme("ace/theme/twilight");
@@ -73,11 +74,13 @@
             doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, doc2.getNewLineCharacter());
           } 
           if (line.length > 0) {
-            // Do something with the current line
-            var fullLine = doc1.getLine(lineNum)
-            console.log(fullLine);
-            
-            doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, line);
+            var doc1FullLine = doc1.getLine(lineNum);
+            // Below, newLine should be the result of a call to interpretLine(doc1FullLine)
+            // where interpretLine takes in a line of GCode and returns the english 
+            // translation as a string.
+            // The english translation can also be an error message.
+            var newLine = doc1FullLine;
+            session2.replace(new Range(lineNum, 0, lineNum, Number.MAX_VALUE), newLine);
           }
         }
       } else if (e.action == "remove") {
@@ -85,8 +88,14 @@
         var startRow = e.start.row;
         var endCol = e.end.column;
         var endRow = e.end.row;
-        var Range = ace.require('ace/range').Range;
         doc2.remove(new Range(startRow, startCol, endRow, endCol));
+        var doc1FullLine = doc1.getLine(startRow);
+        // Below, newLine should be the result of a call to interpretLine(doc1FullLine)
+        // where interpretLine takes in a line of GCode and returns the english 
+        // translation as a string.
+        // The english translation can also be an error message.
+        var newLine = doc1FullLine;
+        session2.replace(new Range(startRow, 0, startRow, Number.MAX_VALUE), newLine);
       }
     });
 
