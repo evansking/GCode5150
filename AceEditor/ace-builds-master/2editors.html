@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+
+    .ace_editor {
+        border: 1px solid lightgray;
+        margin: auto;
+        height: 200px;
+        width: 40%;
+    }
+    .scrollmargin {
+        height: 80px;
+        text-align: left;
+    }
+    </style>
+</head>
+<body>
+<pre id="editor1"></pre>
+<div class="scrollmargin" style="text-align: right;"></div>
+<pre id="editor2"></pre>
+
+<!-- load ace -->
+<script src="src-min-noconflict/ace.js"></script>
+<script>
+
+    var editor1 = ace.edit("editor1");
+    editor1.setTheme("ace/theme/twilight");
+    editor1.session.setMode("ace/mode/html");
+    editor1.setAutoScrollEditorIntoView(true);
+    editor1.setOption("maxLines", 30);
+    editor1.setOption("minLines", 20);
+
+    var editor2 = ace.edit("editor2");
+    editor2.setTheme("ace/theme/twilight");
+    editor2.session.setMode("ace/mode/html");
+    editor2.setAutoScrollEditorIntoView(true);
+    editor2.setOption("maxLines", 30);
+    editor2.setOption("minLines", 20);
+    editor2.setReadOnly(true);
+    editor2.renderer.$cursorLayer.element.style.display = "none";
+    editor2.setHighlightActiveLine(true);
+
+    var session1 = editor1.getSession();
+    var doc1 = session1.getDocument();
+
+    var session2 = editor2.getSession();
+    var doc2 = session2.getDocument();
+
+    session1.on('changeScrollTop', function() {
+      session2.setScrollTop(session1.getScrollTop())
+    });
+
+    session2.on('changeScrollTop', function() {
+      session1.setScrollTop(session2.getScrollTop())
+    });
+
+    editor1.on("change", function(e) {
+      //console.log(e);
+      if(e.action == "insert") {
+        var startCol = e.start.column;
+        var startRow = e.start.row;
+        var endCol = e.end.column;
+        var endRow = e.end.row;
+        for (var i = 0; i < e.lines.length; i++) {
+          var lineNum = startRow + i;
+          var line = e.lines[i];
+          if (i > 0) {
+            // This is a new line
+            doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, doc2.getNewLineCharacter());
+          } 
+          if (line.length > 0) {
+            // Do something with the current line
+            var fullLine = doc1.getLine(lineNum)
+            console.log(fullLine);
+            doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, line);
+          }
+        }
+      } else if (e.action == "remove") {
+        var startCol = e.start.column;
+        var startRow = e.start.row;
+        var endCol = e.end.column;
+        var endRow = e.end.row;
+        var Range = ace.require('ace/range').Range;
+        doc2.remove(new Range(startRow, startCol, endRow, endCol));
+      }
+    });
+
+    editor1.on("changeSelection", function() {
+      var lineNum = editor1.getCursorPosition().row;
+      editor2.gotoLine(lineNum+1, 0, false);
+    });
+</script>
+
+<!-- <script src="./show_own_source.js"></script> -->
+
+</body>
+</html>
