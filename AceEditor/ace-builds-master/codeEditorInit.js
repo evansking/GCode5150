@@ -12,9 +12,8 @@
     editor1 = ace.edit("editor1");
     editor1.setTheme("ace/theme/twilight");
     editor1.session.setMode("ace/mode/gcode");
-    editor1.setAutoScrollEditorIntoView(true);
-    editor1.setOption("maxLines", 30);
-    editor1.setOption("minLines", 20);
+    editor1.setOption("maxLines", 25);
+    editor1.setOption("minLines", 25);
     editor1.setOptions({
         enableBasicAutocompletion: true,
         enableSnippets: true,
@@ -24,9 +23,8 @@
     var editor2 = ace.edit("editor2");
     editor2.setTheme("ace/theme/twilight");
     editor2.session.setMode("ace/mode/text");
-    editor2.setAutoScrollEditorIntoView(true);
-    editor2.setOption("maxLines", 30);
-    editor2.setOption("minLines", 20);
+    editor2.setOption("maxLines", 25);
+    editor2.setOption("minLines", 25);
     editor2.setReadOnly(true);
     editor2.renderer.$cursorLayer.element.style.display = "none";
     editor2.setHighlightActiveLine(true);

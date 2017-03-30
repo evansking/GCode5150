@@ -1,29 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Editor</title>
-  <style type="text/css" media="screen">
-
-    .ace_editor {
-        border: 1px solid lightgray;
-        margin: auto;
-        height: 200px;
-        width: 40%;
-    }
-    .scrollmargin {
-        height: 80px;
-        text-align: left;
-    }
-    </style>
-</head>
 <body>
-<div id="editor1"></div>
-<div class="scrollmargin" style="text-align: right;"></div>
-<div id="editor2"></div>
 
-<!-- load ace -->
+<!-- G-Code Editor divs -->
+<div id="editor1"></div>
+<pre> </pre> <!-- this line is totally unnecessary outside of aesthetics in this test webpage -->
+<div id="editor2"></div>
+<!-- end G-Code Editor divs -->
+
+<!-- G-Code Editor JS -->
 <script src="src-min-noconflict/ace.js"></script>
 <script src="src-min-noconflict/ext-language_tools.js"></script>
 <script src="codeEditorInit.js"></script>
@@ -32,6 +16,7 @@
 <script>
     codeEditor.init();
 </script>
+<!-- End G-Code Editor JS -->
 
 </body>
 </html>
