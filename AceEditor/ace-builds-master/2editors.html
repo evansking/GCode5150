@@ -25,19 +25,25 @@
 
 <!-- load ace -->
 <script src="src-min-noconflict/ace.js"></script>
+<script src="src-min-noconflict/ext-language_tools.js"></script>
 <script>
     var Range = ace.require('ace/range').Range;
 
     var editor1 = ace.edit("editor1");
     editor1.setTheme("ace/theme/twilight");
-    editor1.session.setMode("ace/mode/html");
+    editor1.session.setMode("ace/mode/gcode");
     editor1.setAutoScrollEditorIntoView(true);
     editor1.setOption("maxLines", 30);
     editor1.setOption("minLines", 20);
+    editor1.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
 
     var editor2 = ace.edit("editor2");
     editor2.setTheme("ace/theme/twilight");
-    editor2.session.setMode("ace/mode/html");
+    editor2.session.setMode("ace/mode/text");
     editor2.setAutoScrollEditorIntoView(true);
     editor2.setOption("maxLines", 30);
     editor2.setOption("minLines", 20);
@@ -66,14 +72,15 @@
         var startRow = e.start.row;
         var endCol = e.end.column;
         var endRow = e.end.row;
+
         for (var i = 0; i < e.lines.length; i++) {
-          var lineNum = startRow + i;
-          var line = e.lines[i];
-          if (i > 0) {
-            // This is a new line
-            doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, doc2.getNewLineCharacter());
-          } 
-          if (line.length > 0) {
+            var lineNum = startRow + i;
+            var line = e.lines[i];
+            if (i < e.lines.length - 1 && e.lines.length > 1) {
+              // This is a new line
+              doc2.insert({row:lineNum, column:(i==0 ? startCol : 0)}, doc2.getNewLineCharacter());
+            } 
+
             var doc1FullLine = doc1.getLine(lineNum);
             // Below, newLine should be the result of a call to interpretLine(doc1FullLine)
             // where interpretLine takes in a line of GCode and returns the english 
@@ -81,13 +88,14 @@
             // The english translation can also be an error message.
             var newLine = doc1FullLine;
             session2.replace(new Range(lineNum, 0, lineNum, Number.MAX_VALUE), newLine);
-          }
         }
-      } else if (e.action == "remove") {
+      }
+      else if (e.action == "remove") {
         var startCol = e.start.column;
         var startRow = e.start.row;
         var endCol = e.end.column;
         var endRow = e.end.row;
+
         doc2.remove(new Range(startRow, startCol, endRow, endCol));
         var doc1FullLine = doc1.getLine(startRow);
         // Below, newLine should be the result of a call to interpretLine(doc1FullLine)
