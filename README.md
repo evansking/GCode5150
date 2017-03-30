@@ -22,10 +22,11 @@ The architecture is broadly defined as follows:
 > **Startup Notes:**
 
 > - The server requires python 2.7
-> - Install requirement with `pip install -r requirements`
-> - Run the code with `python server.py`
+> - Install requirement with `[sudo] pip install -r requirements`
+> - Run the code with `[sudo] python server.py`
 > - Visit the site at http://127.0.0.1:5000/
 
+You may or may not need to use "sudo" before your commands depending on where you installed pip. If you can't get it working by next meeting Ishaan or Evan can help you.
 
 #### <i class="icon-folder-open"></i> Interpreter
 
