@@ -12,7 +12,7 @@ var QUEUE_MEMBERS = {
 }
 
 //Debugging Variables
-var DEBUG_PRINT = true;
+var DEBUG_PRINT = false;
 
 //Printing Convention Variables
 var MM_PER_SEGMENT = 10;

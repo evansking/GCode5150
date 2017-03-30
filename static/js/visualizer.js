@@ -50,6 +50,22 @@ var mouse;
 // Helper Variables
 var isAnimating;
 
+var points = [];
+//cube
+points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
+points.push([[0,0,10], [0,10,10], [0,10,0], [10,10,0], [10,10,10], [0,10,10]]);
+points.push([[10,10,10], [10,0,10]]);
+for (var t = 0; t <= 10; ){
+    var side = [];
+    for (var c = 0; c <= 10; ){
+        side.push([t,c,0]);
+        side.push([t,c,10]);
+        c += 0.1
+    }
+    points.push(side);
+    t += 0.1;
+}
+
 
 /* ########################################## FUNCTIONS ##########################################*/
 
@@ -81,7 +97,7 @@ function queueAnimatedLine(point) {
         // currentLine
         animationQueue.push([QUEUE_MEMBERS.LINE, new THREE.Line(geometry,  material), point]);
     } else {
-
+        queueMoveHead(point);
     }
 
 }
@@ -96,9 +112,34 @@ function queueMoveHead(point){
 function queueInstantLine(point){
     if (DEBUG_PRINT) console.log('Drawing Permanent Line');
 
-    var material = new THREE.LineBasicMaterial({ color: lineColor, linewidth: 50 });
-    var geometry = new THREE.Geometry();
-    animationQueue.push([QUEUE_MEMBERS.INSTANT_LINE, new THREE.Line(geometry,  material), point]);
+    if (isDrawing){
+        var material = new THREE.LineBasicMaterial({ color: lineColor, linewidth: 50 });
+        var geometry = new THREE.Geometry();
+        animationQueue.push([QUEUE_MEMBERS.INSTANT_LINE, new THREE.Line(geometry,  material), point]);
+    } else {
+        queueMoveHead(point);
+    }
+
+}
+
+//This function takes in a list of lists, where each list is a path
+//It draws lines along each point on an individual path
+//It starts its next drawing at the beginning of a point in a given point list
+function path(pointList, animated){
+    //pointList : the parent list of all subpaths
+    for (var i = 0; i < pointList.length; i++){
+        //currentPath: the currentPath starting at the first point on this path
+        for (var p = 0; p < pointList[i].length; p++){
+            if (p == 1){
+                startDrawing();
+            }
+            if (animated) queueAnimatedLine({x: pointList[i][p][0], y: pointList[i][p][1],
+                z: pointList[i][p][2]})
+            else queueInstantLine({x: pointList[i][p][0], y: pointList[i][p][1],
+                z: pointList[i][p][2]})
+        }
+        stopDrawing();
+    }
 }
 
 
@@ -185,7 +226,6 @@ function animate() {
                 drawArc(nextAnimation[1], nextAnimation[2], nextAnimation[3],
                     nextAnimation[4], nextAnimation[5], nextAnimation[6], nextAnimation[7]);
             } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
-                console.log('starting instant line');
                 currentLine = nextAnimation[1];
                 var origin = new THREE.Vector3();
                 copyPoint(origin, currentPosition)
@@ -312,8 +352,9 @@ function drawLineFunction(){
     var x = parseInt($("#line_x").attr("value"));
     var y = parseInt($("#line_y").attr("value"));
     var z = parseInt($("#line_z").attr("value"));
-    startDrawing();
-    queueAnimatedLine({x: x, y: y, z: z});
+    //startDrawing();
+    //queueAnimatedLine({x: x, y: y, z: z});
+    path(points, false);
 }
 
 function moveHeadFunction(){
