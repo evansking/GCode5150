@@ -6,23 +6,44 @@
 <body>
 {% include 'nav.html' %}
 
-<!-- Page Content -->
-<div class="container">
+<!-- Page Content Row -->
+{#<div class="container">#}
 
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <h1>Dimitri GCode 5150 Project</h1>
-            <p>In progress...</p>
-        </div>
+    <!-- Visualizer Row -->
+    <div class="col-lg-12 hor-half" id="top-half">
+        <div id="visualization"></div>
     </div>
-    <!-- /.row -->
+    <!-- /.Visualizer Row -->
 
-</div>
+    <!-- IDE Row -->
+    <div class="col-lg-12 hor-half">
+
+        <!-- Left IDE -->
+        <div id="container">
+            <div id="left_panel">
+            </div>
+        </div>
+
+
+        <!-- Right IDE -->
+        <div id="right_panel">
+            <div id="drag"></div>
+        </div>
+
+    </div>
+    <!-- /.IDE Row -->
+
+
+{#</div>#}
 <!-- /.container -->
 
 </body>
 
-<!-- Socketio js example -->
-<script type="text/javascript" src="{{ url_for('static', filename='js/socketio.js') }}"></script>
+<!-- Project Structure Javascript -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/containers.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dependencies/OrbitControls.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/constants.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
+
 
 </html>
