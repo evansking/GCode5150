@@ -49,3 +49,14 @@ body, html {
     padding-left: 0px;
     padding-right: 0px;
 }
+
+/*Cobalt Theme Override*/
+.cm-s-cobalt.CodeMirror {
+    height: 100%;
+}
+
+/*Bootstrap override*/
+
+.btn-toolbar{
+    background: black;
+}

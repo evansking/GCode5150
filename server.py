@@ -1,8 +1,16 @@
+import os
+
 import flask
+import json
 from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from werkzeug.utils import secure_filename
+
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = 'uploads/'
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'secret!'
 app.config['SECURITY_PASSWORD_SALT'] = 'secret'
 app.debug = True
@@ -30,6 +38,16 @@ def index():
 @app.route('/test')
 def visualizer():
     return flask.make_response(flask.render_template('testVisualizer.html'))
+
+@app.route('/uploader', methods=['POST'])
+def upload_file():
+    f = request.files['file']
+    content = f.read()
+    # Starts forwarding file to client on separate thread, never saved locally (at least in non-temp file)
+    filename = secure_filename(f.filename)
+    location = os.path.join(BASEDIR, app.config['UPLOAD_FOLDER'], filename)
+    f.save(location)
+    return json.dumps({"content": content})
 
 
 ######################################################################

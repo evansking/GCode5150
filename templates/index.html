@@ -6,41 +6,65 @@
 <body>
 {% include 'nav.html' %}
 
-<!-- Page Content Row -->
-{#<div class="container">#}
 
-    <!-- Visualizer Row -->
-    <div class="col-lg-12 hor-half" id="top-half">
-        <div id="visualization"></div>
-    </div>
-    <!-- /.Visualizer Row -->
+<!-- Visualizer Row -->
+<div class="col-lg-12 hor-half" id="top-half">
+    <div id="visualization"></div>
+</div>
+<!-- /.Visualizer Row -->
 
-    <!-- IDE Row -->
-    <div class="col-lg-12 hor-half">
+<!-- IDE Row -->
+<div class="col-lg-12 hor-half">
 
-        <!-- Left IDE -->
-        <div id="container">
-            <div id="left_panel">
+    <!-- Left IDE -->
+    <div id="container">
+        <div id="left_panel">
+            <div class="btn-toolbar">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-secondary">Button</button>
+                    <button type="button" class="btn btn-secondary">Button</button>
+                    <button type="button" class="btn btn-secondary">Button</button>
+                    <button type="button" class="btn btn-secondary">Button</button>
+                    <button type="button" class="btn btn-secondary">Button</button>
+                    <button type="button" class="btn btn-secondary">Button</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="#">Dropdown link</a>
+                        <a class="dropdown-item" href="#">Dropdown link</a>
+                    </div>
+                </div>
+                <div class="btn-group" role="group">
+                    <form id="upload-file" method="post" enctype="multipart/form-data">
+                        <fieldset>
+                            <label class="btn btn-primary btn-block btn-file">
+                                Upload File <input name="file" type="file" style="display: none;">
+                            </label>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
-
-
-        <!-- Right IDE -->
-        <div id="right_panel">
-            <div id="drag"></div>
-        </div>
-
     </div>
-    <!-- /.IDE Row -->
 
 
-{#</div>#}
-<!-- /.container -->
+    <!-- Right IDE -->
+    <div id="right_panel">
+        <div id="drag"></div>
+    </div>
+
+</div>
+<!-- /.IDE Row -->
+
 
 </body>
 
 <!-- Project Structure Javascript -->
-<script type="text/javascript" src="{{ url_for('static', filename='js/containers.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/editors.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/dependencies/OrbitControls.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/constants.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
