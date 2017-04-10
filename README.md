@@ -64,9 +64,9 @@ Hey guys, just in case I do not make it to the meeting here is a synapses:
         I should have it looking presentable by the demo.
 5. The upload button does work (crudely). It uploads a file and shows the corresponding GCode in the left editor. The backend currently does not check file type of misformed file etc.
 
-Paul, I didnt see that you had worked on integrating an editor until today. We can either stick my the one i have in there or switch to yours. You and I can discuss the pros and cons.
+Paul, I didnt see that you had worked on integrating an editor until today. We can either stick with the one i have in there or switch to yours. You and I can discuss the pros and cons.
 
-Also Paul, what sort of state is the interpreter in? Would be nice to be able to demo some of that and I can hook it up to the front end.
+Also Paul, what sort of state is the interpreter in? Would be nice to be able to demo some of that and I can hook it up to the front end. We can move this conversation to slack (of which I promise I will see and respond this time lol).
 
 
 License
