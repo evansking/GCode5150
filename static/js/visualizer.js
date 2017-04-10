@@ -349,7 +349,7 @@ function drawArc(cx, cy, cz, x, y, z, dir){
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize($('#top-half').width(), $('#top-half').height());
 }
 
 function drawLineFunction(){
@@ -433,7 +433,7 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.shadowMap.enabled = true;
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize($('#top-half').width(), $('#top-half').height());
     window.addEventListener('resize', onWindowResize, false);
     document.getElementById("visualization").appendChild(renderer.domElement);
 
