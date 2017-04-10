@@ -44,19 +44,19 @@ function IDESetDragVertical() {
 }
 
 //function to add the left editor
-function addLeftEditor() {
-    left_editor = $('#left_panel')
-    var leftCodemirror = CodeMirror(function (elt) {
+function addEditor(id, value) {
+    left_editor = $(id)
+    var codemirror = CodeMirror(function (elt) {
         left_editor.append(elt);
     }, {
-        value: "X10\nMove X axis to 10\nX0\nMove X axis to 0\n",
+        value: value,
         mode: "javascript",
         lineNumbers: true,
         styleActiveLine: true,
         lineWrapping: true,
         theme: "cobalt"
     });
-    return leftCodemirror;
+    return codemirror;
 }
 
 //upload a file to the server
@@ -79,10 +79,21 @@ function uploadFile(leftCodemirror) {
     });
 };
 
+function disableBodyScroll(){
+      $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
+    });
+}
 
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
+    $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height())
     IDESetDragHorizontal();
-    var leftCodemirror = addLeftEditor()
-    uploadFile(leftCodemirror)
+    var leftCodemirror = addEditor('#left_panel', "X10\nMove X axis to 10\nX0\nMove X axis to 0\n");
+    uploadFile(leftCodemirror);
+    disableBodyScroll();
+
+    var rightCodemirror = addEditor('#right_panel', "")
+
 });
