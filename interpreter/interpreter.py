@@ -66,6 +66,7 @@ class Command:
 		raise SyntaxError if there are syntax errors
 		'''
 		line = line[:line.find(';')] # remove comments
+		line = line[:line.find('//')] # remove comments
 		arguments = {}
 		args = line.split()[1:]
 		for arg in args:
