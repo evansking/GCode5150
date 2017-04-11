@@ -65,8 +65,11 @@ class Command:
 
 		raise SyntaxError if there are syntax errors
 		'''
-		line = line[:line.find(';')] # remove comments
-		line = line[:line.find('//')] # remove comments
+		comment_delimiter = ['//',';']
+		for delimiter in comment_delimiter:
+			comment_index = line.find(delimiter)
+			if comment_index >= 0:
+				line = line[:comment_index] # remove comments
 		arguments = {}
 		args = line.split()[1:]
 		for arg in args:
@@ -82,7 +85,11 @@ class Command:
 		return the english description of this command
 		'''
 		try:
-			return constants.descriptions[self.command]
+			eng_desc = ''
+			eng_desc += constants.common_comm[self.command]
+			for argument in self.arguments:
+				eng_desc += ';' + constants.arguments[argument.lower()][self.command] + self.arguments[argument]
+			return eng_desc
 		except KeyError:
 			# invalid command
 			raise exceptions.CommandError
