@@ -1,6 +1,9 @@
 import re
 import constants
+import json
+import sys
 import exceptions
+from os.path import basename, splitext
 
 class Command:
 	'''
@@ -85,15 +88,75 @@ class Command:
 
 	#TODO: handle multiple commands on same line
 
+line_list = []
+point_list = []
+
+def interpret_gcode(l):
+	global line_list, point_list
+
+	if l.letter == 'G' and l.number == '1':
+		p = [None,None,None]
+		for key in l.arguments:
+			if key == 'X':
+				p[0] = float(l.arguments[key])
+			elif key == 'Y':
+				p[1] = float(l.arguments[key])
+			elif key == 'Z':
+				p[2] = float(l.arguments[key])
+		if p[0] is None:
+			if len(line_list) > 0:
+				p[0] = line_list[len(line_list)-1][0]
+			else:
+				raise exceptions.UndefinedPoint
+		if p[1] is None:
+			if len(line_list) > 0:
+				p[1] = line_list[len(line_list)-1][1]
+			else:
+				raise exceptions.UndefinedPoint
+		if p[2] is None:
+			if len(line_list) > 0:
+				p[2] = line_list[len(line_list)-1][2]
+			else:
+				raise exceptions.UndefinedPoint
+		line_list.append(p)
+	elif l.letter == 'G' and l.number == '28':
+		line_list.append([0,0,0])
+	elif l.letter == 'G' and l.number == '1':
+		point_list.append(line_list)
+		line_list = []
+	elif l.letter == 'G' and l.number == '21':
+		pass
+	elif l.letter == 'G' and l.number == '90':
+		pass
+	elif l.letter == 'M' and l.number == '127':
+		pass
+	elif l.letter == 'M' and l.number == '73':
+		pass
+	elif l.letter == 'M' and l.number == '104':
+		pass
+	elif l.letter == 'M' and l.number == '126':
+		pass
+	elif l.letter == 'M' and l.number == '84':
+		pass
+	else:
+		raise exceptions.UndefinedInstruction(l)
+
+def parse_file(filename):
+	with open(filename) as f:
+		for line in f:
+			if line[0] != ';' and not line.isspace():
+				command = Command(line=line)
+				interpret_gcode(command)
+	point_list.append(line_list)
+	name, extension =  splitext(basename(filename))
+	outfilename = 'output_' +  name + '.json'
+	with open(outfilename , 'w') as outfile:
+		json.dump(point_list, outfile, indent=4,separators=(',',': '))
 
 if __name__ == '__main__':
 	# main function for testing purposes
-	line = Command(line='G11 X-2h34 Y2.34; test line')
-	print line.command
-	print line.arguments
-	print line.letter
-	print line.number
-	print line.get_english()
+	parse_file(sys.argv[1])
+	print "done"
 
 
 
