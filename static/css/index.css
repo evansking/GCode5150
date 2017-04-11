@@ -6,7 +6,7 @@ body, html {
     background: black;
 }
 
-.navbar-inverse{
+.navbar-inverse {
     margin-bottom: 0px;
 }
 
@@ -34,18 +34,18 @@ body, html {
     left: -4px;
     top: 0;
     bottom: 0;
-    width: 4px;
+    width: 16px;
     cursor: col-resize;
     background-color: black;
     height: 100%;
 }
 
-#visualization{
-    max-width:100%;
-    max-height:100%;
+#visualization {
+    max-width: 100%;
+    max-height: 100%;
 }
 
-#top-half{
+#top-half {
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -57,6 +57,6 @@ body, html {
 
 /*Bootstrap override*/
 
-.btn-toolbar{
+.btn-toolbar {
     background: black;
 }

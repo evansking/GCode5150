@@ -1,8 +1,8 @@
 /**
  * Created by EvanKing on 4/8/17.
+ *
+ * This file defines the Javascipt functions necessary to construct the IDE style GCode editors at the bottom of the index page
  */
-
-
 
 // Function to allow for the IDE to be split into two divs and have width adjusted by drag
 // Adapted from http://jsfiddle.net/gaby/Bek9L/1779/
@@ -37,26 +37,26 @@ function IDESetDragHorizontal() {
     });
 }
 
+// TODO
 function IDESetDragVertical() {
     var isResizing = false,
         lastDownY = 0;
-
 }
 
-//function to add the left editor
-function addLeftEditor() {
-    left_editor = $('#left_panel')
-    var leftCodemirror = CodeMirror(function (elt) {
+//function to add and editor with a default value to a div basse din by id
+function addEditor(id, value) {
+    left_editor = $(id)
+    var codemirror = CodeMirror(function (elt) {
         left_editor.append(elt);
     }, {
-        value: "X10\nMove X axis to 10\nX0\nMove X axis to 0\n",
+        value: value,
         mode: "javascript",
         lineNumbers: true,
         styleActiveLine: true,
         lineWrapping: true,
         theme: "cobalt"
     });
-    return leftCodemirror;
+    return codemirror;
 }
 
 //upload a file to the server
@@ -79,10 +79,21 @@ function uploadFile(leftCodemirror) {
     });
 };
 
+function disableBodyScroll(){
+      $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
+    });
+}
 
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
+    $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height())
     IDESetDragHorizontal();
-    var leftCodemirror = addLeftEditor()
-    uploadFile(leftCodemirror)
+    var leftCodemirror = addEditor('#left_panel', "X10\nMove X axis to 10\nX0\nMove X axis to 0\n");
+    uploadFile(leftCodemirror);
+    disableBodyScroll();
+
+    var rightCodemirror = addEditor('#right_panel', "")
+
 });
