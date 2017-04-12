@@ -1,4 +1,4 @@
-var FOV = 50; // Camera frustum vertical field of view default value.
+var FOV = 500; // Camera frustum vertical field of view default value.
 var NEAR = 0.5; // Camera frustum near plane default value.
 var FAR = 100; // Camera frustum far plane default value.
 var MAX_POINTS = 10; // Inversely proportional to drawing speed
