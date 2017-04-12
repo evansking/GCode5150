@@ -1,15 +1,18 @@
 (function( codeEditor, undefined ) { 
   var Range = ace.require('ace/range').Range;
-  var editor1, 
-      editor2, 
-      session1, 
+
+  codeEditor.leftEditor;
+  codeEditor.rightEditor;
+
+  var session1, 
       session2, 
       doc1, 
       doc2;
 
   codeEditor.init = function() {
+    var editor1, editor2;
     console.log(codeEditor.interpretLine("lol"));
-    editor1 = ace.edit("editor1");
+    editor1 = ace.edit("left_panel");
     editor1.setTheme("ace/theme/twilight");
     editor1.session.setMode("ace/mode/gcode");
     editor1.setOption("maxLines", 25);
@@ -20,7 +23,7 @@
         enableLiveAutocompletion: true
     });
 
-    var editor2 = ace.edit("editor2");
+    var editor2 = ace.edit("right_panel");
     editor2.setTheme("ace/theme/twilight");
     editor2.session.setMode("ace/mode/text");
     editor2.setOption("maxLines", 25);
@@ -81,5 +84,8 @@
       var lineNum = editor1.getCursorPosition().row;
       editor2.gotoLine(lineNum+1, 0, false);
     });
+
+    codeEditor.leftEditor = editor1;
+    codeEditor.rightEditor = editor2;
   } 
 }( window.codeEditor = window.codeEditor || {} ));
