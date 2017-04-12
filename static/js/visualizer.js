@@ -1,19 +1,4 @@
 
-// Obsolete Functions
-////function drawMeshLine(p1, p2) {
-////    var MeshLine = require('three.meshline');
-////    var material = new MeshLineMaterial({linewidth: 300});
-////    var geometry = new THREE.Geometry()
-////    geometry.vertices.push(new THREE.Vector3(p1.x,p1.y,p1.z))
-////    geometry.vertices.push(new THREE.Vector3(p2.x,p2.y,p2.z))
-////    var currentLine = new MeshLine();
-////    currentLine.setGeometry(geometry, function( p ) { return 2; } ); // makes width 2 * lineWidth;
-////    var mesh = new THREE.Mesh( currentLine.geometry, material ); // this syntax could definitely be improved!
-////    scene.add(mesh);
-////    renderer.render(scene, camera);
-////}
-//
-//
 
 /* ###################################### GLOBAL VARIABLES ######################################*/
 
@@ -47,10 +32,9 @@ var lineColor =  0xff0000; //red, for now everything is red but we will begin to
 // The mouse object
 var mouse;
 
-// Helper Variables
-var isAnimating;
+var isAnimating; // Set to true if we want each line to be drawn animatedly
 
-var points = [];
+var points = []; // List of lists of lists - determines points of current visualization
 
 // CUBE PATH EXAMPLE
 points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
@@ -67,17 +51,26 @@ for (var t = 0; t <= 10; ){
     t += 0.5;
 }
 
-// SIMPLE LINE PATH EXAMPLE
-//points = [[[0, 0, 0], [1, 1, 1]]];
+function drawPath(pathString, lineSpeed){
+    points = $.parseJSON(pathString);
+    path(points, false);
+
+    // @ ***** EVAN ****** @EVAN @evan @Evan
+}
 
 
 /* ########################################## FUNCTIONS ##########################################*/
 
 /* Low Level Functions */
+
+// Start drawing.
+// All movements of the drawing head will generate lines
 function startDrawing(){
     isDrawing = true;
 }
 
+// Stop drawing.
+// No movements of the drawing head will generate lines
 function stopDrawing(){
     isDrawing = false;
 }
@@ -146,44 +139,15 @@ function path(pointList, animated){
     }
 }
 
-
-function queueFill(path){
-    console.log(path.vertices);
-    //make a currentLine from the first two vertices and treat that as the direction of the currentLine to fill everything
-
-}
-
-
-// This function draws an arc from currentPosition to x,y,z
-// cx/cy/cz - center of circle that arc is a part of
-// x/y/z - end position
-// dir - ARC_CW or ARC_CCW to control direction of arc
-function queueArc(cx, cy, cz, x, y, z, dir){
-    animationQueue.push([QUEUE_MEMBERS.ARC, cx, cy, cz, x, y, z, dir]);
-}
-
+//Clear the visualization of any lines.
+//Reset the set of points.
 function clear(){
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
-    scene.children.forEach(function(object){
-        scene.remove(object);
-    });
+    points = [];
+    while (scene.children.length > 0) {
+        scene.children.forEach(function(object){
+            scene.remove(object);
+        });
+    }
     scene.add(ground);
     scene.add(ambientLight);
     scene.add(dirLight);
@@ -191,7 +155,7 @@ function clear(){
 
 /* Three.js functions */
 function render() {
-    renderer.render( scene, camera );
+    renderer.render(scene, camera);
 }
 
 // animate
@@ -223,12 +187,6 @@ function animate() {
                 scene.add(currentLine);
                 isAnimating = true;
                 updatePositions(nextAnimation[2]);
-            } else if (nextAnimation[0] == QUEUE_MEMBERS.ARC){
-                console.log('starting arc');
-                currentLine = null;
-                isAnimating = true;
-                drawArc(nextAnimation[1], nextAnimation[2], nextAnimation[3],
-                    nextAnimation[4], nextAnimation[5], nextAnimation[6], nextAnimation[7]);
             } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
                 currentLine = nextAnimation[1];
                 var origin = new THREE.Vector3();
@@ -293,13 +251,6 @@ function updatePositions(point) {
     positions[2] = currentPosition.z; //hack
 }
 
-// Helper to queueArc
-function atan3(dy, dx) {
-    var a = Math.atan2(dy,dx);
-    if(a<0) a = (Math.PI*2.0)+a;
-    return a;
-}
-
 // Helper to animate
 function copyPoint(p1, p2){
     p1.x = p2.x;
@@ -307,42 +258,7 @@ function copyPoint(p1, p2){
     p1.z = p2.z;
 }
 
-//Helper to queueArc
-function drawArc(cx, cy, cz, x, y, z, dir){
-    // get radius
-    var dx = currentPosition.x - cx; if (DEBUG_PRINT) console.log('dx', dx);
-    var dy = currentPosition.y - cy; if (DEBUG_PRINT) console.log('dy', dy);
-    var dz = currentPosition.z - cz; if (DEBUG_PRINT) console.log('dz', dz);
-    var radius = Math.sqrt(dx*dx + dy*dy); if (DEBUG_PRINT) console.log('radius', radius);
 
-    // find angle of arc (sweep)
-    var angle1 = atan3(dy,dx); if (DEBUG_PRINT) console.log('angle1', angle1);
-    var angle2 = atan3(y-cy,x-cx); if (DEBUG_PRINT) console.log('angle2', angle2);
-    var theta = angle2-angle1;
-
-    if (dir > 0 && theta < 0) angle2 += 2*Math.PI;
-    else if(dir < 0 && theta > 0) angle1 += 2*Math.PI;
-
-    theta = (angle2-angle1);//%(2*Math.PI);
-
-    var len = Math.abs(theta) * radius;
-
-    var segments = Math.ceil(len*MM_PER_SEGMENT);
-
-    var nx, ny, angle3, scale;
-    for(var i = 0;i < segments; ++i) {
-        // interpolate around the arc
-        scale = i/segments;
-
-        angle3 = (theta * scale) + angle1;
-        nx = cx + Math.cos(angle3) * radius;
-        ny = cy + Math.sin(angle3) * radius;
-
-        // send it to the planner
-        queueInstantLine({x: 0, y: ny, z: nx});
-    }
-    isAnimating = false;
-}
 
 /* Environment set-up functions*/
 
@@ -352,43 +268,16 @@ function onWindowResize() {
     renderer.setSize($('#top-half').width(), $('#top-half').height());
 }
 
-function drawLineFunction(){
+function drawTestPathFunction(){
     var x = parseInt($("#line_x").attr("value"));
     var y = parseInt($("#line_y").attr("value"));
     var z = parseInt($("#line_z").attr("value"));
     //startDrawing();
     //queueAnimatedLine({x: x, y: y, z: z});
-    path(points, false);
+    path(points, true);
 }
 
-function moveHeadFunction(){
-    var x = parseInt($("#move_x").attr("value"));
-    var y = parseInt($("#move_y").attr("value"));
-    var z = parseInt($("#move_z").attr("value"));
-    stopDrawing();
-    queueMoveHead({x: x, y: y, z: z});
-}
-
-function drawArcFunction(){
-    startDrawing();
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: 10, y: 0, z: 0});
-    queueAnimatedLine({x: 10, y: 10, z: 0});
-    queueAnimatedLine({x: 0, y: 10, z: 0});
-    queueAnimatedLine({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: 0, y: 0, z: 10});
-    queueAnimatedLine({x: 10, y: 0, z: 10});
-    queueAnimatedLine({x: 10, y: 0, z: 0});
-    queueMoveHead({x: 0, y: 0, z: 10});
-    queueAnimatedLine({x: 0, y: 10, z: 10});
-    queueAnimatedLine({x: 0, y: 10, z: 0});
-    queueAnimatedLine({x: 10, y: 10, z: 0});
-    queueAnimatedLine({x: 10, y: 10, z: 10});
-    queueAnimatedLine({x: 0, y: 10, z: 10});
-    queueMoveHead({x: 10, y: 10, z: 10});
-    queueAnimatedLine({x: 10, y: 0, z: 10});
-}
-
+// Currently not used for anything. Listens for mouse clicks.
 function onMouseClick(event) {
     event.preventDefault();
     mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
@@ -454,70 +343,13 @@ function init() {
     controls.update();
 
     //Button Controls
-    var drawLineButton = $("#drawLine");
-    drawLineButton.click(drawLineFunction);
-
-    var moveHeadButton = $("#moveHead");
-    moveHeadButton.click(moveHeadFunction);
-
-    var drawArcButton = $("#drawArc");
-    drawArcButton.click(drawArcFunction);
+    var drawTestPathButton = $("#drawTestPath");
+    drawTestPathButton.click(drawTestPathFunction);
 
     var clearButton = $("#clear");
     clearButton.click(clear);
 
-    var lineExampleButton = $("#lineExample");
-    lineExampleButton.click(lineExampleFunction);
-
-
-    var arcExampleButton = $("#arcExample");
-    arcExampleButton.click(arcExampleFunction);
-
-    var fillExampleButton = $("#fillExample");
-    fillExampleButton.click(fillExampleFunction);
-
-
-
-
     if (DEBUG_PRINT) console.log('finished init');
-}
-
-/* Examples - only for demo*/
-
-function lineExampleFunction(){
-    startDrawing();
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: 0, y: 10, z: 10});
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: 0, y: 10, z: -10});
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: 0, y: 12, z: 1});
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: -5, y: 1, z: -5});
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueAnimatedLine({x: 5, y: 1, z: -5});
-}
-
-function arcExampleFunction(){
-    startDrawing();
-    queueMoveHead({x: 0, y: 0, z: 0});
-    drawArc(0,10,0,5,5,0,1);
-    queueMoveHead({x: 0, y: 0, z: 0});
-    drawArc(0,10,0,5,5,0,-1);
-    stopDrawing();
-}
-
-function fillExampleFunction(){
-    startDrawing();
-    queueMoveHead({x: 0, y: 0, z: 0});
-    queueInstantLine({x: 0, y: 10, z: 0});
-    queueInstantLine({x: 0, y: 10, z: 10});
-    queueInstantLine({x: 0, y: 0, z: 10});
-    for (var c = 0; c <= 10; ){
-        queueInstantLine({x: 0, y: c, z: 0});
-        queueInstantLine({x: 0, y: c, z: 10});
-        c += 0.1
-    }
 }
 
 /* ###################################### SCRIPT ######################################*/
@@ -528,43 +360,3 @@ $(document).ready(function () {
 });
 
 /* ###################################### NOTES ######################################*/
-
-//for 3d arcs:
-//
-// http://xboxforums.create.msdn.com/forums/t/97112.aspx
-
-
-/// <summary>
-/// and atan 3 would just be two floats for y/x and z/x and return
-/// a vector 2 bering or two angles
-///
-/// ok so this would be atan4 i guess
-/// ...
-/// messed up thing is the vector3 you get back xyz is angle wise opposite
-/// logically like for example
-/// e.g.
-/// q = atan4(..)  then result would be q.X is the z Axis angle and q.Y is the Y axis angle and q.Z would be the X axis angle
-/// but i guess that would be atan4
-/// </summary>
-/// <param name="x"></param>
-/// <param name="y"></param>
-/// <param name="z"></param>
-/// <returns></returns>
-//public static Vector3   atan4(float x,float y,float z)
-//{
-//    return new Vector3(
-//        (float)Math.Atan2(y, x) , // z axis from x //y/x forms z angle
-//    (float)Math.Atan2(z, x) , // y axis from x //? forms y angle
-//    (float)Math.Atan2(z, y) // x axis from y  //? forms x angle
-//);
-//    // now if this was standardized already i would know what the standard order is
-//    // for the part were you read z from y you could instead by like Y from Z and still get the x axis angle just reversed
-//    // so how would i base the standardization i guess on proper quadrants but i dunno
-//    // i guess as long as the method defines the operation its ok
-//}
-
-//for above control buttons:
-//var inp = document.createElement("input");
-//inp.setAttribute("type", "number");
-//inp.setAttribute("value", "40");
-//document.getElementById("controls").appendChild(inp);
