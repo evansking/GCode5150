@@ -84,6 +84,7 @@ function uploadDraw() {
             success: function (data) {
                 console.log("here fucker")
                 pathString = JSON.parse(data)['path']
+                console.log(pathString)
                 path(pathString, false)
             },
         });
