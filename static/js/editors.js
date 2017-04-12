@@ -79,6 +79,25 @@ function uploadFile(leftCodemirror) {
     });
 };
 
+// uploads the GCode commands to the server which responds with the necessary points
+function uploadDraw() {
+    $('#draw-upload').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/draw',
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                content = JSON.parse(data)['content']
+                console.log(content)
+                //draw that shit
+            },
+        });
+    });
+};
+
 function disableBodyScroll(){
       $('html, body').css({
         overflow: 'hidden',
@@ -93,7 +112,6 @@ $(document).ready(function () {
     var leftCodemirror = addEditor('#left_panel', "X10\nMove X axis to 10\nX0\nMove X axis to 0\n");
     uploadFile(leftCodemirror);
     disableBodyScroll();
-
+    uploadDraw();
     var rightCodemirror = addEditor('#right_panel', "")
-
 });

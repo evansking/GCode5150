@@ -1,10 +1,14 @@
 import os
+import sys
 
 import flask
 import json
 from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from werkzeug.utils import secure_filename
+
+sys.path.append("/Users/EvanKing/Documents/Dev/Academic/Spring2017/CS5150/GCode5150/interpreter")
+from interpreter import parse_commands
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'uploads/'
@@ -49,6 +53,11 @@ def upload_file():
     f.save(location)
     return json.dumps({"content": content})
 
+@app.route('/draw', methods=['POST'])
+def draw_points():
+    commands = request.data
+    # response = parse_commands(commands)
+    return json.dumps({"response": commands})
 
 ######################################################################
 #                        SocketIO Logic                              #
