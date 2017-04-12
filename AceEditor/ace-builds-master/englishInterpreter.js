@@ -9,6 +9,10 @@
   **/
   codeEditor.interpretLine = function(gCodeLine) {
 
+    if (gCodeLine=="") {
+      return "";
+    }
+
     var common_comm = {"G0":"Move (rapid linear)", "G1":"Move (linear)", "G2":"Move (controlled clockwise arc)",
     "G3":"Move (controlled counter-clockwise arc)", "G4":"Dwell (pause)", "G6":"Move (direct stepper)",
     "G10":"Tool Offset/Retract", "G11":"Unretract", "G20":"Set Units to Inches", "G21":"Set Units to Millimeters",
@@ -255,6 +259,8 @@
     var commands = gCodeLine.split(" ");
     var output = "";
     var found=true;
+    var comment=false;
+    var comments = "";
     for (i=0; i<commands.length; i++) {
       if (!(commands[i] in common_comm)) {
         found=false;
@@ -262,6 +268,7 @@
         switch ((commands[i]).charAt(0)) {
           case 'N':
             found=true;
+            comment=false;
             if (commands[0]=="M404") {
               output += " filament width (in mm): "+(commands[i]).slice(1)+";";
             }
@@ -272,132 +279,166 @@
           case 'X':
             if (commands[0] in x_comm) {
               found=true;
+              comment=false;
               output += x_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'Y':
             if (commands[0] in y_comm) {
               found=true;
+              comment=false;
               output += y_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'Z':
             if (commands[0] in z_comm) {
               found=true;
+              comment=false;
               output += z_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'E':
             if (commands[0] in e_comm) {
               found=true;
+              comment=false;
               output += e_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'F':
             if (commands[0] in f_comm) {
               found=true;
+              comment=false;
               output += f_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'S':
             if (commands[0] in s_comm) {
               found=true;
+              comment=false;
               output += s_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'I':
             if (commands[0] in i_comm) {
               found=true;
+              comment=false;
               output += i_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'J':
             if (commands[0] in j_comm) {
               found=true;
+              comment=false;
               output += j_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'P':
             if (commands[0] in p_comm) {
               found=true;
+              comment=false;
               output += p_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'A':
             if (commands[0] in a_comm) {
               found=true;
+              comment=false;
               output += a_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'B':
             if (commands[0] in b_comm) {
               found=true;
+              comment=false;
               output += b_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'C':
             if (commands[0] in c_comm) {
               found=true;
+              comment=false;
               output += c_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'R':
             if (commands[0] in r_comm) {
               found=true;
+              comment=false;
               output += r_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'U':
             if (commands[0] in u_comm) {
               found=true;
+              comment=false;
               output += u_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'H':
             if (commands[0] in h_comm) {
               found=true;
+              comment=false;
               output += h_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'T':
             if (commands[0] in t_comm) {
               found=true;
+              comment=false;
               output += t_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'D':
             if (commands[0] in d_comm) {
               found=true;
+              comment=false;
               output += d_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'L':
             if (commands[0] in l_comm) {
               found=true;
+              comment=false;
               output += l_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'W':
             if (commands[0] in w_comm) {
               found=true;
+              comment=false;
               output += w_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'V':
             if (commands[0] in v_comm) {
               found=true;
+              comment=false;
               output += v_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case 'K':
             if (commands[0] in k_comm) {
               found=true;
+              comment=false;
               output += k_comm[commands[0]] + (commands[i]).slice(1)+";";
             }
             break;
           case '*':
             found=true;
+            comment=false;
             output += " checksum (can be used for checking): "+(commands[i]).slice(1)+";";
+            break;
+          case ';':
+            found=true;
+            comment=true;
+          case '//':
+            found=true;
+            comment=true;
+          default:
+            if (comment==true) {
+              found=true;
+              comments += (commands[i])+" ";
+            }
         }
       }
       else {
@@ -408,6 +449,9 @@
     if (found==false) {
       return "COMMAND NOT FOUND"
     }
+    //if (comment==true) {
+    //  return output+" comment: "+comments+";";
+    //}
     return output;
   };
 }( window.codeEditor = window.codeEditor || {} ));
