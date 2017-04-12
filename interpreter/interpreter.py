@@ -2,7 +2,7 @@ import re
 import constants
 import json
 import sys
-import exceptions
+import Gcode_exceptions
 from os.path import basename, splitext
 
 class Command:
@@ -34,8 +34,8 @@ class Command:
 			try:
 				self.command = self.parse_command(line)
 				self.arguments = self.parse_arguments(line)
-			except exceptions.GcodeError:
-				raise exceptions.InvalidLine
+			except Gcode_exceptions.GcodeError:
+				raise Gcode_exceptions.InvalidLine
 		else:
 			self.command = str(command)
 			self.arguments = arguments
@@ -54,7 +54,7 @@ class Command:
 		if re.match(r'[A-Z][0-9]+', command): 
 			return command
 		else:
-			raise exceptions.CommandError('invalid command')
+			raise Gcode_exceptions.CommandError('invalid command')
 
 	def parse_arguments(self, line):
 		'''
@@ -65,15 +65,18 @@ class Command:
 
 		raise SyntaxError if there are syntax errors
 		'''
-		line = line[:line.find(';')] # remove comments
-		line = line[:line.find('//')] # remove comments
+		comment_delimiter = ['//',';']
+		for delimiter in comment_delimiter:
+			comment_index = line.find(delimiter)
+			if comment_index >= 0:
+				line = line[:comment_index] # remove comments
 		arguments = {}
 		args = line.split()[1:]
 		for arg in args:
 			try:
 				letter, number = re.findall(r'([A-Z])([0-9.-]*)', arg)[0] # TODO check if Gcode only contains alphanumeric and .-
 			except:
-				raise exceptions.SyntaxError('arguments')
+				raise Gcode_exceptions.SyntaxError('arguments')
 			arguments[letter] = number
 		return arguments
 
@@ -82,10 +85,14 @@ class Command:
 		return the english description of this command
 		'''
 		try:
-			return constants.descriptions[self.command]
+			eng_desc = ''
+			eng_desc += constants.common_comm[self.command]
+			for argument in self.arguments:
+				eng_desc += ';' + constants.arguments[argument.lower()][self.command] + self.arguments[argument]
+			return eng_desc
 		except KeyError:
 			# invalid command
-			raise exceptions.CommandError
+			raise Gcode_exceptions.CommandError
 
 	#TODO: handle multiple commands on same line
 
@@ -108,17 +115,17 @@ def interpret_gcode(l):
 			if len(line_list) > 0:
 				p[0] = line_list[len(line_list)-1][0]
 			else:
-				raise exceptions.UndefinedPoint
+				raise Gcode_exceptions.UndefinedPoint
 		if p[1] is None:
 			if len(line_list) > 0:
 				p[1] = line_list[len(line_list)-1][1]
 			else:
-				raise exceptions.UndefinedPoint
+				raise Gcode_exceptions.UndefinedPoint
 		if p[2] is None:
 			if len(line_list) > 0:
 				p[2] = line_list[len(line_list)-1][2]
 			else:
-				raise exceptions.UndefinedPoint
+				raise Gcode_exceptions.UndefinedPoint
 		line_list.append(p)
 	elif l.letter == 'G' and l.number == '28':
 		line_list.append([0,0,0])
@@ -140,7 +147,7 @@ def interpret_gcode(l):
 	elif l.letter == 'M' and l.number == '84':
 		pass
 	else:
-		raise exceptions.UndefinedInstruction(l)
+		raise Gcode_exceptions.UndefinedInstruction(l)
 
 def parse_file(filename):
 	with open(filename) as f:
