@@ -442,6 +442,7 @@
             else {
               found=true;
               slash=true;
+              comment=true;
             }
             break;
           case ';*':
