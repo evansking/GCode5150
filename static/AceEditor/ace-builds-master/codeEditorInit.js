@@ -12,7 +12,7 @@
   codeEditor.init = function() {
     var editor1, editor2;
     editor1 = ace.edit("left_panel");
-    editor1.setTheme("ace/theme/twilight");
+    editor1.setTheme("ace/theme/cobalt");
     editor1.session.setMode("ace/mode/gcode");
     editor1.setOptions({
         enableBasicAutocompletion: true,
@@ -22,7 +22,7 @@
     });
 
     var editor2 = ace.edit("right_panel");
-    editor2.setTheme("ace/theme/twilight");
+    editor2.setTheme("ace/theme/cobalt");
     editor2.session.setMode("ace/mode/text");
     editor2.setReadOnly(true);
     editor2.renderer.$cursorLayer.element.style.display = "none";
