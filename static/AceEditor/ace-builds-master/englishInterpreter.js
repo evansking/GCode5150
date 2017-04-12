@@ -431,9 +431,19 @@
           case ';':
             found=true;
             comment=true;
+            break;
           case '//':
             found=true;
             comment=true;
+            break;
+          case ';*':
+            found=true;
+            comment=true;
+            break;
+          case '->':
+            found=true;
+            comment=true;
+            break;
           default:
             if (comment==true) {
               found=true;

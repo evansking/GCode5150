@@ -1,33 +1,33 @@
 (function( codeEditor, undefined ) { 
   var Range = ace.require('ace/range').Range;
-  var editor1, 
-      editor2, 
-      session1, 
+
+  codeEditor.leftEditor;
+  codeEditor.rightEditor;
+
+  var session1, 
       session2, 
       doc1, 
       doc2;
 
   codeEditor.init = function() {
-    console.log(codeEditor.interpretLine("lol"));
-    editor1 = ace.edit("editor1");
-    editor1.setTheme("ace/theme/twilight");
+    var editor1, editor2;
+    editor1 = ace.edit("left_panel");
+    editor1.setTheme("ace/theme/cobalt");
     editor1.session.setMode("ace/mode/gcode");
-    editor1.setOption("maxLines", 25);
-    editor1.setOption("minLines", 25);
     editor1.setOptions({
         enableBasicAutocompletion: true,
         enableSnippets: true,
-        enableLiveAutocompletion: true
+        enableLiveAutocompletion: true,
+        showPrintMargin: false
     });
 
-    var editor2 = ace.edit("editor2");
-    editor2.setTheme("ace/theme/twilight");
+    var editor2 = ace.edit("right_panel");
+    editor2.setTheme("ace/theme/cobalt");
     editor2.session.setMode("ace/mode/text");
-    editor2.setOption("maxLines", 25);
-    editor2.setOption("minLines", 25);
     editor2.setReadOnly(true);
     editor2.renderer.$cursorLayer.element.style.display = "none";
     editor2.setHighlightActiveLine(true);
+    editor2.setShowPrintMargin(false);
 
     session1 = editor1.getSession();
     doc1 = session1.getDocument();
@@ -81,5 +81,8 @@
       var lineNum = editor1.getCursorPosition().row;
       editor2.gotoLine(lineNum+1, 0, false);
     });
+
+    codeEditor.leftEditor = editor1;
+    codeEditor.rightEditor = editor2;
   } 
 }( window.codeEditor = window.codeEditor || {} ));

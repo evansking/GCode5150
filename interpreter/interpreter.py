@@ -158,9 +158,10 @@ def interpret_gcode(l):
 def parse_commands(gcode):
     lines = gcode.split('\n')
     for line in lines:
-        if line[0] != ';' and not line.isspace():
-            command = Command(line=line)
-            interpret_gcode(command)
+        if line:
+            if line[0] != ';' and not line.isspace():
+                command = Command(line=line)
+                interpret_gcode(command)
     point_list.append(line_list)
     return json.dumps(point_list)
 
@@ -170,5 +171,5 @@ def parse_commands(gcode):
 
 if __name__ == '__main__':
     # main function for testing purposes
-    parse_file(sys.argv[1])
+    parse_commands(sys.argv[1])
     print "done"

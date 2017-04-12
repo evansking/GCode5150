@@ -43,24 +43,15 @@ function IDESetDragVertical() {
         lastDownY = 0;
 }
 
-//function to add and editor with a default value to a div basse din by id
-function addEditor(id, value) {
-    left_editor = $(id)
-    var codemirror = CodeMirror(function (elt) {
-        left_editor.append(elt);
-    }, {
-        value: value,
-        mode: "javascript",
-        lineNumbers: true,
-        styleActiveLine: true,
-        lineWrapping: true,
-        theme: "cobalt"
+function disableBodyScroll(){
+      $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
     });
-    return codemirror;
 }
 
 //upload a file to the server
-function uploadFile(leftCodemirror) {
+function uploadFile(leftEditor) {
     $('#upload-file').change(function () {
         //no bot selected
         var form_data = new FormData($('#upload-file')[0]);
@@ -73,7 +64,7 @@ function uploadFile(leftCodemirror) {
             processData: false,
             success: function (data) {
                 content = JSON.parse(data)['content']
-                leftCodemirror.setValue(content);
+                leftEditor.setValue(content);
             },
         });
     });
@@ -82,16 +73,18 @@ function uploadFile(leftCodemirror) {
 // uploads the GCode commands to the server which responds with the necessary points
 function uploadDraw() {
     $('#draw-upload').click(function () {
+        data = codeEditor.leftEditor.getValue();
         $.ajax({
             type: 'POST',
             url: '/draw',
-            data: ,
+            data: data,
             contentType: false,
             cache: false,
             processData: false,
             success: function (data) {
-                path = JSON.parse(data)['path']
-                drawPath(path, false)
+                console.log("here fucker")
+                pathString = JSON.parse(data)['path']
+                path(pathString, false)
             },
         });
     });
@@ -107,10 +100,8 @@ function disableBodyScroll(){
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
     $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height())
-    IDESetDragHorizontal();
-    var leftCodemirror = addEditor('#left_panel', "X10\nMove X axis to 10\nX0\nMove X axis to 0\n");
-    uploadFile(leftCodemirror);
+    codeEditor.init();
     disableBodyScroll();
     uploadDraw();
-    var rightCodemirror = addEditor('#right_panel', "")
+    uploadFile(codeEditor.leftEditor);
 });

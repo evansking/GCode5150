@@ -51,13 +51,6 @@ for (var t = 0; t <= 10; ){
     t += 0.5;
 }
 
-function drawPath(pathString, lineSpeed){
-    points = $.parseJSON(pathString);
-    path(points, false);
-
-    // @ ***** EVAN ****** @EVAN @evan @Evan
-}
-
 
 /* ########################################## FUNCTIONS ##########################################*/
 

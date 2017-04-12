@@ -57,7 +57,7 @@ def upload_file():
 def draw_points():
     commands = request.data
     path = parse_commands(commands)
-    return json.dumps({"path": path})
+    return json.dumps({"path" : path})
 
 ######################################################################
 #                        SocketIO Logic                              #
