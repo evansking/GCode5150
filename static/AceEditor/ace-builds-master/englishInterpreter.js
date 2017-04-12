@@ -256,10 +256,11 @@
 
     var k_comm ={"M149":" Flag to treat temperature as Kelvin "};
 
-    var commands = gCodeLine.split(" ");
+    var commands = gCodeLine.split(/ +/);
     var output = "";
     var found=true;
     var comment=false;
+    var slash=false;
     var comments = "";
     for (i=0; i<commands.length; i++) {
       if (!(commands[i] in common_comm)) {
@@ -432,9 +433,16 @@
             found=true;
             comment=true;
             break;
-          case '//':
-            found=true;
-            comment=true;
+          case '/':
+            if (slash==true) {
+              found=true;
+              comment=true;
+              slash=false;
+            }
+            else {
+              found=true;
+              slash=true;
+            }
             break;
           case ';*':
             found=true;
