@@ -11,26 +11,23 @@
 
   codeEditor.init = function() {
     var editor1, editor2;
-    console.log(codeEditor.interpretLine("lol"));
     editor1 = ace.edit("left_panel");
     editor1.setTheme("ace/theme/twilight");
     editor1.session.setMode("ace/mode/gcode");
-    editor1.setOption("maxLines", 25);
-    editor1.setOption("minLines", 25);
     editor1.setOptions({
         enableBasicAutocompletion: true,
         enableSnippets: true,
-        enableLiveAutocompletion: true
+        enableLiveAutocompletion: true,
+        showPrintMargin: false
     });
 
     var editor2 = ace.edit("right_panel");
     editor2.setTheme("ace/theme/twilight");
     editor2.session.setMode("ace/mode/text");
-    editor2.setOption("maxLines", 25);
-    editor2.setOption("minLines", 25);
     editor2.setReadOnly(true);
     editor2.renderer.$cursorLayer.element.style.display = "none";
     editor2.setHighlightActiveLine(true);
+    editor2.setShowPrintMargin(false);
 
     session1 = editor1.getSession();
     doc1 = session1.getDocument();

@@ -73,9 +73,8 @@ function uploadFile(leftEditor) {
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
     $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height())
-    IDESetDragHorizontal();
     codeEditor.init();
-    uploadFile(codeEditor.leftEditor);
     disableBodyScroll();
+    uploadFile(codeEditor.leftEditor);
 
 });
