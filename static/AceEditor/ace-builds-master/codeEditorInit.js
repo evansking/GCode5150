@@ -20,6 +20,7 @@
         enableLiveAutocompletion: true,
         showPrintMargin: false
     });
+    editor1.$blockScrolling = Infinity;
 
     var editor2 = ace.edit("right_panel");
     editor2.setTheme("ace/theme/cobalt");
@@ -28,6 +29,7 @@
     editor2.renderer.$cursorLayer.element.style.display = "none";
     editor2.setHighlightActiveLine(true);
     editor2.setShowPrintMargin(false);
+    editor2.$blockScrolling = Infinity;
 
     session1 = editor1.getSession();
     doc1 = session1.getDocument();
