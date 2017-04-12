@@ -1,8 +1,8 @@
 /**
  * Created by EvanKing on 4/8/17.
+ *
+ * This file defines the Javascipt functions necessary to construct the IDE style GCode editors at the bottom of the index page
  */
-
-
 
 // Function to allow for the IDE to be split into two divs and have width adjusted by drag
 // Adapted from http://jsfiddle.net/gaby/Bek9L/1779/
@@ -37,13 +37,13 @@ function IDESetDragHorizontal() {
     });
 }
 
+// TODO
 function IDESetDragVertical() {
     var isResizing = false,
         lastDownY = 0;
-
 }
 
-//function to add the left editor
+//function to add and editor with a default value to a div basse din by id
 function addEditor(id, value) {
     left_editor = $(id)
     var codemirror = CodeMirror(function (elt) {

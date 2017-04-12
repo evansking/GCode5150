@@ -34,7 +34,7 @@ body, html {
     left: -4px;
     top: 0;
     bottom: 0;
-    width: 8px;
+    width: 16px;
     cursor: col-resize;
     background-color: black;
     height: 100%;

@@ -51,7 +51,8 @@ var mouse;
 var isAnimating;
 
 var points = [];
-//cube
+
+// CUBE PATH EXAMPLE
 points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
 points.push([[0,0,10], [0,10,10], [0,10,0], [10,10,0], [10,10,10], [0,10,10]]);
 points.push([[10,10,10], [10,0,10]]);
@@ -60,11 +61,14 @@ for (var t = 0; t <= 10; ){
     for (var c = 0; c <= 10; ){
         side.push([t,c,0]);
         side.push([t,c,10]);
-        c += 0.1
+        c += 0.5;
     }
     points.push(side);
-    t += 0.1;
+    t += 0.5;
 }
+
+// SIMPLE LINE PATH EXAMPLE
+//points = [[[0, 0, 0], [1, 1, 1]]];
 
 
 /* ########################################## FUNCTIONS ##########################################*/
@@ -525,17 +529,9 @@ $(document).ready(function () {
 
 /* ###################################### NOTES ######################################*/
 
-//Line and arc are exactly as they were in Gbot
-
-//Figure out fill
-
-//asynchrony
-
-//make drawpermanent line only in terms of destination, source should be filled by animate
-
-//for fill https://threejs.org/examples/#webgl_geometry_shapes
-
-//for 3d arcs http://xboxforums.create.msdn.com/forums/t/97112.aspx
+//for 3d arcs:
+//
+// http://xboxforums.create.msdn.com/forums/t/97112.aspx
 
 
 /// <summary>
@@ -567,6 +563,7 @@ $(document).ready(function () {
 //    // i guess as long as the method defines the operation its ok
 //}
 
+//for above control buttons:
 //var inp = document.createElement("input");
 //inp.setAttribute("type", "number");
 //inp.setAttribute("value", "40");
