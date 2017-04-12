@@ -105,12 +105,12 @@
      "M998":"", "M999":""
      }; //TODO: finish above and below for the corresponding M commands
 
-    var x_comm = {"G0":" to X axis position: ", "G1":" to X axis position: ", "G2":" to X axis position: ",
-    "G3":" to X axis position: ", "G10":" X offset: ", "G28":" flag to go back to the X axis origin ",
+    var x_comm = {"G0":" to X axis pos: ", "G1":" to X axis pos: ", "G2":" to X axis pos: ",
+    "G3":" to X axis pos: ", "G10":" X offset: ", "G28":" flag to go back to the X axis origin ",
     "G29.1":" X offset: ", "G30":" X coordinate: ", "G31":" probe X offset: ", "G33":" X correction: ",
     "G61":" X coordinate: ", "G92":" new X axis pos: ", "G100":" flag to set floor for X axis ",
-    "G130":" to X axis position: ", "G161":" flag to home X axis to min ",
-    "G162":" flag to home X axis to max ", "M18":" X axis: ", "M48":" position on the X axis: ",
+    "G130":" to X axis pos: ", "G161":" flag to home X axis to min ",
+    "G162":" flag to home X axis to max ", "M18":" X axis: ", "M48":" pos on the X axis: ",
     "M92":" X drive: ", "M132":" X axis offset: ", "M201":" acceleration for X axis: ",
     "M202":" travel moves (in units/s^2): ", "M203":" max for X axis: ",
     "M205":" max xy jerk/xy junction deviation: ", "M206":" X axis offset/float: ", "M208":" X axis limit: ",
@@ -119,12 +119,12 @@
     "M370":" divisions: ", "M421":" index: ", "M460":" min temp: ", "M532":" print progress: ",
     "M556":" deviation in X: ", "M557":" X coordinate: ", "M558":" If nonzero, use probe for homing X axis: "};
 
-    var y_comm = {"G0":" to Y axis position: ", "G1":" to Y axis position: ", "G2":" to Y axis position: ",
-    "G3":" to Y axis position: ", "G10":" Y offset: ", "G28":" flag to go back to the Y axis origin ",
+    var y_comm = {"G0":" to Y axis pos: ", "G1":" to Y axis pos: ", "G2":" to Y axis pos: ",
+    "G3":" to Y axis pos: ", "G10":" Y offset: ", "G28":" flag to go back to the Y axis origin ",
     "G29.1":" Y offset: ", "G30":" Y coordinate: ", "G31":" probe Y offset: ", "G33":" Y correction: ",
     "G61":" Y coordinate: ", "G92":" new Y axis pos: ", "G100":" flag to set floor for Y axis ",
-    "G130":" to Y axis position: ", "G161":" flag to home Y axis to min ",
-    "G162":" flag to home Y axis to max ", "M18":" Y axis: ", "M48":" position on the Y axis: ",
+    "G130":" to Y axis pos: ", "G161":" flag to home Y axis to min ",
+    "G162":" flag to home Y axis to max ", "M18":" Y axis: ", "M48":" pos on the Y axis: ",
     "M92":" Y drive: ", "M132":" Y axis offset: ", "M201":" acceleration for Y axis: ",
     "M202":" travel moves (in units/s^2): ", "M203":" max for Y axis: ", "M206":" Y axis offset: ",
     "M208":" Y axis limit: ", "M210":" in mm per minute: ", "M211":" 1=max endstop or 0=min endstop: ",
@@ -132,11 +132,11 @@
     "M460":" max temp: ", "M556":" deviation in Y: ", "M557":" Y coordinate: ",
     "M558":" If nonzero, use probe for homing Y axis: "};
 
-    var z_comm = {"G0":" to Z axis position: ", "G1":" to Z axis position: ",
+    var z_comm = {"G0":" to Z axis pos: ", "G1":" to Z axis pos: ",
     "G28":" flag to go back to the Z axis origin ", "G29.1":" Z offset: ", "G29.2":" Z offset: ",
     "G30":" Z coordinate: ", "G31":" trigger Z height: ", "G33":" Z correction: ",
     "G61":" Z coordinate: ", "G92":" new Z axis pos: ", "G100":" flag to set floor for Z axis ",
-    "G130":" to Z axis position: ", "G161":" flag to home Z axis to min ",
+    "G130":" to Z axis pos: ", "G161":" flag to home Z axis to min ",
     "G162":" flag to home Z axis to max ", "M18":" Z axis: ", "M92":" Z drive: ", "M132":" Z axis offset: ",
     "M201":" acceleration for Z axis: ", "M203":" max for Z axis: ",
     "M205":" max Z jerk/z junction deviation: ", "M206":" Z axis offset: ", "M207":" additional zlift/hop: ",
@@ -160,7 +160,7 @@
     "G10":" active temperature(s) or retract length: ", "G11":" retract length: ",
     "G29":" firmware-dependent behavior: ", "G30":" set parameter: ", "G31":" calibration temperature: ",
     "G32":" bed leveling method: ", "G60":" memory slot #: ", "G61":" memory slot #: ",
-    "M0":" wait time (in s): ", "M20":" output style: ", "M26":" file position (in bytes): ",
+    "M0":" wait time (in s): ", "M20":" output style: ", "M26":" file pos (in bytes): ",
     "M37":" toggle mode ( S1 enters, S0 leaves) ", "M42":" pin value: ", "M48":" schizoid ",
     "M85":" seconds: ", "M104":" target temperature: ", "M105":" response type: ", "M106":" fan speed: ",
     "M109":" min target temp: ", "M111":" debug on/off: ", "M113":" value to set: ", "M128":" pressure: ",
@@ -206,10 +206,10 @@
     "M550":" machine name: ", "M551":" password: ", "M552":" IP address: ", "M553":" net mask: ", "M554":" gateway: ",
     "M555":" emulation type: ", "M557":" probe point #: ", "M558":" Z probe type: ", "M562":" heater #: "};
 
-    var a_comm = {"G6":" Stepper A pos/angle: ", "G130":" to A axis position: ", "M132":" A axis offset: ",
+    var a_comm = {"G6":" Stepper A pos/angle: ", "G130":" to A axis pos: ", "M132":" A axis offset: ",
     "M165": " mix factor for extruder stepper 1: ", "M260":"  address: ", "M261":"  address: ", "M307":" gAin: "};
 
-    var b_comm = {"G6":" Stepper B pos/angle: ", "G130":" to B axis position: ", "M106":" blip time: ",
+    var b_comm = {"G6":" Stepper B pos/angle: ", "G130":" to B axis pos: ", "M106":" blip time: ",
     "M132":" B axis offset: ", "M150":" blue: ", "M165": " mix factor for extruder stepper 2: ",
     "M205":" min segment time: ", "M260":"  add to buffer: ", "M261":"  bytes: ",
     "M305":" beta value: ", "M307":" Bang-bang control: ", "M350":" extruder 1: ", "M420":" blue PWM: "};
