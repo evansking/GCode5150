@@ -56,8 +56,8 @@ def upload_file():
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
-    # response = parse_commands(commands)
-    return json.dumps({"response": commands})
+    path = parse_commands(commands)
+    return json.dumps({"path": path})
 
 ######################################################################
 #                        SocketIO Logic                              #

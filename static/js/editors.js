@@ -85,14 +85,13 @@ function uploadDraw() {
         $.ajax({
             type: 'POST',
             url: '/draw',
-            data: data,
+            data: ,
             contentType: false,
             cache: false,
             processData: false,
             success: function (data) {
-                content = JSON.parse(data)['content']
-                console.log(content)
-                //draw that shit
+                path = JSON.parse(data)['path']
+                drawPath(path, false)
             },
         });
     });
