@@ -202,6 +202,7 @@ function animate() {
         } else {
             currentLine = null;
             isAnimating = false;
+            console.log("done with current drawing");
         }
 
     }
