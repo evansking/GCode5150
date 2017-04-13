@@ -116,7 +116,8 @@ function queueInstantLine(point){
 //It draws lines along each point on an individual path
 //It starts its next drawing at the beginning of a point in a given point list
 function path(pointList, animated){
-    console.log('beginning points');
+    console.log('beginning points, pointList.length: ');
+    console.log(pointList.length);
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
         //currentPath: the currentPath starting at the first point on this path
@@ -131,13 +132,15 @@ function path(pointList, animated){
         }
         stopDrawing();
     }
-    console.log('ending points');
+    console.log('ending points, animationQueue.length: ');
+    console.log(animationQueue.length);
 }
 
 //Clear the visualization of any lines.
 //Reset the set of points.
 function clear(){
     points = [];
+    animationQueue = [];
     while (scene.children.length > 0) {
         scene.children.forEach(function(object){
             scene.remove(object);
@@ -202,7 +205,6 @@ function animate() {
         } else {
             currentLine = null;
             isAnimating = false;
-            console.log("done with current drawing");
         }
 
     }

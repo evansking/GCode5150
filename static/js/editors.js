@@ -82,9 +82,10 @@ function uploadDraw() {
             cache: false,
             processData: false,
             success: function (data) {
-                console.log("data transferred")
-                pathString = JSON.parse(data)['path']
-                path($.parseJSON(pathString), false);
+                console.log("data transferred, pathString.length: ")
+                pathString = $.parseJSON(JSON.parse(data)['path']);
+                console.log(pathString.length);
+                path(pathString, false);
             },
         });
     });
