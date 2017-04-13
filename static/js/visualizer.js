@@ -116,6 +116,7 @@ function queueInstantLine(point){
 //It draws lines along each point on an individual path
 //It starts its next drawing at the beginning of a point in a given point list
 function path(pointList, animated){
+    console.log('beginning points');
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
         //currentPath: the currentPath starting at the first point on this path
@@ -130,6 +131,7 @@ function path(pointList, animated){
         }
         stopDrawing();
     }
+    console.log('ending points');
 }
 
 //Clear the visualization of any lines.
@@ -265,9 +267,7 @@ function drawTestPathFunction(){
     var x = parseInt($("#line_x").attr("value"));
     var y = parseInt($("#line_y").attr("value"));
     var z = parseInt($("#line_z").attr("value"));
-    //startDrawing();
-    //queueAnimatedLine({x: x, y: y, z: z});
-    path(points, true);
+    path(points, false);
 }
 
 // Currently not used for anything. Listens for mouse clicks.

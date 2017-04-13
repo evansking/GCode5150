@@ -7,7 +7,7 @@ from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from werkzeug.utils import secure_filename
 
-sys.path.append("/Users/EvanKing/Documents/Dev/Academic/Spring2017/CS5150/GCode5150/interpreter")
+sys.path.append("/Users/ishaanjhaveri/Google_Drive/git/GCode5150/interpreter")
 from interpreter import parse_commands
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -57,6 +57,8 @@ def upload_file():
 def draw_points():
     commands = request.data
     path = parse_commands(commands)
+    with open('evan.json', 'w') as outfile:
+        json.dump(path, outfile, indent=4, sort_keys=True)
     return json.dumps({"path" : path})
 
 ######################################################################
