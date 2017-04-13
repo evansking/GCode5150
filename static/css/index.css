@@ -16,7 +16,7 @@ body, html {
     top: 0;
     bottom: 0;
     right: 100px;
-    background: #cbcfce;
+    background: transparent;
 }
 
 #right_panel {
@@ -26,7 +26,7 @@ body, html {
     bottom: 0;
     width: 50%;
     color: #fff;
-    background: #7f7d86;
+    background: transparent;
 }
 
 #drag {
@@ -75,4 +75,14 @@ body, html {
 .btn-secondary:hover {
     background-color: #252525;
     color: white;
+}
+
+/* Ace editor overrides */
+
+.ace_content{
+    background: #011e3a;
+}
+
+.ace_gutter-layer{
+    background: #01172c;
 }
