@@ -7,7 +7,7 @@ from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from werkzeug.utils import secure_filename
 
-sys.path.append("/Users/ishaanjhaveri/Google_Drive/git/GCode5150/interpreter")
+sys.path.append(os.getcwd() + "/interpreter")
 from interpreter import parse_commands
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
