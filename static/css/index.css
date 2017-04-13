@@ -58,5 +58,21 @@ body, html {
 /*Bootstrap override*/
 
 .btn-toolbar {
-    background: black;
+    background: #131313;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.btn.sharp {
+    border-radius: 0;
+}
+
+.btn-secondary, .btn-secondary:active, .btn-secondary:visited {
+    background-color: #131313;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #252525;
+    color: white;
 }
