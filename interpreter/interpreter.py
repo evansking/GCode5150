@@ -34,6 +34,7 @@ class Command:
         line = line.upper()
         if line:
             try:
+            	line = self.remove_comments(line)
                 self.command = self.parse_command(line)
                 self.arguments = self.parse_arguments(line)
             except Gcode_exceptions.GcodeError:
@@ -42,6 +43,19 @@ class Command:
             self.command = str(command)
             self.arguments = arguments
         self.letter, self.number = re.findall(r'([A-Z])([0-9]*)', self.command)[0]
+
+    def remove_comments(self, line):
+        '''
+        input:
+            line: string of line of Gcode 
+        output: 
+            string of line of Gcode with comments removed
+        '''
+        for delimiter in constants.comment_delimiter:
+            comment_index = line.find(delimiter)
+            if comment_index >= 0:
+                line = line[:comment_index]
+        return line
 
     def parse_command(self, line):
         '''
@@ -67,11 +81,6 @@ class Command:
 
         raise SyntaxError if there are syntax errors
         '''
-        comment_delimiter = ['//', ';']
-        for delimiter in comment_delimiter:
-            comment_index = line.find(delimiter)
-            if comment_index >= 0:
-                line = line[:comment_index]  # remove comments
         arguments = {}
         args = line.split()[1:]
         for arg in args:
@@ -105,8 +114,19 @@ point_list = []
 
 ######################## NERLA'S FUNCTION ##########################
 def interpret_gcode(l):
+    '''
+    input:
+        l: string of line of Gcode
+    output:
+        tuple of point (x,y,z) of movement, and boolean indicating if drawing or not 
+        ex) ((1,2,3), True)
+        
+        if command is not a draw command (like any of the M commands), return None
+    '''
     global line_list, point_list
-
+    l = l.strip()
+        if l and l[0] not in constants.comment_delimiter and not l.isspace():
+            l = Command(line=l)
     if l.letter == 'G' and l.number == '1':
         p = [None, None, None]
         for key in l.arguments:
@@ -158,17 +178,20 @@ def interpret_gcode(l):
 def parse_commands(gcode):
     lines = gcode.split('\n')
     for line in lines:
-        if line:
-            if line[0] != ';' and not line.isspace():
-                command = Command(line=line)
-                interpret_gcode(command)
-    point_list.append(line_list)
-    return json.dumps(point_list)
+    	interpretation = interpret_gcode(line)
+        if interpretation:
+            p, draw = interpretation
+            draw_line(p, draw)
+    return
 
-def draw_line():
-	pass
+def draw_line(p, draw):
+	'''
+	input:
+        p: endpoint (x,y,z) to draw line to (starting at current position)
+        draw: boolean indicating whether or not to draw 
 
-def move_head():
+	wrapper function for draw line
+	'''
 	pass
 
 '''
