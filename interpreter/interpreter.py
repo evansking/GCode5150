@@ -125,8 +125,10 @@ def interpret_gcode(l):
     '''
     global line_list, point_list
     l = l.strip()
-        if l and l[0] not in constants.comment_delimiter and not l.isspace():
-            l = Command(line=l)
+    if l and not l[0] in constants.comment_delimiter and not l.isspace():
+        l = Command(line=l)
+    else:
+        return None
     if l.letter == 'G' and l.number == '1':
         p = [None, None, None]
         for key in l.arguments:
@@ -152,8 +154,10 @@ def interpret_gcode(l):
             else:
                 raise Gcode_exceptions.UndefinedPoint
         line_list.append(p)
+        return (p, True)
     elif l.letter == 'G' and l.number == '28':
         line_list.append([0, 0, 0])
+        return ([0,0,0], True)
     elif l.letter == 'G' and l.number == '1':
         point_list.append(line_list)
         line_list = []
@@ -175,13 +179,25 @@ def interpret_gcode(l):
         raise Gcode_exceptions.UndefinedInstruction(l)
 
 ################# AUSTIN'S SPACE ########################
+
 def parse_commands(gcode):
+    '''
+    input:
+        gcode: text string of entire Gcode file
+    '''
     lines = gcode.split('\n')
-    for line in lines:
+    # initialize gcodeline -> point dict
+    for i in range(1, len(lines) + 1):
+        constants.gcodeline_point[i] = None
+    current_head = [0.0,0.0,0.0]
+    for i in range(len(lines)):
+        line = lines[i]
     	interpretation = interpret_gcode(line)
         if interpretation:
             p, draw = interpretation
             draw_line(p, draw)
+            constants.gcodeline_point[i+1] = (current_head,p)
+            current_head = p
     return
 
 def draw_line(p, draw):
@@ -206,5 +222,7 @@ dictionaries
 
 if __name__ == '__main__':
     # main function for testing purposes
-    parse_commands(sys.argv[1])
+    with open(sys.argv[1]) as f:
+        parse_commands(f.read())
+    print constants.gcodeline_point
     print "done"
