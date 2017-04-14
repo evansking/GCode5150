@@ -103,7 +103,7 @@ class Command:
 line_list = []
 point_list = []
 
-
+######################## NERLA'S FUNCTION ##########################
 def interpret_gcode(l):
     global line_list, point_list
 
@@ -154,7 +154,7 @@ def interpret_gcode(l):
     else:
         raise Gcode_exceptions.UndefinedInstruction(l)
 
-
+################# AUSTIN'S SPACE ########################
 def parse_commands(gcode):
     lines = gcode.split('\n')
     for line in lines:
@@ -165,6 +165,18 @@ def parse_commands(gcode):
     point_list.append(line_list)
     return json.dumps(point_list)
 
+def draw_line():
+	pass
+
+def move_head():
+	pass
+
+'''
+dictionaries
+- gcode line -> point
+- point -> gcode line
+'''
+##########################################################
 
 # with open(outfilename , 'w') as outfile:
 # 	json.dump(point_list, outfile, indent=4,separators=(',',': '))
