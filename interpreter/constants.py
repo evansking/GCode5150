@@ -1,3 +1,9 @@
+comment_delimiter = ['//', ';']
+
+gcodeline_point = {}
+
+point_gcodeline = {}
+
 common_comm = {	"G0":"Move (rapid linear)", 
 				"G1":"Move (linear)", 
 				"G2":"Move (controlled clockwise arc)",
