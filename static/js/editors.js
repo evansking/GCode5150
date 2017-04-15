@@ -83,7 +83,7 @@ function uploadDraw() {
             processData: false,
             success: function (data) {
                 console.log("data transferred, pathString.length: ")
-                pathString = $.parseJSON(JSON.parse(data)['path']);
+                var pathString = $.parseJSON(JSON.parse(data)['path']);
                 console.log(pathString.length);
                 path(pathString, false);
             },
