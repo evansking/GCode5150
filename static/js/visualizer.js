@@ -1,5 +1,3 @@
-
-
 /* ###################################### GLOBAL VARIABLES ######################################*/
 
 //var startTime, object, mouse;
@@ -202,6 +200,12 @@ function animate() {
                 onScreenObjects.push(currentLine);
                 isAnimating = true;
                 updatePositions(nextAnimation[2]);
+            }  else if (nextAnimation[0] == QUEUE_MEMBERS.ARC){
+                console.log('starting arc');
+                currentLine = null;
+                isAnimating = true;
+                drawArc(nextAnimation[1], nextAnimation[2], nextAnimation[3],
+                    nextAnimation[4], nextAnimation[5], nextAnimation[6], nextAnimation[7]);
             } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
                 currentLine = nextAnimation[1];
                 var origin = new THREE.Vector3();
@@ -408,6 +412,9 @@ function init() {
     var clearButton = $("#clear");
     clearButton.click(clear);
 
+    var arcExampleButton = $("#arcExample");
+    arcExampleButton.click(arcExampleFunction);
+
     if (DEBUG_PRINT) console.log('finished init');
 }
 
@@ -419,3 +426,70 @@ $(document).ready(function () {
 });
 
 /* ###################################### NOTES ######################################*/
+
+// This function draws an arc from currentPosition to x,y,z
+// cx/cy/cz - center of circle that arc is a part of
+// x/y/z - end position
+// dir - ARC_CW or ARC_CCW to control direction of arc
+function queueArc(cx, cy, cz, x, y, z, dir){
+    animationQueue.push([QUEUE_MEMBERS.ARC, cx, cy, cz, x, y, z, dir]);
+}
+
+// Helper to queueArc
+function atan3(dy, dx) {
+    var a = Math.atan2(dy,dx);
+    if(a<0) a = (Math.PI*2.0)+a;
+    return a;
+}
+
+//Helper to queueArc
+function drawArc(cx, cy, cz, x, y, z, dir){
+    // get radius
+    var dx = currentPosition.x - cx; if (DEBUG_PRINT) console.log('dx', dx);
+    var dy = currentPosition.y - cy; if (DEBUG_PRINT) console.log('dy', dy);
+    var dz = currentPosition.z - cz; if (DEBUG_PRINT) console.log('dz', dz);
+    var radius = Math.sqrt(dx*dx + dy*dy); if (DEBUG_PRINT) console.log('radius', radius);
+
+    // find angle of arc (sweep)
+    var angle1 = atan3(dy,dx); if (DEBUG_PRINT) console.log('angle1', angle1);
+    var angle2 = atan3(y-cy,x-cx); if (DEBUG_PRINT) console.log('angle2', angle2);
+    var theta = angle2-angle1;
+
+    if (dir > 0 && theta < 0) angle2 += 2*Math.PI;
+    else if(dir < 0 && theta > 0) angle1 += 2*Math.PI;
+
+    theta = (angle2-angle1);//%(2*Math.PI);
+
+    var len = Math.abs(theta) * radius;
+
+    var segments = Math.ceil(len*MM_PER_SEGMENT);
+
+    var nx, ny, angle3, scale;
+    for(var i = 0;i < segments; ++i) {
+      console.log("done ", i, ' of ', segments, ' segments' );
+        // interpolate around the arc
+        scale = i/segments;
+
+        angle3 = (theta * scale) + angle1;
+        nx = cx + Math.cos(angle3) * radius;
+        ny = cy + Math.sin(angle3) * radius;
+
+        // send it to the planner
+        queueInstantLine({x: nx, y: ny, z: 0});
+    }
+    isAnimating = false;
+}
+
+
+function arcExampleFunction(){
+    stopDrawing();
+    copyPoint(currentPosition, {x: 6.7891, y: 0.4066, z: 0});
+    startDrawing();
+    drawArc(-8.2874,5.5335,0,7.9548, 2.7874,0,1);
+    // copyPoint(currentPosition, {x: 7.38, y: 2.69, z: 0});
+    copyPoint(currentPosition, {x: 7.95, y: 2.79, z: 0});
+    drawArc(-6.5121, 2.1718,0,8.3074, 4.9592,0,1);
+    // drawArc(7.208,-0,0,8.253, 5.8432,0,1);
+    stopDrawing();
+}
+

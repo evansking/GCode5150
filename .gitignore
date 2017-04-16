@@ -6,3 +6,5 @@
 **/cert/*
 **/logs/*
 **.db
+evan.json
+uploads/*
