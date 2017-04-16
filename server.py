@@ -8,10 +8,12 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from werkzeug.utils import secure_filename
 
 sys.path.append(os.getcwd() + "/interpreter")
-from interpreter import parse_commands
+from interpreter import Drawer
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'uploads/'
+POINT_BATCH_LENGTH = 1584
+DRAWER = Drawer()
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -56,10 +58,8 @@ def upload_file():
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
-    path = parse_commands(commands)
-    with open('evan.json', 'w') as outfile:
-        json.dump(path, outfile, indent=4, sort_keys=True)
-    return json.dumps({"path" : path})
+    pathSegment, requestAgain = DRAWER.parse_commands(commands, POINT_BATCH_LENGTH)
+    return json.dumps({"points" : pathSegment, "again" : requestAgain})
 
 ######################################################################
 #                        SocketIO Logic                              #

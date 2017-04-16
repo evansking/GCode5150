@@ -44,11 +44,12 @@ class Command:
             self.arguments = arguments
         self.letter, self.number = re.findall(r'([A-Z])([0-9]*)', self.command)[0]
 
+
     def remove_comments(self, line):
         '''
         input:
-            line: string of line of Gcode 
-        output: 
+            line: string of line of Gcode
+        output:
             string of line of Gcode with comments removed
         '''
         for delimiter in constants.comment_delimiter:
@@ -118,9 +119,9 @@ def interpret_gcode(l):
     input:
         l: string of line of Gcode
     output:
-        tuple of point (x,y,z) of movement, and boolean indicating if drawing or not 
+        tuple of point (x,y,z) of movement, and boolean indicating if drawing or not
         ex) ((1,2,3), True)
-        
+
         if command is not a draw command (like any of the M commands), return None
     '''
     global line_list, point_list
@@ -129,7 +130,7 @@ def interpret_gcode(l):
         l = Command(line=l)
     else:
         return None
-    if l.letter == 'G' and l.number == '1':
+    if l.letter == 'G' and (l.number == '1' or l.number == '0'):
         p = [None, None, None]
         for key in l.arguments:
             if key == 'X':
@@ -154,7 +155,7 @@ def interpret_gcode(l):
             else:
                 raise Gcode_exceptions.UndefinedPoint
         line_list.append(p)
-        return (p, True)
+        return (p, l.number == '1')
     elif l.letter == 'G' and l.number == '28':
         line_list.append([0, 0, 0])
         return ([0,0,0], True)
@@ -179,36 +180,60 @@ def interpret_gcode(l):
         raise Gcode_exceptions.UndefinedInstruction(l)
 
 ################# AUSTIN'S SPACE ########################
-
-def parse_commands(gcode):
+class Drawer:
     '''
-    input:
-        gcode: text string of entire Gcode file
+    define object for a draw command (entire Gcode file or set of lines)
     '''
-    lines = gcode.split('\n')
-    # initialize gcodeline -> point dict
-    for i in range(1, len(lines) + 1):
-        constants.gcodeline_point[i] = None
-    current_head = [0.0,0.0,0.0]
-    for i in range(len(lines)):
-        line = lines[i]
-    	interpretation = interpret_gcode(line)
-        if interpretation:
-            p, draw = interpretation
-            draw_line(p, draw)
-            constants.gcodeline_point[i+1] = (current_head,p)
-            current_head = p
-    return
+    def __init__(self):
+        self.current_line_list = []
+        self.current_progress = 0
+        self.total_lines = 0
+        self.current_head = [0.0,0.0,0.0]
+        print "Drawer initialized"
 
-def draw_line(p, draw):
-	'''
-	input:
-        p: endpoint (x,y,z) to draw line to (starting at current position)
-        draw: boolean indicating whether or not to draw 
 
-	wrapper function for draw line
-	'''
-	pass
+    def parse_commands(self, gcode, num_lines):
+        # point_list_to_send = [[[0,0,0],[10,10,10]], [[5,5,5],[45,45,45]]]
+        # return json.dumps(point_list_to_send), False
+        '''
+        input:
+            gcode: text string of entire Gcode file
+        '''
+        if self.current_progress == 0:
+            self.current_line_list = gcode.split('\n')
+            # initialize gcodeline -> point dict
+            self.total_lines = len(self.current_line_list)
+            for i in range(1, self.total_lines + 1):
+                constants.gcodeline_point[i] = None
+            self.current_head = [0.0,0.0,0.0]
+
+        i = self.current_progress
+        point_list_to_send = [[self.current_head]]
+        current_list_of_points = 0
+        while i < self.current_progress + num_lines:
+            if i >= self.total_lines - 1:
+                self.current_line_list = []
+                self.current_progress = 0
+                self.total_lines = 0
+                return json.dumps(point_list_to_send), False
+
+            line = self.current_line_list[i]
+            interpretation = interpret_gcode(line)
+            if interpretation:
+                p, extrude = interpretation
+                #figure out whether to start a new list or append the point to the
+                #current list
+                if extrude:
+                    point_list_to_send[current_list_of_points].append(p)
+                else:
+                    point_list_to_send.append([p])
+                    current_list_of_points += 1
+                constants.gcodeline_point[i+1] = (self.current_head[0], self.current_head[1], self.current_head[2] ,p[0], p[1], p[2])
+                constants.point_gcodeline[(self.current_head[0], self.current_head[1], self.current_head[2] ,p[0], p[1], p[2])] = i+1
+                self.current_head = p
+            i += 1
+        self.current_progress += num_lines
+        return json.dumps(point_list_to_send), True
 
 '''
 dictionaries

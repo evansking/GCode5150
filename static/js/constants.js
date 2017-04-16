@@ -1,6 +1,8 @@
-var FOV = 500; // Camera frustum vertical field of view default value.
-var NEAR = 0.5; // Camera frustum near plane default value.
-var FAR = 100; // Camera frustum far plane default value.
+var FOV = 45; // Camera frustum vertical field of view default value.
+var NEAR = 0.1; // Camera frustum near plane default value.
+var FAR = 2000; // Camera frustum far plane default value.
+
+
 var MAX_POINTS = 10; // Inversely proportional to drawing speed
 
 var QUEUE_MEMBERS = {
@@ -9,7 +11,7 @@ var QUEUE_MEMBERS = {
     FILL : 2,
     INSTANT_LINE: 3,
     MOVE: 4
-}
+};
 
 //Debugging Variables
 var DEBUG_PRINT = false;
@@ -18,4 +20,3 @@ var DEBUG_PRINT = false;
 var MM_PER_SEGMENT = 10;
 var ARC_CW = 1;
 var ARC_CCW = -1;
-

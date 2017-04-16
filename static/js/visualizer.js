@@ -6,7 +6,7 @@
 //var objects = []
 
 //Three.js rendering variables
-var renderer, scene, camera;
+var renderer, scene, camera, WIDTH, HEIGHT;
 
 var ambientLight, ground, dirLight;
 
@@ -28,13 +28,16 @@ var isDrawing;
 
 //Colors
 var lineColor =  0xff0000; //red, for now everything is red but we will begin to use color to better effect later on
+var red, blue;
 
 // The mouse object
-var mouse;
+var raycaster, projector, mouse;
 
 var isAnimating; // Set to true if we want each line to be drawn animatedly
 
 var points = []; // List of lists of lists - determines points of current visualization
+
+var onScreenObjects = []; // as we draw lines add them to this
 
 // CUBE PATH EXAMPLE
 points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
@@ -51,6 +54,7 @@ for (var t = 0; t <= 10; ){
     t += 0.5;
 }
 
+// points = [[[0, 0, 0], [50, 0, 0]]];
 
 /* ########################################## FUNCTIONS ##########################################*/
 
@@ -116,8 +120,8 @@ function queueInstantLine(point){
 //It draws lines along each point on an individual path
 //It starts its next drawing at the beginning of a point in a given point list
 function path(pointList, animated){
-    console.log('beginning points, pointList.length: ');
-    console.log(pointList.length);
+    // console.log('beginning points, pointList.length: ');
+    // console.log(pointList);
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
         //currentPath: the currentPath starting at the first point on this path
@@ -126,14 +130,26 @@ function path(pointList, animated){
                 startDrawing();
             }
             if (animated) queueAnimatedLine({x: pointList[i][p][0], y: pointList[i][p][1],
-                z: pointList[i][p][2]})
+                z: pointList[i][p][2]});
             else queueInstantLine({x: pointList[i][p][0], y: pointList[i][p][1],
-                z: pointList[i][p][2]})
+                z: pointList[i][p][2]});
         }
         stopDrawing();
     }
-    console.log('ending points, animationQueue.length: ');
-    console.log(animationQueue.length);
+    // console.log('ending points, animationQueue.length: ');
+    // console.log(animationQueue.length);
+}
+
+function pathSegment(pointList, animated){
+    //pointList : the parent list of all subpaths
+    for (var i = 0; i < pointList.length; i++){
+        //currentPath: the currentPath starting at the first point on this path
+        for (var p = 0; p < pointList[i].length; p++){
+            if (p == 1){
+                startDrawing();
+            }
+        }
+    }
 }
 
 //Clear the visualization of any lines.
@@ -177,23 +193,25 @@ function animate() {
     if (drawCount == MAX_POINTS || !isAnimating) {
         drawCount = 1;
         copyPoint(currentPosition, updatedPosition);
-        if (animationQueue.length != 0){
+        if (animationQueue.length !== 0){
             var nextAnimation = animationQueue.shift();
             if (nextAnimation[0] == QUEUE_MEMBERS.LINE){
                 console.log('starting line');
                 currentLine = nextAnimation[1];
                 scene.add(currentLine);
+                onScreenObjects.push(currentLine);
                 isAnimating = true;
                 updatePositions(nextAnimation[2]);
             } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
                 currentLine = nextAnimation[1];
                 var origin = new THREE.Vector3();
-                copyPoint(origin, currentPosition)
+                copyPoint(origin, currentPosition);
                 currentLine.geometry.vertices.push(origin);
                 if (DEBUG_PRINT) console.log('origin: ', currentPosition);
                 currentLine.geometry.vertices.push(nextAnimation[2]);
                 if (DEBUG_PRINT) console.log('destination: ', nextAnimation[2]);
                 scene.add(currentLine);
+                onScreenObjects.push(currentLine);
                 isAnimating = false;
                 copyPoint(currentPosition, nextAnimation[2]);
                 copyPoint(updatedPosition, currentPosition);
@@ -216,8 +234,9 @@ function animate() {
 
 // Helper to queueAnimatedLine
 function updatePositions(point) {
+    var positions;
     try {
-        var positions = currentLine.geometry.attributes.position.array;
+      positions = currentLine.geometry.attributes.position.array;
     } catch (err){
         return;
     }
@@ -273,11 +292,49 @@ function drawTestPathFunction(){
     path(points, false);
 }
 
-// Currently not used for anything. Listens for mouse clicks.
+// Mouse clicks to highlight segments of code
 function onMouseClick(event) {
+    // the following line would stop any other event handler from firing
     event.preventDefault();
-    mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
-    mouse.y = -( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+    console.log("Click, mouse coords: ");
+
+    // update the mouse variable
+    mouse.x = ( event.clientX / WIDTH ) * 2 - 1;
+    mouse.y = - ( event.clientY / HEIGHT ) * 2 + 1;
+    console.log(mouse.x, mouse.y);
+
+    // look for intersections
+    raycaster.setFromCamera(mouse, camera);
+    var intersects = raycaster.intersectObjects(onScreenObjects);
+    if (intersects.length > 0) {
+        // addLine(intersects[0]);
+        intersects.forEach(function (workingLine){
+          addLine(workingLine);
+        });
+    } else {
+        console.log("No intersections");
+    }
+
+    // text situation
+    console.log('currently highlighted lines: ');
+    console.log(codeEditor.leftEditor.selection.getRange());
+    var r = codeEditor.leftEditor.selection.getRange();
+    r.start.row = 0;
+    r.end.row = 10;
+    codeEditor.leftEditor.selection.setSelectionRange(r, false);
+    console.log(r);
+
+}
+
+function addLine(workingLine){
+    if (workingLine.object.material.color.equals(red)){
+        workingLine.object.material.color = blue;
+        console.log('changed line color');
+    } else {
+        workingLine.object.material.color = red;
+    }
+
+    renderer.render(scene, camera);
 }
 
 function init() {
@@ -286,14 +343,17 @@ function init() {
     // scene
     scene = new THREE.Scene();
     // camera
-    camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR);
-    camera.position.set(60, 40, 0);
+    WIDTH = $('#top-half').width();
+    HEIGHT = $('#top-half').height();
+    camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
+    camera.position.set(0, 0, 400);
+    // camera.position.set(0,150,400);
 
     // Lights
     ambientLight = new THREE.AmbientLight(0x505050);
     scene.add(ambientLight);
     dirLight = new THREE.DirectionalLight(0x55505a, 2.5);
-    dirLight.position.set(0, 3, 0);
+    dirLight.position.set(0, 0, 3);
     dirLight.castShadow = true;
     dirLight.shadow.camera.near = 1;
     dirLight.shadow.camera.far = 10;
@@ -306,11 +366,10 @@ function init() {
     scene.add(dirLight);
 
     // Platform on which to 3d print
-    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(50, 50, 1, 1),
+    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(500, 500, 1, 1),
         new THREE.MeshPhongMaterial({
             color: 0xa0adaf, shininess: 150
         }));
-    ground.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z
     ground.receiveShadow = true;
     scene.add(ground);
 
@@ -330,8 +389,12 @@ function init() {
     isDrawing = false;
 
     // mouse
-    mouse = new THREE.Vector2();
+    raycaster = new THREE.Raycaster();
+    mouse = { x: 0, y: 0 };
     document.addEventListener('mousedown', onMouseClick, false);
+
+    red = new THREE.Color('red');
+    blue = new THREE.Color('skyblue');
 
     // Controls
     var controls = new THREE.OrbitControls(camera, renderer.domElement);

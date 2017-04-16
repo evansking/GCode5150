@@ -63,17 +63,38 @@ function uploadFile(leftEditor) {
             cache: false,
             processData: false,
             success: function (data) {
-                content = JSON.parse(data)['content']
+                content = JSON.parse(data).content;
                 leftEditor.setValue(content);
             },
         });
     });
-};
+}
 
 // uploads the GCode commands to the server which responds with the necessary points
+// function uploadDraw() {
+//     $('#draw-upload').click(function () {
+//         data = codeEditor.leftEditor.getValue();
+//         $.ajax({
+//             type: 'POST',
+//             url: '/draw',
+//             data: data,
+//             contentType: false,
+//             cache: false,
+//             processData: false,
+//             success: function (data) {
+//                 console.log("data transferred, pathString.length: ");
+//                 var pathString = $.parseJSON(JSON.parse(data).path);
+//                 console.log(pathString);
+//                 path(pathString, false);
+//             },
+//         });
+//     });
+// }
+
 function uploadDraw() {
     $('#draw-upload').click(function () {
         data = codeEditor.leftEditor.getValue();
+        console.log('draw clicked');
         $.ajax({
             type: 'POST',
             url: '/draw',
@@ -81,15 +102,28 @@ function uploadDraw() {
             contentType: false,
             cache: false,
             processData: false,
-            success: function (data) {
-                console.log("data transferred, pathString.length: ")
-                var pathString = $.parseJSON(JSON.parse(data)['path']);
-                console.log(pathString.length);
-                path(pathString, false);
-            },
+            success: draw,
         });
     });
-};
+}
+
+function draw (data) {
+    var nextPoints = $.parseJSON(JSON.parse(data).points);
+    path(nextPoints, false);
+    var requestAgain = $.parseJSON(JSON.parse(data).again);
+    if (requestAgain){
+      $.ajax({
+          type: 'POST',
+          url: '/draw',
+          data: 'drawAgain',
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: draw,
+      });
+    }
+}
+
 
 function disableBodyScroll(){
       $('html, body').css({
@@ -100,7 +134,7 @@ function disableBodyScroll(){
 
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
-    $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height())
+    $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height());
     codeEditor.init();
     disableBodyScroll();
     uploadDraw();
