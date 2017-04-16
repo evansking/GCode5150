@@ -13,9 +13,7 @@ var ambientLight, ground, dirLight;
 var currentLine;
 // The current animation queue
 var animationQueue;
-// If a arc is currently being drawn this variable tracks it
-var currentArc;
-// This variable maintains the amount of segments drawn of a currently drawing line or arc
+// This variable maintains the amount of segments drawn of a currently drawing line
 var drawCount;
 //The drawing heads most recent position
 var currentPosition;
@@ -25,7 +23,6 @@ var updatedPosition;
 var isDrawing;
 
 //Colors
-var lineColor =  0xff0000; //red, for now everything is red but we will begin to use color to better effect later on
 var red, blue;
 
 // The mouse object
@@ -72,7 +69,7 @@ function stopDrawing(){
 
 // This function draws a line from currentPosition to point.
 // The drawing of the line is animated
-function queueAnimatedLine(point) {
+function queueAnimatedLine(point, color) {
     if (isDrawing) {
         // geometry
         var geometry = new THREE.BufferGeometry();
@@ -84,7 +81,7 @@ function queueAnimatedLine(point) {
         geometry.setDrawRange(0, drawCount);
 
         // material
-        var material = new THREE.LineBasicMaterial( { color: lineColor, linewidth: 20 } );
+        var material = new THREE.LineBasicMaterial( { color: color, linewidth: 20 } );
 
         // currentLine
         animationQueue.push([QUEUE_MEMBERS.LINE, new THREE.Line(geometry,  material), point]);
@@ -101,11 +98,11 @@ function queueMoveHead(point){
 
 // This function draws a line from currentPosition to point.
 // The drawing of the line is not animated
-function queueInstantLine(point){
+function queueInstantLine(point, color, lineWidth){
     if (DEBUG_PRINT) console.log('Drawing Permanent Line');
 
     if (isDrawing){
-        var material = new THREE.LineBasicMaterial({ color: lineColor, linewidth: 50 });
+        var material = new THREE.LineBasicMaterial({ color: color, linewidth: lineWidth });
         var geometry = new THREE.Geometry();
         animationQueue.push([QUEUE_MEMBERS.INSTANT_LINE, new THREE.Line(geometry,  material), point]);
     } else {
@@ -128,9 +125,9 @@ function path(pointList, animated){
                 startDrawing();
             }
             if (animated) queueAnimatedLine({x: pointList[i][p][0], y: pointList[i][p][1],
-                z: pointList[i][p][2]});
+                z: pointList[i][p][2]}, red);
             else queueInstantLine({x: pointList[i][p][0], y: pointList[i][p][1],
-                z: pointList[i][p][2]});
+                z: pointList[i][p][2]}, red, 60);
         }
         stopDrawing();
     }
@@ -200,12 +197,6 @@ function animate() {
                 onScreenObjects.push(currentLine);
                 isAnimating = true;
                 updatePositions(nextAnimation[2]);
-            }  else if (nextAnimation[0] == QUEUE_MEMBERS.ARC){
-                console.log('starting arc');
-                currentLine = null;
-                isAnimating = true;
-                drawArc(nextAnimation[1], nextAnimation[2], nextAnimation[3],
-                    nextAnimation[4], nextAnimation[5], nextAnimation[6], nextAnimation[7]);
             } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
                 currentLine = nextAnimation[1];
                 var origin = new THREE.Vector3();
@@ -300,40 +291,65 @@ function drawTestPathFunction(){
 function onMouseClick(event) {
     // the following line would stop any other event handler from firing
     event.preventDefault();
-    console.log("Click, mouse coords: ");
 
     // update the mouse variable
     mouse.x = ( event.clientX / WIDTH ) * 2 - 1;
     mouse.y = - ( event.clientY / HEIGHT ) * 2 + 1;
-    console.log(mouse.x, mouse.y);
+    // console.log(mouse.x, mouse.y);
+
+    var highlight_range = [10000000,0];
+    var lineNum;
 
     // look for intersections
     raycaster.setFromCamera(mouse, camera);
     var intersects = raycaster.intersectObjects(onScreenObjects);
     if (intersects.length > 0) {
-        // addLine(intersects[0]);
-        intersects.forEach(function (workingLine){
-          addLine(workingLine);
-        });
+        addLine(intersects[0]);
+        // intersects.forEach(function (workingLine){
+          // addLine(workingLine);
+          // lineNum = addLine(workingLine);
+        //   if (lineNum < highlight_range[0]){
+        //     highlight_range[0] = lineNum;
+        //   } else if (lineNum > highlight_range[1]){
+        //     highlight_range[1] = lineNum;
+        //   }
+        // });
+        // var r = codeEditor.leftEditor.selection.getRange();
+        // r.start.row = highlight_range[0];
+        // r.end.row = highlight_range[1];
+        // codeEditor.leftEditor.selection.setSelectionRange(r, false);
     } else {
-        console.log("No intersections");
+        // console.log("No intersections");
     }
-
-    // text situation
-    console.log('currently highlighted lines: ');
-    console.log(codeEditor.leftEditor.selection.getRange());
-    var r = codeEditor.leftEditor.selection.getRange();
-    r.start.row = 0;
-    r.end.row = 10;
-    codeEditor.leftEditor.selection.setSelectionRange(r, false);
-    console.log(r);
-
 }
 
 function addLine(workingLine){
     if (workingLine.object.material.color.equals(red)){
         workingLine.object.material.color = blue;
-        console.log('changed line color');
+        two_points = [[workingLine.object.geometry.vertices[0].x,
+          workingLine.object.geometry.vertices[0].y,
+          workingLine.object.geometry.vertices[0].z],
+          [workingLine.object.geometry.vertices[1].x,
+          workingLine.object.geometry.vertices[1].y,
+          workingLine.object.geometry.vertices[1].z]];
+        // console.log(two_points);
+
+          $.ajax({
+              type: 'POST',
+              url: '/lineNumber',
+              data: JSON.stringify(two_points),
+              contentType: false,
+              cache: false,
+              processData: false,
+              success: function (data) {
+                  lineNum = JSON.parse(data).lineNum;
+                  var r = codeEditor.leftEditor.selection.getRange();
+                  r.start.row = lineNum;
+                  r.end.row = lineNum;
+                  codeEditor.leftEditor.selection.setSelectionRange(r, false);
+              },
+          });
+
     } else {
         workingLine.object.material.color = red;
     }
@@ -412,9 +428,6 @@ function init() {
     var clearButton = $("#clear");
     clearButton.click(clear);
 
-    var arcExampleButton = $("#arcExample");
-    arcExampleButton.click(arcExampleFunction);
-
     if (DEBUG_PRINT) console.log('finished init');
 }
 
@@ -426,70 +439,3 @@ $(document).ready(function () {
 });
 
 /* ###################################### NOTES ######################################*/
-
-// This function draws an arc from currentPosition to x,y,z
-// cx/cy/cz - center of circle that arc is a part of
-// x/y/z - end position
-// dir - ARC_CW or ARC_CCW to control direction of arc
-function queueArc(cx, cy, cz, x, y, z, dir){
-    animationQueue.push([QUEUE_MEMBERS.ARC, cx, cy, cz, x, y, z, dir]);
-}
-
-// Helper to queueArc
-function atan3(dy, dx) {
-    var a = Math.atan2(dy,dx);
-    if(a<0) a = (Math.PI*2.0)+a;
-    return a;
-}
-
-//Helper to queueArc
-function drawArc(cx, cy, cz, x, y, z, dir){
-    // get radius
-    var dx = currentPosition.x - cx; if (DEBUG_PRINT) console.log('dx', dx);
-    var dy = currentPosition.y - cy; if (DEBUG_PRINT) console.log('dy', dy);
-    var dz = currentPosition.z - cz; if (DEBUG_PRINT) console.log('dz', dz);
-    var radius = Math.sqrt(dx*dx + dy*dy); if (DEBUG_PRINT) console.log('radius', radius);
-
-    // find angle of arc (sweep)
-    var angle1 = atan3(dy,dx); if (DEBUG_PRINT) console.log('angle1', angle1);
-    var angle2 = atan3(y-cy,x-cx); if (DEBUG_PRINT) console.log('angle2', angle2);
-    var theta = angle2-angle1;
-
-    if (dir > 0 && theta < 0) angle2 += 2*Math.PI;
-    else if(dir < 0 && theta > 0) angle1 += 2*Math.PI;
-
-    theta = (angle2-angle1);//%(2*Math.PI);
-
-    var len = Math.abs(theta) * radius;
-
-    var segments = Math.ceil(len*MM_PER_SEGMENT);
-
-    var nx, ny, angle3, scale;
-    for(var i = 0;i < segments; ++i) {
-      console.log("done ", i, ' of ', segments, ' segments' );
-        // interpolate around the arc
-        scale = i/segments;
-
-        angle3 = (theta * scale) + angle1;
-        nx = cx + Math.cos(angle3) * radius;
-        ny = cy + Math.sin(angle3) * radius;
-
-        // send it to the planner
-        queueInstantLine({x: nx, y: ny, z: 0});
-    }
-    isAnimating = false;
-}
-
-
-function arcExampleFunction(){
-    stopDrawing();
-    copyPoint(currentPosition, {x: 6.7891, y: 0.4066, z: 0});
-    startDrawing();
-    drawArc(-8.2874,5.5335,0,7.9548, 2.7874,0,1);
-    // copyPoint(currentPosition, {x: 7.38, y: 2.69, z: 0});
-    copyPoint(currentPosition, {x: 7.95, y: 2.79, z: 0});
-    drawArc(-6.5121, 2.1718,0,8.3074, 4.9592,0,1);
-    // drawArc(7.208,-0,0,8.253, 5.8432,0,1);
-    stopDrawing();
-}
-

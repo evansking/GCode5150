@@ -189,7 +189,7 @@ class Drawer:
         self.current_progress = 0
         self.total_lines = 0
         self.current_head = [0.0,0.0,0.0]
-        print "Drawer initialized"
+        # print "Drawer initialized"
 
 
     def parse_commands(self, gcode, num_lines):
@@ -240,6 +240,22 @@ dictionaries
 - gcode line -> point
 - point -> gcode line
 '''
+
+def get_gcode_line_num_from_points(x1, y1, z1, x2, y2, z2):
+    try:
+        return constants.point_gcodeline[(x1, y1, z1, x2, y2, z2)]
+    except:
+        return 0
+
+def get_points_from_gcode_line_num(line_num):
+    try:
+        six_ints = constants.gcodeline_point[line_num]
+        return [[six_ints[0], six_ints[1], six_ints[2]],
+        [six_ints[3], six_ints[4], six_ints[5]]]
+    except:
+        return []
+
+
 ##########################################################
 
 # with open(outfilename , 'w') as outfile:

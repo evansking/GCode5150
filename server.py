@@ -8,7 +8,7 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from werkzeug.utils import secure_filename
 
 sys.path.append(os.getcwd() + "/interpreter")
-from interpreter import Drawer
+from interpreter import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'uploads/'
@@ -60,6 +60,20 @@ def draw_points():
     commands = request.data
     pathSegment, requestAgain = DRAWER.parse_commands(commands, POINT_BATCH_LENGTH)
     return json.dumps({"points" : pathSegment, "again" : requestAgain})
+
+@app.route('/points', methods=['POST'])
+def get_points():
+    line_num = int(request.data)
+    points = get_points_from_gcode_line_num(line_num)
+    return json.dumps({"points" : points})
+
+@app.route('/lineNumber', methods=['POST'])
+def get_gcode_line_num():
+    two_points = json.loads(request.data)
+    line_num = get_gcode_line_num_from_points(
+    two_points[0][0], two_points[0][1], two_points[0][2],
+    two_points[1][0], two_points[1][1], two_points[1][2])
+    return json.dumps({"lineNum" : line_num})
 
 ######################################################################
 #                        SocketIO Logic                              #
