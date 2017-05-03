@@ -5,10 +5,13 @@
  */
 sid = "session cookie";
 
-namespace = '';
-
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 socket.on('connect', function () {
-    socket.emit("join", {room: sid});
+    socket.emit("join", {room: io().id});
+});
+
+socket.on('test', function (next) {
+    current = codeEditor.leftEditor.getValue();
+    codeEditor.leftEditor.setValue(current + next);
 });
