@@ -69,31 +69,11 @@ function uploadFile(leftEditor) {
                 leftEditor.resize(true);
                 leftEditor.moveCursorTo(0,0);
                 leftEditor.getSession().setScrollTop(0);
+                console.log(data)
             },
         });
     });
 }
-
-// uploads the GCode commands to the server which responds with the necessary points
-// function uploadDraw() {
-//     $('#draw-upload').click(function () {
-//         data = codeEditor.leftEditor.getValue();
-//         $.ajax({
-//             type: 'POST',
-//             url: '/draw',
-//             data: data,
-//             contentType: false,
-//             cache: false,
-//             processData: false,
-//             success: function (data) {
-//                 console.log("data transferred, pathString.length: ");
-//                 var pathString = $.parseJSON(JSON.parse(data).path);
-//                 console.log(pathString);
-//                 path(pathString, false);
-//             },
-//         });
-//     });
-// }
 
 function uploadDraw() {
     $('#draw-upload').click(function () {
