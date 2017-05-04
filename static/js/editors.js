@@ -64,12 +64,6 @@ function uploadFile(leftEditor) {
             processData: false,
             success: function (data) {
                 console.log(data);
-                content = JSON.parse(data).content;
-                leftEditor.setValue(content);
-                leftEditor.clearSelection();
-                leftEditor.resize(true);
-                leftEditor.moveCursorTo(0,0);
-                leftEditor.getSession().setScrollTop(0);
             },
         });
     });
