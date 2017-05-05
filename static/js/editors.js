@@ -43,31 +43,29 @@ function IDESetDragVertical() {
         lastDownY = 0;
 }
 
-function disableBodyScroll(){
-      $('html, body').css({
+function disableBodyScroll() {
+    $('html, body').css({
         overflow: 'hidden',
         height: '100%'
     });
 }
 
-//upload a file to the server
-function uploadFile(leftEditor) {
+
+function uploadFile() {
     $('#upload-file').change(function () {
-        //no bot selected
-        var form_data = new FormData($('#upload-file')[0]);
-        $.ajax({
-            type: 'POST',
-            url: '/uploader',
-            data: form_data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-                console.log(data);
-            },
+        var reader = new FileReader();
+        reader.addEventListener('load', function () {
+            codeEditor.leftEditor.setValue(this.result);
+            codeEditor.leftEditor.clearSelection();
+            codeEditor.leftEditor.resize(true);
+            codeEditor.leftEditor.moveCursorTo(0, 0);
+            codeEditor.leftEditor.getSession().setScrollTop(0);
         });
+        file = document.querySelector('#upload-file').files[0]
+        reader.readAsText(file);
     });
 }
+
 
 function uploadDraw() {
     $('#draw-upload').click(function () {
@@ -85,30 +83,31 @@ function uploadDraw() {
     });
 }
 
-function draw (data) {
+function draw(data) {
     var nextPoints = $.parseJSON(JSON.parse(data).points);
     path(nextPoints, false);
     var requestAgain = $.parseJSON(JSON.parse(data).again);
-    if (requestAgain){
-      $.ajax({
-          type: 'POST',
-          url: '/draw',
-          data: 'drawAgain',
-          contentType: false,
-          cache: false,
-          processData: false,
-          success: draw,
-      });
+    if (requestAgain) {
+        $.ajax({
+            type: 'POST',
+            url: '/draw',
+            data: 'drawAgain',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: draw,
+        });
     }
 }
 
 
-function disableBodyScroll(){
-      $('html, body').css({
+function disableBodyScroll() {
+    $('html, body').css({
         overflow: 'hidden',
         height: '100%'
     });
 }
+
 
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
@@ -116,5 +115,39 @@ $(document).ready(function () {
     codeEditor.init();
     disableBodyScroll();
     uploadDraw();
-    uploadFile(codeEditor.leftEditor);
+    uploadFile();
 });
+
+
+$('body').click(function (e) {
+    if ($(e.target).hasClass('ace_gutter-cell')) {
+        lineNum = $(e.target).text()
+
+        $.ajax({
+            type: 'POST',
+            url: '/points',
+            data: lineNum,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                var two_points = JSON.parse(data).points;
+                if (two_points.length > 0) {
+                    var material = new THREE.LineBasicMaterial({color: blue, linewidth: 100});
+                    var geometry = new THREE.Geometry();
+                    var currentLine = new THREE.Line(geometry, material);
+
+                    var origin = new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]);
+                    var destination = new THREE.Vector3(two_points[1][0], two_points[1][1], two_points[1][2]);
+                    currentLine.geometry.vertices.push(origin);
+                    currentLine.geometry.vertices.push(destination);
+                    scene.add(currentLine);
+                    renderer.render(scene, camera);
+                }
+            },
+        });
+    }
+})
+
+
+
