@@ -43,31 +43,6 @@ socketio = SocketIO(app, async_mode=async_mode)
 def index():
     return flask.make_response(flask.render_template('index.html'))
 
-
-@app.route('/test')
-def visualizer():
-    return flask.make_response(flask.render_template('testVisualizer.html'))
-
-
-@app.route('/uploader', methods=['POST'])
-def upload_file():
-    f = request.files['file']
-    filename = secure_filename(f.filename)
-    location = os.path.join(BASEDIR, app.config['UPLOAD_FOLDER'], filename)
-    f.save(location)
-
-    def read_in_chunks(file, chunk_size=524288):
-        while True:
-            data = file.read(chunk_size)
-            if not data:
-                break
-            yield data
-
-    f = open(location)
-    for piece in read_in_chunks(f):
-        socketio.emit('test', piece)
-    return 'Done'
-
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
