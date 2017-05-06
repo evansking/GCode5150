@@ -110,74 +110,8 @@ class Command:
         # TODO: handle multiple commands on same line
 
 
-line_list = []
-point_list = []
-
 ######################## NERLA'S FUNCTION ##########################
-def interpret_gcode(l):
-    '''
-    input:
-        l: string of line of Gcode
-    output:
-        tuple of point (x,y,z) of movement, and boolean indicating if drawing or not
-        ex) ((1,2,3), True)
 
-        if command is not a draw command (like any of the M commands), return None
-    '''
-    global line_list, point_list
-    l = l.strip()
-    if l and not l[0] in constants.comment_delimiter and not l.isspace():
-        l = Command(line=l)
-    else:
-        return None
-    if l.letter == 'G' and (l.number == '1' or l.number == '0'):
-        p = [None, None, None]
-        for key in l.arguments:
-            if key == 'X':
-                p[0] = float(l.arguments[key])
-            elif key == 'Y':
-                p[1] = float(l.arguments[key])
-            elif key == 'Z':
-                p[2] = float(l.arguments[key])
-        if p[0] is None:
-            if len(line_list) > 0:
-                p[0] = line_list[len(line_list) - 1][0]
-            else:
-                raise Gcode_exceptions.UndefinedPoint
-        if p[1] is None:
-            if len(line_list) > 0:
-                p[1] = line_list[len(line_list) - 1][1]
-            else:
-                raise Gcode_exceptions.UndefinedPoint
-        if p[2] is None:
-            if len(line_list) > 0:
-                p[2] = line_list[len(line_list) - 1][2]
-            else:
-                raise Gcode_exceptions.UndefinedPoint
-        line_list.append(p)
-        return (p, l.number == '1')
-    elif l.letter == 'G' and l.number == '28':
-        line_list.append([0, 0, 0])
-        return ([0,0,0], True)
-    elif l.letter == 'G' and l.number == '1':
-        point_list.append(line_list)
-        line_list = []
-    elif l.letter == 'G' and l.number == '21':
-        pass
-    elif l.letter == 'G' and l.number == '90':
-        pass
-    elif l.letter == 'M' and l.number == '127':
-        pass
-    elif l.letter == 'M' and l.number == '73':
-        pass
-    elif l.letter == 'M' and l.number == '104':
-        pass
-    elif l.letter == 'M' and l.number == '126':
-        pass
-    elif l.letter == 'M' and l.number == '84':
-        pass
-    else:
-        raise Gcode_exceptions.UndefinedInstruction(l)
 
 ################# AUSTIN'S SPACE ########################
 class Drawer:
@@ -189,6 +123,7 @@ class Drawer:
         self.current_progress = 0
         self.total_lines = 0
         self.current_head = [0.0,0.0,0.0]
+        self.positioning = 'ABSOLUTE'
         # print "Drawer initialized"
 
 
@@ -218,7 +153,7 @@ class Drawer:
                 return json.dumps(point_list_to_send), False
 
             line = self.current_line_list[i]
-            interpretation = interpret_gcode(line)
+            interpretation = self.interpret_gcode(line)
             if interpretation:
                 p, extrude = interpretation
                 #figure out whether to start a new list or append the point to the
@@ -235,11 +170,71 @@ class Drawer:
         self.current_progress += num_lines
         return json.dumps(point_list_to_send), True
 
-'''
-dictionaries
-- gcode line -> point
-- point -> gcode line
-'''
+
+    def interpret_gcode(self, l):
+        '''
+        input:
+            l: string of line of Gcode
+        output:
+            tuple of point (x,y,z) of movement, and boolean indicating if drawing or not
+            ex) ((1,2,3), True)
+
+            if command is not a draw command (like any of the M commands), return None
+        '''
+        l = l.strip()
+        if l and not l[0] in constants.comment_delimiter and not l.isspace():
+            try:
+                l = Command(line=l)
+            except Gcode_exceptions.InvalidLine:
+                return None
+        else:
+            return None
+        # movement
+        if l.letter == 'G' and (l.number == '1' or l.number == '0'):
+            if self.positioning == 'RELATIVE':
+                offset = self.current_head
+            else:
+                offset = [0.0, 0.0, 0.0]
+            p = [None, None, None]
+            extrude = True
+            for key in l.arguments:
+                if key == 'X':
+                    p[0] = offset[0] + float(l.arguments[key])
+                elif key == 'Y':
+                    p[1] = offset[1] + float(l.arguments[key])
+                elif key == 'Z':
+                    p[2] = offset[2] + float(l.arguments[key])
+                elif key == 'E':
+                    if float(l.arguments[key]) <= 0:
+                        extrude = False
+            # if a coordinate is not given, use previous point to fill in missing component
+            for i in range(3):
+                if p[i] == None:
+                    p[i] = self.current_head[i]
+            return (p, extrude)
+        # absolute positioning
+        elif l.letter == 'G' and l.number == '90':
+            self.positioning = 'ABSOLUTE'
+            return None
+        # relative positioning
+        elif l.letter == 'G' and l.number == '91':
+            self.positioning = 'RELATIVE'
+            return None
+        # Home
+        elif l.letter == 'G' and l.number == '28':
+            if not set(['X','Y','Z']).intersection(set(l.arguments.keys())):
+                return ([0.0,0.0,0.0], False)
+            p = self.current_head
+            for key in l.arguments:
+                if key == 'X':
+                    p[0] = 0.0
+                elif key == 'Y':
+                    p[1] = 0.0
+                elif key == 'Z':
+                    p[2] = 0.0
+            return (p, False)
+        return None
+
 
 def get_gcode_line_num_from_points(x1, y1, z1, x2, y2, z2):
     try:
