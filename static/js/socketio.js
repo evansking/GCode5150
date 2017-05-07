@@ -12,5 +12,6 @@ socket.on('connect', function () {
 });
 
 socket.on('draw', function (points) {
+    // append points to global queue here and then have path pull from that global queue
     path(points, false)
 });
