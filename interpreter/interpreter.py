@@ -37,7 +37,7 @@ class Command:
             	line = self.remove_comments(line)
                 self.command = self.parse_command(line)
                 self.arguments = self.parse_arguments(line)
-            except Gcode_exceptions.GcodeError:
+            except:
                 raise Gcode_exceptions.InvalidLine
         else:
             self.command = str(command)
@@ -110,10 +110,6 @@ class Command:
         # TODO: handle multiple commands on same line
 
 
-######################## NERLA'S FUNCTION ##########################
-
-
-################# AUSTIN'S SPACE ########################
 class Drawer:
     '''
     define object for a draw command (entire Gcode file or set of lines)
@@ -124,6 +120,7 @@ class Drawer:
         self.total_lines = 0
         self.current_head = [0.0,0.0,0.0]
         self.positioning = 'ABSOLUTE'
+        self.extrude = True
         # print "Drawer initialized"
 
 
@@ -185,7 +182,7 @@ class Drawer:
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:
                 l = Command(line=l)
-            except Gcode_exceptions.InvalidLine:
+            except Gcode_exceptions.GcodeError:
                 return None
         else:
             return None
@@ -196,7 +193,6 @@ class Drawer:
             else:
                 offset = [0.0, 0.0, 0.0]
             p = [None, None, None]
-            extrude = True
             for key in l.arguments:
                 if key == 'X':
                     p[0] = offset[0] + float(l.arguments[key])
@@ -205,21 +201,12 @@ class Drawer:
                 elif key == 'Z':
                     p[2] = offset[2] + float(l.arguments[key])
                 elif key == 'E':
-                    if float(l.arguments[key]) <= 0:
-                        extrude = False
+                    self.extrude = float(l.arguments[key]) > 0
             # if a coordinate is not given, use previous point to fill in missing component
             for i in range(3):
                 if p[i] == None:
                     p[i] = self.current_head[i]
-            return (p, extrude)
-        # absolute positioning
-        elif l.letter == 'G' and l.number == '90':
-            self.positioning = 'ABSOLUTE'
-            return None
-        # relative positioning
-        elif l.letter == 'G' and l.number == '91':
-            self.positioning = 'RELATIVE'
-            return None
+            return (p, self.extrude)
         # Home
         elif l.letter == 'G' and l.number == '28':
             if not set(['X','Y','Z']).intersection(set(l.arguments.keys())):
@@ -233,6 +220,32 @@ class Drawer:
                 elif key == 'Z':
                     p[2] = 0.0
             return (p, False)
+        # absolute positioning
+        elif l.letter == 'G' and l.number == '90':
+            self.positioning = 'ABSOLUTE'
+            return None
+        # relative positioning
+        elif l.letter == 'G' and l.number == '91':
+            self.positioning = 'RELATIVE'
+            return None
+        # set argument values
+        elif l.letter == 'G' and l.number == '92':
+            p = [None, None, None]
+            for key in l.arguments:
+                if key == 'X':
+                    p[0] = float(l.arguments[key])
+                elif key == 'Y':
+                    p[1] = float(l.arguments[key])
+                elif key == 'Z':
+                    p[2] = float(l.arguments[key])
+                elif key == 'E':
+                    self.extrude = float(l.arguments[key]) > 0
+            # if a coordinate is not given, use previous point to fill in missing component
+            for i in range(3):
+                if p[i] == None:
+                    p[i] = self.current_head[i]
+            return (p, False)
+        
         return None
 
 
