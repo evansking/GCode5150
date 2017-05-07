@@ -199,7 +199,10 @@ class Drawer:
                 elif key == 'Y':
                     p[1] = offset[1] + float(l.arguments[key])
                 elif key == 'Z':
-                    p[2] = offset[2] + float(l.arguments[key])
+                    try:
+                        p[2] = offset[2] + float(l.arguments[key])
+                    except:
+                        p[2] = offset[2] + 0.0
                 elif key == 'E':
                     self.extrude = float(l.arguments[key]) > 0
             # if a coordinate is not given, use previous point to fill in missing component
@@ -245,7 +248,7 @@ class Drawer:
                 if p[i] == None:
                     p[i] = self.current_head[i]
             return (p, False)
-        
+
         return None
 
 

@@ -71,6 +71,7 @@ function uploadDraw() {
     $('#draw-upload').click(function () {
         data = codeEditor.leftEditor.getValue();
         console.log('draw clicked');
+        // console.log(data);
         $.ajax({
             type: 'POST',
             url: '/draw',

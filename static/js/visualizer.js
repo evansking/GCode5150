@@ -115,6 +115,7 @@ function queueInstantLine(point, color, lineWidth){
 //It draws lines along each point on an individual path
 //It starts its next drawing at the beginning of a point in a given point list
 function path(pointList, animated){
+  // console.log('here1');
     // console.log('beginning points, pointList.length: ');
     // console.log(pointList);
     //pointList : the parent list of all subpaths
@@ -136,6 +137,7 @@ function path(pointList, animated){
 }
 
 function pathSegment(pointList, animated){
+  // console.log('here2');
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
         //currentPath: the currentPath starting at the first point on this path

@@ -87,3 +87,7 @@ body, html {
 .ace_gutter-layer{
     background: #01172c;
 }
+
+div#top-half.col-lg-12.hor-half{
+    background: white;
+}
