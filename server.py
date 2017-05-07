@@ -5,6 +5,7 @@ import flask
 import json
 from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from gevent.wsgi import WSGIServer
 from werkzeug.utils import secure_filename
 from werkzeug.wrappers import Response
 
@@ -25,7 +26,7 @@ app.debug = True
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
-async_mode = None
+async_mode = "threading"
 
 socketio = SocketIO(app, async_mode=async_mode)
 
@@ -43,11 +44,23 @@ socketio = SocketIO(app, async_mode=async_mode)
 def index():
     return flask.make_response(flask.render_template('index.html'))
 
+
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
-    pathSegment, requestAgain = DRAWER.parse_commands(commands, POINT_BATCH_LENGTH)
-    return json.dumps({"points": pathSegment, "again": requestAgain})
+
+    def read_in_chunks(commands):
+        while True:
+            path_segment, more = DRAWER.parse_commands(commands, POINT_BATCH_LENGTH)
+            if not more:
+                yield path_segment
+                break
+            yield path_segment
+
+    for points in read_in_chunks(commands):
+        socketio.emit('draw', points)
+
+    return "Done"
 
 
 @app.route('/points', methods=['POST'])

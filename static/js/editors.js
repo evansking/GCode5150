@@ -66,11 +66,9 @@ function uploadFile() {
     });
 }
 
-
 function uploadDraw() {
-    $('#draw-upload').click(function () {
+    $('#draw-upload').click(function (e) {
         data = codeEditor.leftEditor.getValue();
-        console.log('draw clicked');
         $.ajax({
             type: 'POST',
             url: '/draw',
@@ -78,34 +76,48 @@ function uploadDraw() {
             contentType: false,
             cache: false,
             processData: false,
-            success: draw,
         });
+        e.stopImmediatePropagation();
+        return false;
     });
 }
-
-function draw(data) {
-    var nextPoints = $.parseJSON(JSON.parse(data).points);
-    path(nextPoints, false);
-    var requestAgain = $.parseJSON(JSON.parse(data).again);
-    if (requestAgain) {
-        $.ajax({
-            type: 'POST',
-            url: '/draw',
-            data: 'drawAgain',
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: draw,
-        });
-    }
-}
-
 
 function disableBodyScroll() {
     $('html, body').css({
         overflow: 'hidden',
         height: '100%'
     });
+}
+
+function getLineNumber() {
+    $('body').click(function (e) {
+        if ($(e.target).hasClass('ace_gutter-cell')) {
+            lineNum = $(e.target).text()
+            $.ajax({
+                type: 'POST',
+                url: '/points',
+                data: lineNum,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    var two_points = JSON.parse(data).points;
+                    if (two_points.length > 0) {
+                        var material = new THREE.LineBasicMaterial({color: blue, linewidth: 100});
+                        var geometry = new THREE.Geometry();
+                        var currentLine = new THREE.Line(geometry, material);
+
+                        var origin = new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]);
+                        var destination = new THREE.Vector3(two_points[1][0], two_points[1][1], two_points[1][2]);
+                        currentLine.geometry.vertices.push(origin);
+                        currentLine.geometry.vertices.push(destination);
+                        scene.add(currentLine);
+                        renderer.render(scene, camera);
+                    }
+                },
+            });
+        }
+    })
 }
 
 
@@ -116,38 +128,7 @@ $(document).ready(function () {
     disableBodyScroll();
     uploadDraw();
     uploadFile();
+    getLineNumber();
 });
-
-
-$('body').click(function (e) {
-    if ($(e.target).hasClass('ace_gutter-cell')) {
-        lineNum = $(e.target).text()
-
-        $.ajax({
-            type: 'POST',
-            url: '/points',
-            data: lineNum,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-                var two_points = JSON.parse(data).points;
-                if (two_points.length > 0) {
-                    var material = new THREE.LineBasicMaterial({color: blue, linewidth: 100});
-                    var geometry = new THREE.Geometry();
-                    var currentLine = new THREE.Line(geometry, material);
-
-                    var origin = new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]);
-                    var destination = new THREE.Vector3(two_points[1][0], two_points[1][1], two_points[1][2]);
-                    currentLine.geometry.vertices.push(origin);
-                    currentLine.geometry.vertices.push(destination);
-                    scene.add(currentLine);
-                    renderer.render(scene, camera);
-                }
-            },
-        });
-    }
-})
-
 
 
