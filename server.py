@@ -9,11 +9,11 @@ from werkzeug.utils import secure_filename
 from werkzeug.wrappers import Response
 
 sys.path.append(os.getcwd() + "/interpreter")
-from interpreter import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
+from interpreter_v1 import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'uploads/'
-POINT_BATCH_LENGTH = 1584
+POINT_BATCH_LENGTH = 5000
 DRAWER = Drawer()
 
 app = Flask(__name__)

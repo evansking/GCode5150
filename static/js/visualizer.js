@@ -3,8 +3,14 @@
 //var startTime, object, mouse;
 //var objects = []
 
+var highlightCube, highlightGeometry, highlightMaterial;
+
 //Three.js rendering variables
-var renderer, scene, camera, WIDTH, HEIGHT, object;
+var renderer, scene, camera, WIDTH, HEIGHT, object, controls;
+
+var prevX = 0, prevY = 0, prevZ = 0;
+
+var camToSave;
 
 var ambientLight, ground, dirLight;
 
@@ -17,11 +23,9 @@ var animationQueue;
 var currentPosition;
 //The drawing heads destination at any given time
 var updatedPosition;
-// If the printing head is in drawing mode or not
-var isDrawing;
 
 //Colors
-var red, blue;
+var red, white;
 
 // The mouse object
 var raycaster, projector, mouse;
@@ -34,30 +38,34 @@ var onScreenObjects = []; // as we draw lines add them to this
 
 /* Low Level Functions */
 
-// Start drawing.
-// All movements of the drawing head will generate lines
-function startDrawing(){
-    isDrawing = true;
-}
-
-// Stop drawing.
-// No movements of the drawing head will generate lines
-function stopDrawing(){
-    isDrawing = false;
-}
-
 // This function moves the drawing head from currentPosition to point without drawing anything as it moves
 function queueMoveHead(point){
-    animationQueue.push([QUEUE_MEMBERS.MOVE, point]);
+    animationQueue.push([QUEUE_MEMBERS.MOVE,
+      new THREE.Vector3(point[0], point[1], point[2])]);
+
+      // var material = new THREE.LineBasicMaterial({ color: red, linewidth: 1 });
+      // var geometry = new THREE.Geometry();
+      // animationQueue.push([QUEUE_MEMBERS.INSTANT_LINE, new THREE.Line(geometry,  material),
+      //   new THREE.Vector3(point[0], point[1], point[2])]);
 }
 
 function drawSegmentedShape(points){
   var lineSegmentGeometry = new THREE.Geometry();
-  for (var i = 1; i < points.length; i++){
-    // lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i-1][0], points[i-1][1], points[i-1][2]));
-    lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]));
+  var len = points.length;
+  for (var i = 1; i < len; i++){
+    if (points[3]){
+      lineSegmentGeometry.vertices.push(new THREE.Vector3(prevX, prevY, prevZ));
+      lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]));
+
+      // console.log(prevX,prevY,prevZ,points[i][0], points[i][1], points[i][2]);
+    }
+    prevX = points[i][0];
+    prevY = points[i][1];
+    prevZ = points[i][2];
   }
-  animationQueue.push([QUEUE_MEMBERS.LINE_SEGMENTS, lineSegmentGeometry]);
+  animationQueue.push([QUEUE_MEMBERS.LINE_SEGMENTS,
+    lineSegmentGeometry, new THREE.Vector3(points[len-1][0],
+      points[len-1][1], points[len-1][2])]);
 }
 
 //This function takes in a list of lists, where each list is a path
@@ -68,10 +76,33 @@ function path(pointList, animated){
     // console.log(pointList);
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
-      queueMoveHead(pointList[i][0]);
       drawSegmentedShape(pointList[i]);
     }
 }
+
+// function drawSegmentedShape(points){
+//   var lineSegmentGeometry = new THREE.Geometry();
+//   var len = points.length;
+//   for (var i = 1; i < len; i++){
+//     lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i-1][0], points[i-1][1], points[i-1][2]));
+//     lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]));
+//   }
+//   animationQueue.push([QUEUE_MEMBERS.LINE_SEGMENTS, lineSegmentGeometry,
+//     new THREE.Vector3(points[len-1][0], points[len-1][1], points[len-1][2])]);
+// }
+
+//This function takes in a list of lists, where each list is a path
+//It draws lines along each point on an individual path
+//It starts its next drawing at the beginning of a point in a given point list
+// function path(pointList, animated){
+//     // console.log('beginning points, pointList.length: ');
+//     // console.log(pointList);
+//     //pointList : the parent list of all subpaths
+//     for (var i = 0; i < pointList.length; i++){
+//       queueMoveHead(pointList[i][0]);
+//       drawSegmentedShape(pointList[i]);
+//     }
+// }
 
 //Clear the visualization of any lines.
 //Reset the set of points.
@@ -79,20 +110,22 @@ function clear(){
     points = [];
     animationQueue = [];
     while (scene.children.length > 0) {
-        scene.children.forEach(function(object){
-            scene.remove(object);
+        scene.children.forEach(function(child){
+            scene.remove(child);
         });
     }
     object = new THREE.Object3D();
 
     scene.add(ground);
     scene.add(ambientLight);
-    scene.add(dirLight);
+    scene.add(front);
+    scene.add(right);
     scene.add(object);
 }
 
 /* Three.js functions */
 function render() {
+    controls.update();
     renderer.render(scene, camera);
 }
 
@@ -128,16 +161,24 @@ function animate() {
             copyPoint(currentPosition, nextAnimation[2]);
             copyPoint(updatedPosition, currentPosition);
         } else if (nextAnimation[0] == QUEUE_MEMBERS.MOVE){
+            if (DEBUG_PRINT) console.log('origin: ', currentPosition);
+            if (DEBUG_PRINT) console.log('destination: ', nextAnimation[1]);
             copyPoint(currentPosition, nextAnimation[1]);
             copyPoint(updatedPosition, currentPosition);
+            if (DEBUG_PRINT) console.log('current position: ', currentPosition);
         } else if (nextAnimation[0] == QUEUE_MEMBERS.LINE_SEGMENTS){
-          var lineMaterial = new THREE.LineBasicMaterial({color: red, opacity: 0.6, fog: false});
+          // return;
+          var lineMaterial = new THREE.LineBasicMaterial({color: white, opacity: 0.8, fog: false});
           var lineSegmentGeometry = nextAnimation[1];
           lineSegmentGeometry.computeBoundingBox();
-          object.add(new THREE.Line(lineSegmentGeometry, lineMaterial, THREE.LineSegments));
+          var segmentedLine = new THREE.Line(lineSegmentGeometry, lineMaterial, THREE.LineSegments);
+          object.add(segmentedLine);
+          onScreenObjects.push(segmentedLine);
           var center = new THREE.Vector3().addVectors(lineSegmentGeometry.boundingBox.min,
             lineSegmentGeometry.boundingBox.max).divideScalar(2);
           object.position = center.multiplyScalar(-1);
+          copyPoint(currentPosition, nextAnimation[2]);
+          copyPoint(updatedPosition, currentPosition);
         }
 
 }
@@ -147,41 +188,6 @@ function animate() {
 
 /* Helpers */
 
-// Helper to queueAnimatedLine
-function updatePositions(point) {
-    var positions;
-    try {
-      positions = currentLine.geometry.attributes.position.array;
-    } catch (err){
-        return;
-    }
-
-    updatedPosition.x = currentPosition.x;
-    updatedPosition.y = currentPosition.y;
-    updatedPosition.z = currentPosition.z;
-    var index = 0;
-
-    var x_step = (point.x - currentPosition.x)/MAX_POINTS;
-    var y_step = (point.y - currentPosition.y)/MAX_POINTS;
-    var z_step = (point.z - currentPosition.z)/MAX_POINTS;
-
-
-    for (var i = 0;i < MAX_POINTS;i++) {
-
-        updatedPosition.x += x_step;
-        updatedPosition.y += y_step;
-        updatedPosition.z += z_step;
-
-        positions[index++] = updatedPosition.x;
-        positions[index++] = updatedPosition.y;
-        positions[index++] = updatedPosition.z;
-
-    }
-
-    positions[0] = currentPosition.x;
-    positions[1] = currentPosition.y;
-    positions[2] = currentPosition.z; //hack
-}
 
 // Helper to animate
 function copyPoint(p1, p2){
@@ -195,7 +201,7 @@ function copyPoint(p1, p2){
 /* Environment set-up functions*/
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = $('#top-half').width() / $('#top-half').height();
     camera.updateProjectionMatrix();
     renderer.setSize($('#top-half').width(), $('#top-half').height());
 }
@@ -214,7 +220,18 @@ function drawTestPathFunction(){
         points.push(side);
         t += 0.5;
     }
-    path(points, false);
+    path(points);
+}
+
+function resetViewFunction(){
+  camera.position.set(camToSave.position.x, camToSave.position.y,
+    camToSave.position.z);
+  // camera.rotation.set(camToSave.rotation.x, camToSave.rotation.y,
+  //   camToSave.rotation.z);
+  controls.target.set(camToSave.controlCenter.x,
+    camToSave.controlCenter.y, camToSave.controlCenter.z);
+  controls.update();
+  render();
 }
 
 // Mouse clicks to highlight segments of code
@@ -234,19 +251,20 @@ function onMouseClick(event) {
     raycaster.setFromCamera(mouse, camera);
     var intersects = raycaster.intersectObjects(onScreenObjects);
     if (intersects.length > 0) {
+      // console.log(intersects);
         addLine(intersects[0]);
         // intersects.forEach(function (workingLine){
           // addLine(workingLine);
           // lineNum = addLine(workingLine);
-        //   if (lineNum < highlight_range[0]){
-        //     highlight_range[0] = lineNum;
-        //   } else if (lineNum > highlight_range[1]){
-        //     highlight_range[1] = lineNum;
-        //   }
+          // if (lineNum < highlight_range[0]){
+            // highlight_range[0] = lineNum;
+          // } else if (lineNum > highlight_range[1]){
+            // highlight_range[1] = lineNum;
+          // }
         // });
         // var r = codeEditor.leftEditor.selection.getRange();
-        // r.start.row = highlight_range[0];
-        // r.end.row = highlight_range[1];
+        // r.start.row = lineNum;
+        // r.end.row = lineNum;
         // codeEditor.leftEditor.selection.setSelectionRange(r, false);
     } else {
         // console.log("No intersections");
@@ -254,35 +272,51 @@ function onMouseClick(event) {
 }
 
 function addLine(workingLine){
-    if (workingLine.object.material.color.equals(red)){
-        workingLine.object.material.color = blue;
-        two_points = [[workingLine.object.geometry.vertices[0].x,
-          workingLine.object.geometry.vertices[0].y,
-          workingLine.object.geometry.vertices[0].z],
-          [workingLine.object.geometry.vertices[1].x,
-          workingLine.object.geometry.vertices[1].y,
-          workingLine.object.geometry.vertices[1].z]];
-        // console.log(two_points);
+  // console.log(workingLine);
+  makeHighlightCube(workingLine.point);
+  $('#x_coord').html(workingLine.point.x.toFixed(2));
+  $('#y_coord').html(workingLine.point.y.toFixed(2));
+  $('#z_coord').html(workingLine.point.z.toFixed(2));
 
-          $.ajax({
-              type: 'POST',
-              url: '/lineNumber',
-              data: JSON.stringify(two_points),
-              contentType: false,
-              cache: false,
-              processData: false,
-              success: function (data) {
-                  lineNum = JSON.parse(data).lineNum;
-                  var r = codeEditor.leftEditor.selection.getRange();
-                  r.start.row = lineNum;
-                  r.end.row = lineNum;
-                  codeEditor.leftEditor.selection.setSelectionRange(r, false);
-              },
-          });
+  var r = codeEditor.leftEditor.selection.getRange();
+  r.start.row = workingLine.index;
+  r.end.row = workingLine.index;
+  r.start.column = 0;
+  r.end.column = 100;
+  codeEditor.leftEditor.selection.setSelectionRange(r, true);
+  codeEditor.leftEditor.getSession().setScrollTop(16*workingLine.index);
 
-    } else {
-        workingLine.object.material.color = red;
-    }
+
+  // $.ajax({
+  //     type: 'POST',
+  //     url: '/lineNumber',
+  //     data: JSON.stringify(two_points),
+  //     contentType: false,
+  //     cache: false,
+  //     processData: false,
+  //     success: function (data) {
+  //         lineNum = JSON.parse(data).lineNum;
+  //         var r = codeEditor.leftEditor.selection.getRange();
+  //         r.start.row = lineNum;
+  //         r.end.row = lineNum;
+  //         codeEditor.leftEditor.selection.setSelectionRange(r, false);
+  //     },
+  // });
+    // if (workingLine.object.material.color.equals(white)){
+    //     workingLine.object.material.color = red;
+    //     two_points = [[workingLine.object.geometry.vertices[0].x,
+    //       workingLine.object.geometry.vertices[0].y,
+    //       workingLine.object.geometry.vertices[0].z],
+    //       [workingLine.object.geometry.vertices[1].x,
+    //       workingLine.object.geometry.vertices[1].y,
+    //       workingLine.object.geometry.vertices[1].z]];
+    //     console.log(two_points);
+    //
+    //
+    //
+    // } else {
+    //     workingLine.object.material.color = white;
+    // }
 
     renderer.render(scene, camera);
 }
@@ -296,32 +330,48 @@ function init() {
     WIDTH = $('#top-half').width();
     HEIGHT = $('#top-half').height();
     camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
-    camera.position.set(0, 0, 400);
-    // camera.position.set(0,150,400);
+    camera.position.set(0, -400, 50);
+    camera.rotation.set(1.4, 0, 0);
+
+
 
     // Lights
-    ambientLight = new THREE.AmbientLight(0x505050);
+    ambientLight = new THREE.AmbientLight(0x505050, 2.5);
     scene.add(ambientLight);
-    dirLight = new THREE.DirectionalLight(0x55505a, 2.5);
-    dirLight.position.set(0, 0, 3);
-    dirLight.castShadow = true;
-    dirLight.shadow.camera.near = 1;
-    dirLight.shadow.camera.far = 10;
-    dirLight.shadow.camera.right = 1;
-    dirLight.shadow.camera.left = -1;
-    dirLight.shadow.camera.top = 1;
-    dirLight.shadow.camera.bottom = -1;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024; //figure these numbers out
-    scene.add(dirLight);
 
     // Platform on which to 3d print
-    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(500, 500, 1, 1),
+    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(400, 400, 1, 1),
         new THREE.MeshPhongMaterial({
-            color: 0xa0adaf, shininess: 150
+            color: 0x3292F1, shininess: 150
         }));
     ground.receiveShadow = true;
     scene.add(ground);
+
+    front = new THREE.Mesh( new THREE.PlaneBufferGeometry(400, 400, 1, 1),
+        new THREE.MeshPhongMaterial({
+            color: 0x7AB8F6, shininess: 150
+        }));
+    front.receiveShadow = true;
+    front.position.y = 200;
+    front.position.z = 200;
+    front.rotation.x = Math.PI / 2;
+    scene.add(front);
+
+    right = new THREE.Mesh( new THREE.PlaneBufferGeometry(400, 400, 1, 1),
+        new THREE.MeshPhongMaterial({
+            color: 0x0E6CC9, shininess: 150
+        }));
+    right.receiveShadow = true;
+    right.position.x = 200;
+    right.position.z = 200;
+    right.rotation.y = -Math.PI/2;
+    scene.add(right);
+
+    //axes
+
+    var axisHelper = new THREE.AxisHelper(150);
+    scene.add(axisHelper);
+
 
     // Renderer
     renderer = new THREE.WebGLRenderer();
@@ -335,7 +385,6 @@ function init() {
     currentPosition = new THREE.Vector3(0,0,0);
     updatedPosition = new THREE.Vector3(0,0,0);
     animationQueue = [];
-    isDrawing = true;
 
     // mouse
     raycaster = new THREE.Raycaster();
@@ -343,16 +392,20 @@ function init() {
     document.addEventListener('mousedown', onMouseClick, false);
 
     red = new THREE.Color('red');
-    blue = new THREE.Color('skyblue');
+    white = new THREE.Color('white');
 
     // Controls
-    var controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1, 0);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // controls = new THREE.TrackballControls(camera, renderer.domElement);
+    // controls.target.set(0, 1, 0);
     controls.update();
 
     //Button Controls
     var drawTestPathButton = $("#drawTestPath");
     drawTestPathButton.click(drawTestPathFunction);
+
+    var resetViewButton = $("#resetView");
+    resetViewButton.click(resetViewFunction);
 
     var clearButton = $("#clear");
     clearButton.click(clear);
@@ -360,7 +413,29 @@ function init() {
     object = new THREE.Object3D();
     scene.add(object);
 
+    camToSave = {};
+
+    camToSave.position = camera.position.clone();
+    // camToSave.rotation = camera.rotation.clone();
+    camToSave.controlCenter = controls.target.clone();
+
+    highlightGeometry = new THREE.BoxGeometry(70, 70, 70, 10, 10, 10);
+    highlightMaterial = new THREE.MeshBasicMaterial({color: red, wireframe: true});
+    highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
+
+
     if (DEBUG_PRINT) console.log('finished init');
+}
+
+function makeHighlightCube(point){
+  scene.remove(highlightCube);
+  highlightGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.3, 0.05, 0.05, 0.05);
+  highlightMaterial = new THREE.MeshBasicMaterial({color: red, wireframe: true});
+  highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
+  highlightCube.position.x = point.x;
+  highlightCube.position.y = point.y;
+  highlightCube.position.z = point.z;
+  scene.add(highlightCube);
 }
 
 /* ###################################### SCRIPT ######################################*/
@@ -371,3 +446,5 @@ $(document).ready(function () {
 });
 
 /* ###################################### NOTES ######################################*/
+
+//Always put points onto queue as THREE.Vector3's

@@ -105,16 +105,22 @@ function getLineNumber() {
                 success: function (data) {
                     var two_points = JSON.parse(data).points;
                     if (two_points.length > 0) {
-                        var material = new THREE.LineBasicMaterial({color: blue, linewidth: 100});
-                        var geometry = new THREE.Geometry();
-                        var currentLine = new THREE.Line(geometry, material);
-
-                        var origin = new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]);
-                        var destination = new THREE.Vector3(two_points[1][0], two_points[1][1], two_points[1][2]);
-                        currentLine.geometry.vertices.push(origin);
-                        currentLine.geometry.vertices.push(destination);
-                        scene.add(currentLine);
-                        renderer.render(scene, camera);
+                        // var material = new THREE.LineBasicMaterial({color: white, linewidth: 100});
+                        // var geometry = new THREE.Geometry();
+                        // var currentLine = new THREE.Line(geometry, material);
+                        //
+                        // var origin = new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]);
+                        // var destination = new THREE.Vector3(two_points[1][0], two_points[1][1], two_points[1][2]);
+                        // currentLine.geometry.vertices.push(origin);
+                        // currentLine.geometry.vertices.push(destination);
+                        makeHighlightCube(new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]));
+                        // camera.position.x = two_points[0][0];
+                        // camera.position.y = two_points[0][1];
+                        // camera.position.z = two_points[0][2];
+                        // camera.rotation.set(1.4, 0, 0);
+                        // console.log(camera.position);
+                        // scene.add(currentLine);
+                        // renderer.render(scene, camera);
                     }
                 },
             });
