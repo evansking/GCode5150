@@ -4,7 +4,7 @@
 //var objects = []
 
 //Three.js rendering variables
-var renderer, scene, camera, WIDTH, HEIGHT;
+var renderer, scene, camera, WIDTH, HEIGHT, object;
 
 var ambientLight, ground, dirLight;
 
@@ -13,8 +13,6 @@ var ambientLight, ground, dirLight;
 var currentLine;
 // The current animation queue
 var animationQueue;
-// This variable maintains the amount of segments drawn of a currently drawing line
-var drawCount;
 //The drawing heads most recent position
 var currentPosition;
 //The drawing heads destination at any given time
@@ -28,28 +26,9 @@ var red, blue;
 // The mouse object
 var raycaster, projector, mouse;
 
-var isAnimating; // Set to true if we want each line to be drawn animatedly
-
 var points = []; // List of lists of lists - determines points of current visualization
 
 var onScreenObjects = []; // as we draw lines add them to this
-
-// CUBE PATH EXAMPLE
-points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
-points.push([[0,0,10], [0,10,10], [0,10,0], [10,10,0], [10,10,10], [0,10,10]]);
-points.push([[10,10,10], [10,0,10]]);
-for (var t = 0; t <= 10; ){
-    var side = [];
-    for (var c = 0; c <= 10; ){
-        side.push([t,c,0]);
-        side.push([t,c,10]);
-        c += 0.5;
-    }
-    points.push(side);
-    t += 0.5;
-}
-
-// points = [[[0, 0, 0], [50, 0, 0]]];
 
 /* ########################################## FUNCTIONS ##########################################*/
 
@@ -67,85 +46,30 @@ function stopDrawing(){
     isDrawing = false;
 }
 
-// This function draws a line from currentPosition to point.
-// The drawing of the line is animated
-function queueAnimatedLine(point, color) {
-    if (isDrawing) {
-        // geometry
-        var geometry = new THREE.BufferGeometry();
-
-        // attributes
-        var positions = new Float32Array(MAX_POINTS * 3); // 3 vertices per point
-
-        geometry.addAttribute( 'position', new THREE.BufferAttribute(positions, 3));
-        geometry.setDrawRange(0, drawCount);
-
-        // material
-        var material = new THREE.LineBasicMaterial( { color: color, linewidth: 20 } );
-
-        // currentLine
-        animationQueue.push([QUEUE_MEMBERS.LINE, new THREE.Line(geometry,  material), point]);
-    } else {
-        queueMoveHead(point);
-    }
-
-}
-
 // This function moves the drawing head from currentPosition to point without drawing anything as it moves
 function queueMoveHead(point){
     animationQueue.push([QUEUE_MEMBERS.MOVE, point]);
 }
 
-// This function draws a line from currentPosition to point.
-// The drawing of the line is not animated
-function queueInstantLine(point, color, lineWidth){
-    if (DEBUG_PRINT) console.log('Drawing Permanent Line');
-
-    if (isDrawing){
-        var material = new THREE.LineBasicMaterial({ color: color, linewidth: lineWidth });
-        var geometry = new THREE.Geometry();
-        animationQueue.push([QUEUE_MEMBERS.INSTANT_LINE, new THREE.Line(geometry,  material), point]);
-    } else {
-        queueMoveHead(point);
-    }
-
+function drawSegmentedShape(points){
+  var lineSegmentGeometry = new THREE.Geometry();
+  for (var i = 1; i < points.length; i++){
+    // lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i-1][0], points[i-1][1], points[i-1][2]));
+    lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]));
+  }
+  animationQueue.push([QUEUE_MEMBERS.LINE_SEGMENTS, lineSegmentGeometry]);
 }
 
 //This function takes in a list of lists, where each list is a path
 //It draws lines along each point on an individual path
 //It starts its next drawing at the beginning of a point in a given point list
 function path(pointList, animated){
-  // console.log('here1');
     // console.log('beginning points, pointList.length: ');
     // console.log(pointList);
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
-        //currentPath: the currentPath starting at the first point on this path
-        for (var p = 0; p < pointList[i].length; p++){
-            if (p == 1){
-                startDrawing();
-            }
-            if (animated) queueAnimatedLine({x: pointList[i][p][0], y: pointList[i][p][1],
-                z: pointList[i][p][2]}, red);
-            else queueInstantLine({x: pointList[i][p][0], y: pointList[i][p][1],
-                z: pointList[i][p][2]}, red, 60);
-        }
-        stopDrawing();
-    }
-    // console.log('ending points, animationQueue.length: ');
-    // console.log(animationQueue.length);
-}
-
-function pathSegment(pointList, animated){
-  // console.log('here2');
-    //pointList : the parent list of all subpaths
-    for (var i = 0; i < pointList.length; i++){
-        //currentPath: the currentPath starting at the first point on this path
-        for (var p = 0; p < pointList[i].length; p++){
-            if (p == 1){
-                startDrawing();
-            }
-        }
+      queueMoveHead(pointList[i][0]);
+      drawSegmentedShape(pointList[i]);
     }
 }
 
@@ -159,9 +83,12 @@ function clear(){
             scene.remove(object);
         });
     }
+    object = new THREE.Object3D();
+
     scene.add(ground);
     scene.add(ambientLight);
     scene.add(dirLight);
+    scene.add(object);
 }
 
 /* Three.js functions */
@@ -179,50 +106,41 @@ function animate() {
     $("#curr_y").html(currentPosition.y);
     $("#curr_z").html(currentPosition.z);
 
-    if (isAnimating){
-        //console.log('isAnimating, drawCount: ', drawCount);
-        drawCount ++;
-        try{
-            currentLine.geometry.setDrawRange(0, drawCount);
-        } catch (err) {
-        }
-    }
-    if (drawCount == MAX_POINTS || !isAnimating) {
-        drawCount = 1;
-        copyPoint(currentPosition, updatedPosition);
-        if (animationQueue.length !== 0){
-            var nextAnimation = animationQueue.shift();
-            if (nextAnimation[0] == QUEUE_MEMBERS.LINE){
-                console.log('starting line');
-                currentLine = nextAnimation[1];
-                scene.add(currentLine);
-                onScreenObjects.push(currentLine);
-                isAnimating = true;
-                updatePositions(nextAnimation[2]);
-            } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
-                currentLine = nextAnimation[1];
-                var origin = new THREE.Vector3();
-                copyPoint(origin, currentPosition);
-                currentLine.geometry.vertices.push(origin);
-                if (DEBUG_PRINT) console.log('origin: ', currentPosition);
-                currentLine.geometry.vertices.push(nextAnimation[2]);
-                if (DEBUG_PRINT) console.log('destination: ', nextAnimation[2]);
-                scene.add(currentLine);
-                onScreenObjects.push(currentLine);
-                isAnimating = false;
-                copyPoint(currentPosition, nextAnimation[2]);
-                copyPoint(updatedPosition, currentPosition);
-            } else if (nextAnimation[0] == QUEUE_MEMBERS.MOVE){
-                copyPoint(currentPosition, nextAnimation[1]);
-                copyPoint(updatedPosition, currentPosition);
-            }
-
-        } else {
-            currentLine = null;
-            isAnimating = false;
+    copyPoint(currentPosition, updatedPosition);
+    if (animationQueue.length !== 0){
+        var nextAnimation = animationQueue.shift();
+        if (nextAnimation[0] == QUEUE_MEMBERS.LINE){
+            console.log('starting line');
+            currentLine = nextAnimation[1];
+            scene.add(currentLine);
+            onScreenObjects.push(currentLine);
+            updatePositions(nextAnimation[2]);
+        } else if (nextAnimation[0] == QUEUE_MEMBERS.INSTANT_LINE){
+            currentLine = nextAnimation[1];
+            var origin = new THREE.Vector3();
+            copyPoint(origin, currentPosition);
+            currentLine.geometry.vertices.push(origin);
+            if (DEBUG_PRINT) console.log('origin: ', currentPosition);
+            currentLine.geometry.vertices.push(nextAnimation[2]);
+            if (DEBUG_PRINT) console.log('destination: ', nextAnimation[2]);
+            scene.add(currentLine);
+            onScreenObjects.push(currentLine);
+            copyPoint(currentPosition, nextAnimation[2]);
+            copyPoint(updatedPosition, currentPosition);
+        } else if (nextAnimation[0] == QUEUE_MEMBERS.MOVE){
+            copyPoint(currentPosition, nextAnimation[1]);
+            copyPoint(updatedPosition, currentPosition);
+        } else if (nextAnimation[0] == QUEUE_MEMBERS.LINE_SEGMENTS){
+          var lineMaterial = new THREE.LineBasicMaterial({color: red, opacity: 0.6, fog: false});
+          var lineSegmentGeometry = nextAnimation[1];
+          lineSegmentGeometry.computeBoundingBox();
+          object.add(new THREE.Line(lineSegmentGeometry, lineMaterial, THREE.LineSegments));
+          var center = new THREE.Vector3().addVectors(lineSegmentGeometry.boundingBox.min,
+            lineSegmentGeometry.boundingBox.max).divideScalar(2);
+          object.position = center.multiplyScalar(-1);
         }
 
-    }
+}
     render();
 }
 
@@ -283,9 +201,19 @@ function onWindowResize() {
 }
 
 function drawTestPathFunction(){
-    var x = parseInt($("#line_x").attr("value"));
-    var y = parseInt($("#line_y").attr("value"));
-    var z = parseInt($("#line_z").attr("value"));
+    points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
+    points.push([[0,0,10], [0,10,10], [0,10,0], [10,10,0], [10,10,10], [0,10,10]]);
+    points.push([[10,10,10], [10,0,10]]);
+    for (var t = 0; t <= 10; ){
+        var side = [];
+        for (var c = 0; c <= 10; ){
+            side.push([t,c,0]);
+            side.push([t,c,10]);
+            c += 0.5;
+        }
+        points.push(side);
+        t += 0.5;
+    }
     path(points, false);
 }
 
@@ -406,9 +334,8 @@ function init() {
     // state
     currentPosition = new THREE.Vector3(0,0,0);
     updatedPosition = new THREE.Vector3(0,0,0);
-    isAnimating = false;
     animationQueue = [];
-    isDrawing = false;
+    isDrawing = true;
 
     // mouse
     raycaster = new THREE.Raycaster();
@@ -429,6 +356,9 @@ function init() {
 
     var clearButton = $("#clear");
     clearButton.click(clear);
+
+    object = new THREE.Object3D();
+    scene.add(object);
 
     if (DEBUG_PRINT) console.log('finished init');
 }

@@ -4,6 +4,7 @@
  * Socket.io client side example
  */
 sid = "session cookie";
+num_calls = 0;
 
 var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -11,11 +12,10 @@ socket.on('connect', function () {
     socket.emit("join", {room: io().id});
 });
 
-//socket.on('test', function (next) {
-//    current = codeEditor.leftEditor.getValue();
-//    codeEditor.leftEditor.setValue(current + next);
-//    codeEditor.leftEditor.clearSelection();
-//    codeEditor.leftEditor.resize(true);
-//    codeEditor.leftEditor.moveCursorTo(0,0);
-//    codeEditor.leftEditor.getSession().setScrollTop(0);
-//});
+socket.on('draw', function (points) {
+    // append points to global queue here and then have path pull from that global queue
+    var parsedPoints = $.parseJSON(points);
+    path(parsedPoints);
+    // num_calls += 1;
+    // console.log('call number: ', num_calls);
+});

@@ -10,7 +10,8 @@ var QUEUE_MEMBERS = {
     ARC : 1,
     FILL : 2,
     INSTANT_LINE: 3,
-    MOVE: 4
+    MOVE: 4,
+    LINE_SEGMENTS: 5
 };
 
 //Debugging Variables
