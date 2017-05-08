@@ -128,6 +128,24 @@ function getLineNumber() {
     });
 }
 
+function download() {
+    $('#download-file').click(function (e) {
+        console.log("Downloading File")
+        data = codeEditor.leftEditor.getValue();
+        $.ajax({
+            type: 'POST',
+            url: '/download',
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (location) {
+                window.location = window.location.href + location
+            },
+        });
+    });
+}
+
 
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
@@ -137,6 +155,7 @@ $(document).ready(function () {
     uploadDraw();
     uploadFile();
     getLineNumber();
+    download();
 });
 
 
