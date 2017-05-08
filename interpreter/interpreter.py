@@ -121,6 +121,7 @@ class Drawer:
         self.current_head = [0.0,0.0,0.0]
         self.positioning = 'ABSOLUTE'
         self.extrude = True
+        self.prevE = 0.
         # print "Drawer initialized"
 
 
@@ -178,6 +179,7 @@ class Drawer:
 
             if command is not a draw command (like any of the M commands), return None
         '''
+        # self.extrude = False
         l = l.strip()
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:
@@ -204,7 +206,12 @@ class Drawer:
                     except:
                         p[2] = offset[2] + 0.0
                 elif key == 'E':
-                    self.extrude = float(l.arguments[key]) > 0
+                    if self.positioning == 'ABSOLUTE':
+                        self.extrude = float(l.arguments[key]) - self.prevE > 0
+                        self.prevE = float(l.arguments[key])
+                    elif self.positioning == 'RELATIVE':
+                        self.extrude = float(l.arguments[key]) > 0
+                        self.prevE = float(l.arguments[key])
             # if a coordinate is not given, use previous point to fill in missing component
             for i in range(3):
                 if p[i] == None:
@@ -242,7 +249,12 @@ class Drawer:
                 elif key == 'Z':
                     p[2] = float(l.arguments[key])
                 elif key == 'E':
-                    self.extrude = float(l.arguments[key]) > 0
+                    if self.positioning == 'ABSOLUTE':
+                        self.extrude = float(l.arguments[key]) - self.prevE > 0
+                        self.prevE = float(l.arguments[key])
+                    elif self.positioning == 'RELATIVE':
+                        self.extrude = float(l.arguments[key]) > 0
+                        self.prevE = float(l.arguments[key])
             # if a coordinate is not given, use previous point to fill in missing component
             for i in range(3):
                 if p[i] == None:

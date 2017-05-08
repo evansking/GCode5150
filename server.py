@@ -5,15 +5,16 @@ import flask
 import json
 from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
-from werkzeug.utils import secure_filename
-from werkzeug.wrappers import Response
+from random import choice
+from string import ascii_letters
+
 
 sys.path.append(os.getcwd() + "/interpreter")
-from interpreter import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
+from interpreter_v1 import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = 'uploads/'
-POINT_BATCH_LENGTH = 1584
+UPLOAD_FOLDER = 'static/uploads/'
+POINT_BATCH_LENGTH = 5000
 DRAWER = Drawer()
 
 app = Flask(__name__)
@@ -67,6 +68,16 @@ def get_points():
     line_num = int(request.data)
     points = get_points_from_gcode_line_num(line_num)
     return json.dumps({"points": points})
+
+@app.route('/download', methods=['POST'])
+def download():
+    content = request.data
+    title = ''.join(choice(ascii_letters) for i in range(10)) + '.gcode'
+    location = os.path.join(BASEDIR, app.config['UPLOAD_FOLDER'], title)
+
+    with open(location,"w") as file:
+        file.write(content)
+    return 'static/uploads/' + title
 
 
 @app.route('/lineNumber', methods=['POST'])
