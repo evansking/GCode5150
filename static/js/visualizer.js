@@ -5,6 +5,8 @@
 
 var highlightCube, highlightGeometry, highlightMaterial;
 
+// var axisHelper;
+
 //Three.js rendering variables
 var renderer, scene, camera, WIDTH, HEIGHT, object, controls;
 
@@ -121,6 +123,7 @@ function clear(){
     scene.add(front);
     scene.add(right);
     scene.add(object);
+    scene.add(axisHelper);
 }
 
 /* Three.js functions */
@@ -330,7 +333,7 @@ function init() {
     WIDTH = $('#top-half').width();
     HEIGHT = $('#top-half').height();
     camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
-    camera.position.set(0, -400, 50);
+    camera.position.set(0, -400, 120);
     camera.rotation.set(1.4, 0, 0);
 
 
@@ -368,8 +371,7 @@ function init() {
     scene.add(right);
 
     //axes
-
-    var axisHelper = new THREE.AxisHelper(150);
+    axisHelper = new THREE.AxisHelper(150);
     scene.add(axisHelper);
 
 
