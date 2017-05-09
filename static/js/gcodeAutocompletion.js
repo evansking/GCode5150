@@ -145,6 +145,101 @@
             name: "M84: Stop Idle Hold",
             content: "M84",
             tabTrigger: "M84"
+        },
+        {
+            name: "M92: Set Steps Per Unit",
+            content: "M92 X${1:_StepsPerUnit}",
+            tabTrigger: "M92"
+        },
+        {
+            name: "M101: Set Extruder 1 to Forward",
+            content: "M101",
+            tabTrigger: "M101"
+        },
+        {
+            name: "M102: Set Extruder 1 to Reverse",
+            content: "M102",
+            tabTrigger: "M102"
+        },
+        {
+            name: "M103: Turn All Extruders Off",
+            content: "M103",
+            tabTrigger: "M103"
+        },
+        {
+            name: "M104: Set Extruder Temperature (not waiting)",
+            content: "M104 S${1:_Temperature}",
+            tabTrigger: "M104"
+        },
+        {
+            name: "M105: Set Extruder Temperature",
+            content: "M105",
+            tabTrigger: "M105"
+        },
+        {
+            name: "M106: Set Fan Speed and Start",
+            content: "M106 S${1:_FanSpeedPWMValue}",
+            tabTrigger: "M106"
+        },
+        {
+            name: "M107: Turn Fan Off",
+            content: "M107",
+            tabTrigger: "M107"
+        },
+        {
+            name: "M108: Set Extruder Speed",
+            content: "M108",
+            tabTrigger: "M108"
+        },
+        {
+            name: "M109: Set Extruder Temperature (waits until reached)",
+            content: "M109 S${1:_Temperature}",
+            tabTrigger: "M109"
+        },
+        {
+            name: "M110: Set Current Line Number",
+            content: "N${1:_LineNumber} M110",
+            tabTrigger: "M110"
+        },
+        {
+            name: "M111: Set Debug Level",
+            content: "M111 S${1:_DebugLevel}",
+            tabTrigger: "M111"
+        },
+        {
+            name: "M112: Emergency Stop",
+            content: "M112",
+            tabTrigger: "M112"
+        },
+        {
+            name: "M113: Set Extruder PWM to S (or onboard potent. if not given)",
+            content: "M113 S${1:_PWMValue}",
+            tabTrigger: "M113"
+        },
+        {
+            name: "M114: Get Current Position",
+            content: "M114",
+            tabTrigger: "M114"
+        },
+        {
+            name: "M115: Get Firmware Version and Capabilities",
+            content: "M115",
+            tabTrigger: "M115"
+        },
+        {
+            name: "M116: Wait for ALL Temperatures",
+            content: "M116",
+            tabTrigger: "M116"
+        },
+        {
+            name: "M117: Get Zero Position in Steps",
+            content: "M117",
+            tabTrigger: "M117"
+        },
+        {
+            name: "M119: Get Endstop Status",
+            content: "M119",
+            tabTrigger: "M119"
         }];
     }
 
