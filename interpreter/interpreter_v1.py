@@ -202,12 +202,12 @@ class Drawer:
                     try:
                         p[2] = offset[2] + float(l.arguments[key])
                     except:
-                        p[2] = offset[2] + 0.0
+                        p[2] = 0.0
                 elif key == 'E':
-                    if self.extrusion_type == 'RELATIVE':
-                        self.extrude = float(l.arguments[key]) + self.prevE > 0
+                    if self.extrusion_type == 'ABSOLUTE':
+                        self.extrude = (float(l.arguments[key]) - self.prevE) > 0
                         self.prevE = float(l.arguments[key])
-                    elif self.positioning == 'ABSOLUTE':
+                    elif self.extrusion_type == 'RELATIVE':
                         self.extrude = float(l.arguments[key]) > 0
                         self.prevE = float(l.arguments[key])
             # if a coordinate is not given, use previous point to fill in missing component
