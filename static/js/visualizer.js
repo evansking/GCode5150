@@ -55,16 +55,16 @@ function drawSegmentedShape(points){
   var lineSegmentGeometry = new THREE.Geometry();
   var len = points.length;
   for (var i = 1; i < len; i++){
-    if (points[3]){
+    if (points[i][3] == true){
       lineSegmentGeometry.vertices.push(new THREE.Vector3(prevX, prevY, prevZ));
       lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]));
-
       // console.log(prevX,prevY,prevZ,points[i][0], points[i][1], points[i][2]);
     }
     prevX = points[i][0];
     prevY = points[i][1];
     prevZ = points[i][2];
   }
+
   animationQueue.push([QUEUE_MEMBERS.LINE_SEGMENTS,
     lineSegmentGeometry, new THREE.Vector3(points[len-1][0],
       points[len-1][1], points[len-1][2])]);
@@ -333,10 +333,11 @@ function init() {
     WIDTH = $('#top-half').width();
     HEIGHT = $('#top-half').height();
     camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
-    camera.position.set(0, -400, 120);
-    camera.rotation.set(1.4, 0, 0);
+    camera.position.set(39.704180277879885, -92.0561271479466, 88.48799305536456);
+    camera.rotation.set(0.9888453225621937, 0.015460853808581212, -0.02349288815691967);
 
-
+    //rotation 0.9888453225621937, 0.015460853808581212, -0.02349288815691967
+    //position 39.704180277879885, -92.0561271479466, 88.48799305536456
 
     // Lights
     ambientLight = new THREE.AmbientLight(0x505050, 2.5);

@@ -120,7 +120,8 @@ class Drawer:
         self.total_lines = 0
         self.current_head = [0.0,0.0,0.0,False]
         self.positioning = 'ABSOLUTE'
-        self.extrude = True
+        self.extrusion_type = 'ABSOLUTE'
+        self.extrude = False
         self.prevE = 0.
         # print "Drawer initialized"
 
@@ -176,7 +177,6 @@ class Drawer:
 
             if command is not a draw command (like any of the M commands), return None
         '''
-        # self.extrude = False
         l = l.strip()
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:
@@ -187,6 +187,7 @@ class Drawer:
             return None
         # movement
         if l.letter == 'G' and (l.number == '1' or l.number == '0'):
+            self.extrude = False
             if self.positioning == 'RELATIVE':
                 offset = self.current_head
             else:
@@ -201,12 +202,12 @@ class Drawer:
                     try:
                         p[2] = offset[2] + float(l.arguments[key])
                     except:
-                        p[2] = offset[2] + 0.0
+                        p[2] = 0.0
                 elif key == 'E':
-                    if self.positioning == 'ABSOLUTE':
-                        self.extrude = float(l.arguments[key]) - self.prevE > 0
+                    if self.extrusion_type == 'ABSOLUTE':
+                        self.extrude = (float(l.arguments[key]) - self.prevE) > 0
                         self.prevE = float(l.arguments[key])
-                    elif self.positioning == 'RELATIVE':
+                    elif self.extrusion_type == 'RELATIVE':
                         self.extrude = float(l.arguments[key]) > 0
                         self.prevE = float(l.arguments[key])
             # if a coordinate is not given, use previous point to fill in missing component
@@ -246,18 +247,16 @@ class Drawer:
                 elif key == 'Z':
                     p[2] = float(l.arguments[key])
                 elif key == 'E':
-                    if self.positioning == 'ABSOLUTE':
-                        self.extrude = float(l.arguments[key]) - self.prevE > 0
-                        self.prevE = float(l.arguments[key])
-                    elif self.positioning == 'RELATIVE':
-                        self.extrude = float(l.arguments[key]) > 0
-                        self.prevE = float(l.arguments[key])
+                    self.extrude = float(l.arguments[key]) > 0
             # if a coordinate is not given, use previous point to fill in missing component
             for i in range(3):
                 if p[i] == None:
                     p[i] = self.current_head[i]
             return (p, False)
-
+        elif l.letter == 'M' and l.number == '82':
+            self.extrusion_type = 'ABSOLUTE'
+        elif l.letter == 'M' and l.number == '83':
+            self.extrusion_type = 'RELATIVE'
         return None
 
 
