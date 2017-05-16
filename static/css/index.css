@@ -87,3 +87,8 @@ body, html {
 .ace_gutter-layer{
     background: #01172c;
 }
+
+#progress{
+    color: white;
+    padding-top: 7px;
+}
