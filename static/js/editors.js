@@ -55,48 +55,6 @@ function uploadFile() {
         var file = document.getElementById('upload-file').files[0];
         var progress = jQuery('#progress');
 
-        //if (file) {
-        //    var reader = new FileReader();
-        //    var size = file.size;
-        //    var chunk_size = Math.pow(2, 15);
-        //    var content = [];
-        //
-        //    var offset = 0;
-        //    var bytes = 0;
-        //
-        //
-        //    reader.onloadend = function (e) {
-        //        if (e.target.readyState == FileReader.DONE) {
-        //            var chunk = e.target.result;
-        //            bytes += chunk.length;
-        //
-        //            content.append(chunk);
-        //
-        //            progress.html("Uploading: " + bytes + ' bytes...');
-        //
-        //            if ((offset < size)) {
-        //                offset += chunk_size;
-        //                var blob = file.slice(offset, offset + chunk_size);
-        //
-        //                reader.readAsText(blob);
-        //
-        //            } else {
-        //                progress.html("Displaying, please be patient...");
-        //
-        //                codeEditor.leftEditor.setValue(content.join(""));
-        //                codeEditor.leftEditor.clearSelection();
-        //                codeEditor.leftEditor.resize(true);
-        //                codeEditor.leftEditor.moveCursorTo(0, 0);
-        //                codeEditor.leftEditor.getSession().setScrollTop(0);
-        //                progress.html("");
-        //            }
-        //            ;
-        //        }
-        //    };
-        //
-        //    var blob = file.slice(offset, offset + chunk_size);
-        //    reader.readAsText(blob);
-
         if (file) {
             var reader = new FileReader();
             var size = file.size;
