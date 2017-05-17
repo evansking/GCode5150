@@ -29,7 +29,7 @@ var currentPosition;
 var updatedPosition;
 
 //Colors
-var highlight_color, color_one, color_two, current_color;
+var red, white, lc, purple;
 
 // The mouse object
 var raycaster, projector, mouse;
@@ -163,9 +163,9 @@ function animate() {
             if (DEBUG_PRINT) console.log('current position: ', currentPosition);
         } else if (nextAnimation[0] == QUEUE_MEMBERS.LINE_SEGMENTS){
           // return;
-          if (current_color == color_one) current_color = color_two;
-          else current_color = color_one;
-          var lineMaterial = new THREE.LineBasicMaterial({color: current_color, opacity: 0.6, fog: false});
+          if (lc == white) lc = purple;
+          else lc = white;
+          var lineMaterial = new THREE.LineBasicMaterial({color: lc, opacity: 0.6, fog: false});
           var lineSegmentGeometry = nextAnimation[1];
           lineGeometry.computeBoundingBox();
           var segmentedLine = new THREE.LineSegments(lineSegmentGeometry, lineMaterial);
@@ -177,9 +177,7 @@ function animate() {
           copyPoint(currentPosition, nextAnimation[2]);
           copyPoint(updatedPosition, currentPosition);
           // console.log('center: ', center.x.toFixed(1), ',', center.y.toFixed(1), ',', center.z.toFixed(1));
-          object.position.set(-center.x, 0, center.y);
-          object.rotation.x = -Math.PI/2;
-          // object.position.set(-center.x, -center.y, object.position.z);
+          object.position.set(-center.x, -center.y, object.position.z);
         }
 
 } else {
@@ -296,7 +294,7 @@ function addLine(workingLine){
   //         codeEditor.leftEditor.selection.setSelectionRange(r, false);
   //     },
   // });
-    // if (workingLine.object.material.color.equals(color_one)){
+    // if (workingLine.object.material.color.equals(white)){
     //     workingLine.object.material.color = red;
     //     two_points = [[workingLine.object.geometry.vertices[0].x,
     //       workingLine.object.geometry.vertices[0].y,
@@ -309,122 +307,10 @@ function addLine(workingLine){
     //
     //
     // } else {
-    //     workingLine.object.material.color = color_one;
+    //     workingLine.object.material.color = white;
     // }
 
     renderer.render(scene, camera);
-}
-
-function init() {
-    if (DEBUG_PRINT) console.log('beginning init');
-
-    // scene
-    scene = new THREE.Scene();
-    // camera
-    WIDTH = $('#top-half').width();
-    HEIGHT = $('#top-half').height();
-    camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
-    scene.add(camera);
-
-    // Lights
-    ambientLight = new THREE.AmbientLight(0x505050, 2.5);
-    scene.add(ambientLight);
-
-    // Platform on which to 3d print
-    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
-        new THREE.MeshPhongMaterial({
-            color: 0x3292F1, shininess: 150
-        }));
-    ground.receiveShadow = true;
-    ground.rotation.x = -Math.PI/2;
-    scene.add(ground);
-
-
-    front = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
-        new THREE.MeshPhongMaterial({
-            color: 0x7AB8F6, shininess: 150
-        }));
-    front.receiveShadow = true;
-    front.position.y = 75;
-    front.position.z = -75;
-    scene.add(front);
-
-    right = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
-        new THREE.MeshPhongMaterial({
-            color: 0x0E6CC9, shininess: 150
-        }));
-    right.receiveShadow = true;
-    right.position.x = 75;
-    right.position.y = 75;
-    right.rotation.y = -Math.PI/2;
-    scene.add(right);
-
-    //axes
-    axisLength = 75;
-    createAxis(new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0), 0xFF0000);
-    createAxis(new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0), 0x00FF00);
-    createAxis(new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength), 0xFFFFFF);
-
-    // Renderer
-    renderer = new THREE.WebGLRenderer({clearColor:0xffffff, clearAlpha: 1, antialias: true});
-    // renderer.shadowMap.enabled = true;
-    renderer.setSize($('#top-half').width(), $('#top-half').height());
-    window.addEventListener('resize', onWindowResize, false);
-    document.getElementById("visualization").appendChild(renderer.domElement);
-
-    // state
-    currentPosition = new THREE.Vector3(0,0,0);
-    updatedPosition = new THREE.Vector3(0,0,0);
-    animationQueue = [];
-
-    // mouse
-    raycaster = new THREE.Raycaster();
-    mouse = { x: 0, y: 0 };
-    document.addEventListener('mousedown', onMouseClick, false);
-
-    highlight_color = new THREE.Color('red');
-    color_one = new THREE.Color('#5b5959');
-    color_two = new THREE.Color('#2b2727');
-    current_color = color_one;
-
-    // Controls
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    // controls = new THREE.TrackballControls(camera, renderer.domElement);
-    // controls.target.set(0, 1, 0);
-    controls.update();
-
-    //Button Controls
-    var resetViewButton = $("#resetView");
-    resetViewButton.click(resetViewFunction);
-
-    var printViewButton = $("#printView");
-    printViewButton.click(printViewInfo);
-
-    var clearButton = $("#clear");
-    clearButton.click(clear);
-
-    object = new THREE.Object3D();
-    lineGeometry = new THREE.Geometry();
-    scene.add(object);
-
-    //position
-    controls.target.set(0, 0, 0);
-    // camera.position.set(0.8411331463429106, 14.303142467093837, 28.461376836191707);
-    // camera.rotation.set(-0.4656820927094852, 0.026400369392629096, 0.013265073299480094);
-    camera.position.set(-2.103831035351104, 53.65318572991317, 130.3430329819223);
-    camera.rotation.set(-0.24539539345521694, 0.00008969377825654345, 0.000022463162163918027);
-    camToSave = {};
-    camToSave.position = camera.position.clone();
-    camToSave.rotation = camera.rotation.clone();
-    camToSave.controlCenter = controls.target.clone();
-
-    highlightGeometry = new THREE.BoxGeometry(70, 70, 70, 10, 10, 10);
-    highlightMaterial = new THREE.MeshBasicMaterial({color: highlight_color, wireframe: true});
-    highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
-
-    progress = jQuery('#progress');
-
-    if (DEBUG_PRINT) console.log('finished init');
 }
 
 //Create axis (point1, point2, colour)
@@ -439,7 +325,7 @@ function createAxis(p1, p2, color){
 function makeHighlightCube(point){
   scene.remove(highlightCube);
   highlightGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.3, 0.05, 0.05, 0.05);
-  highlightMaterial = new THREE.MeshBasicMaterial({color: highlight_color, wireframe: true});
+  highlightMaterial = new THREE.MeshBasicMaterial({color: red, wireframe: true});
   highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
   highlightCube.position.x = point.x;
   highlightCube.position.y = point.y;
@@ -447,20 +333,238 @@ function makeHighlightCube(point){
   scene.add(highlightCube);
 }
 
-/* ###################################### SCRIPT ######################################*/
+/*
+  Three.js "tutorials by example"
+  Author: Lee Stemkoski
+  Date: July 2013 (three.js v59dev)
+*/
+// MAIN
+// standard global variables
+var container, scene, camera, renderer, controls, stats;
+var clock = new THREE.Clock();
+// custom global variables
+var targetList = [];
+var projector, mouse = { x: 0, y: 0 };
+init();
+animate();
+// FUNCTIONS    
+function init() 
+{
+  // scene
+  scene = new THREE.Scene();
+
+   // camera
+  WIDTH = $('#top-half').width();
+  HEIGHT = $('#top-half').height();
+  camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
+  
+  scene.add(camera);
+  camera.position.set(0,150,400);
+  camera.lookAt(scene.position); 
+
+  // Lights
+  ambientLight = new THREE.AmbientLight(0x505050, 2.5);
+  scene.add(ambientLight); 
+
+
+  // Platform on which to 3d print
+  ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
+      new THREE.MeshPhongMaterial({
+          color: 0x3292F1, shininess: 150
+      }));
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  front = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
+        new THREE.MeshPhongMaterial({
+            color: 0x7AB8F6, shininess: 150
+        }));
+    front.receiveShadow = true;
+    front.position.y = 75;
+    front.position.z = 75;
+    front.rotation.x = Math.PI / 2;
+    scene.add(front);
+
+    right = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
+        new THREE.MeshPhongMaterial({
+            color: 0x0E6CC9, shininess: 150
+        }));
+    right.receiveShadow = true;
+    right.position.x = 75;
+    right.position.z = 75;
+    right.rotation.y = -Math.PI/2;
+    scene.add(right);
+
+    //axes
+    axisLength = 75;
+    createAxis(new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0), 0xFF0000);
+    createAxis(new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0), 0x00FF00);
+    createAxis(new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength), 0x000000);
+
+
+  // Renderer
+  renderer = new THREE.WebGLRenderer({clearColor:0xffffff, clearAlpha: 1, antialias: true});
+  renderer.setSize($('#top-half').width(), $('#top-half').height());
+  window.addEventListener('resize', onWindowResize, false);
+  document.getElementById("visualization").appendChild(renderer.domElement);
+
+  // state
+  currentPosition = new THREE.Vector3(0,0,0);
+  updatedPosition = new THREE.Vector3(0,0,0);
+  animationQueue = [];
+
+  // mouse
+  raycaster = new THREE.Raycaster();
+  mouse = { x: 0, y: 0 };
+  document.addEventListener('mousedown', onMouseClick, false);
+
+  //Colors
+  red = new THREE.Color('red');
+  white = new THREE.Color('#2aba36');
+  purple = new THREE.Color('#21a02c');
+  lc = white;
+
+  //Controls
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+  //Button Controls
+  var resetViewButton = $("#resetView");
+  resetViewButton.click(resetViewFunction);
+
+  var printViewButton = $("#printView");
+  printViewButton.click(printViewInfo);
+
+  var clearButton = $("#clear");
+  clearButton.click(clear);
+
+  object = new THREE.Object3D();
+  lineGeometry = new THREE.Geometry();
+  scene.add(object);
+
+  //position
+  controls.target.set(0, 0, 0);
+  camera.position.set(0.046360605938516715, -64.57763410143014, 74.36213434642659);
+  camera.rotation.set(0.7150916530910365, 0.00047072065637022867, -0.0004087836344610641);
+  camToSave = {};
+  camToSave.position = camera.position.clone();
+  camToSave.rotation = camera.rotation.clone();
+  camToSave.controlCenter = controls.target.clone();
+
+
+  // // FLOOR
+  // var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+  // floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+  // floorTexture.repeat.set( 10, 10 );
+  // var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+  // var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+  // var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  // floor.position.y = -0.5;
+  // floor.rotation.x = Math.PI / 2;
+  // scene.add(floor);
+  // SKYBOX/FOG
+  var skyBoxGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );
+  var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );
+  var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+  scene.add(skyBox);
+  
+  ////////////
+  // CUSTOM //
+  ////////////
+  
+  //////////////////////////////////////////////////////////////////////
+  // this material causes a mesh to use colors assigned to faces
+  var faceColorMaterial = new THREE.MeshBasicMaterial( 
+  { color: 0xffffff, vertexColors: THREE.FaceColors } );
+  
+  var sphereGeometry = new THREE.SphereGeometry( 80, 32, 16 );
+  for ( var i = 0; i < sphereGeometry.faces.length; i++ ) 
+  {
+    face = sphereGeometry.faces[ i ]; 
+    face.color.setRGB( 0, 0, 0.8 * Math.random() + 0.2 );   
+  }
+  var sphere = new THREE.Mesh( sphereGeometry, faceColorMaterial );
+  sphere.position.set(0, 50, 0);
+  scene.add(sphere);
+  
+  targetList.push(sphere);
+  
+  //////////////////////////////////////////////////////////////////////
+  
+  // initialize object to perform world/screen calculations
+  projector = new THREE.Projector();
+  
+  // when the mouse moves, call the given function
+  document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+  
+}
+
+function init5() {
+    if (DEBUG_PRINT) console.log('beginning init');
+
+
+
+    highlightGeometry = new THREE.BoxGeometry(70, 70, 70, 10, 10, 10);
+    highlightMaterial = new THREE.MeshBasicMaterial({color: red, wireframe: true});
+    highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
+
+    progress = jQuery('#progress');
+
+    if (DEBUG_PRINT) console.log('finished init');
+}
+function onDocumentMouseDown( event ) 
+{
+  // the following line would stop any other event handler from firing
+  // (such as the mouse's TrackballControls)
+  // event.preventDefault();
+  
+  console.log("Click.");
+  
+  // update the mouse variable
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  
+  // find intersections
+  // create a Ray with origin at the mouse position
+  //   and direction into the scene (camera direction)
+  var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
+  projector.unprojectVector( vector, camera );
+  var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+  // create an array containing all objects in the scene with which the ray intersects
+  var intersects = ray.intersectObjects( targetList );
+  
+  // if there is one (or more) intersections
+  if ( intersects.length > 0 )
+  {
+    console.log("Hit @ " + toString( intersects[0].point ) );
+    // change the color of the closest face.
+    intersects[ 0 ].face.color.setRGB( 0.8 * Math.random() + 0.2, 0, 0 ); 
+    intersects[ 0 ].object.geometry.colorsNeedUpdate = true;
+  }
+}
+function toString(v) { return "[ " + v.x + ", " + v.y + ", " + v.z + " ]"; }
+function animate() 
+{
+    requestAnimationFrame( animate );
+  render();   
+  update();
+}
+function update()
+{
+  controls.update();
+}
+function render() 
+{
+  renderer.render( scene, camera );
+}
 
 $(document).ready(function () {
     init();
-    animate();
 });
 
-/* ###################################### NOTES ######################################*/
+function onWindowResize() {
+    camera.aspect = $('#top-half').width() / $('#top-half').height();
+    camera.updateProjectionMatrix();
+    renderer.setSize($('#top-half').width(), $('#top-half').height());
+}
 
-//Always put points onto queue as THREE.Vector3's
-
-//WHITE - Z
-//RED - X
-//GREEN - Y
-
-// positive Z becomes negative Y
-// positive Y becomes positive Z

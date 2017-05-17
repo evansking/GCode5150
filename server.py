@@ -14,7 +14,7 @@ from interpreter_v1 import Drawer, get_gcode_line_num_from_points, get_points_fr
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'static/uploads/'
-POINT_BATCH_LENGTH = 5000
+POINT_BATCH_LENGTH = 2000
 DRAWER = Drawer()
 
 app = Flask(__name__)
