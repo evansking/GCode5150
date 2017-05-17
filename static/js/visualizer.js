@@ -3,6 +3,8 @@
 //var startTime, object, mouse;
 //var objects = []
 
+var count_false = 0;
+
 var highlightCube, highlightGeometry, highlightMaterial;
 
 // var axisHelper;
@@ -51,7 +53,7 @@ function queueMoveHead(point){
       //   new THREE.Vector3(point[0], point[1], point[2])]);
 }
 
-function drawSegmentedShape(points){
+function drawSegmentedShape(points, index){
   var lineSegmentGeometry = new THREE.Geometry();
   var len = points.length;
   for (var i = 1; i < len; i++){
@@ -59,15 +61,17 @@ function drawSegmentedShape(points){
       lineSegmentGeometry.vertices.push(new THREE.Vector3(prevX, prevY, prevZ));
       lineSegmentGeometry.vertices.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]));
       // console.log(prevX,prevY,prevZ,points[i][0], points[i][1], points[i][2]);
+    } else {
+      count_false += 1;
     }
     prevX = points[i][0];
     prevY = points[i][1];
     prevZ = points[i][2];
-  }
+  } 
 
   animationQueue.push([QUEUE_MEMBERS.LINE_SEGMENTS,
     lineSegmentGeometry, new THREE.Vector3(points[len-1][0],
-      points[len-1][1], points[len-1][2])]);
+      points[len-1][1], points[len-1][2]), index]);
 }
 
 //This function takes in a list of lists, where each list is a path
@@ -78,7 +82,7 @@ function path(pointList, animated){
     // console.log(pointList);
     //pointList : the parent list of all subpaths
     for (var i = 0; i < pointList.length; i++){
-      drawSegmentedShape(pointList[i]);
+      drawSegmentedShape(pointList[i], i);
     }
 }
 
@@ -117,6 +121,7 @@ function clear(){
         });
     }
     object = new THREE.Object3D();
+    object.castShadow = true;
 
     scene.add(ground);
     scene.add(ambientLight);
@@ -174,14 +179,19 @@ function animate() {
           var lineMaterial = new THREE.LineBasicMaterial({color: white, opacity: 0.8, fog: false});
           var lineSegmentGeometry = nextAnimation[1];
           lineSegmentGeometry.computeBoundingBox();
-          var segmentedLine = new THREE.Line(lineSegmentGeometry, lineMaterial, THREE.LineSegments);
+          var segmentedLine = new THREE.LineSegments(lineSegmentGeometry, lineMaterial);
           object.add(segmentedLine);
           onScreenObjects.push(segmentedLine);
           var center = new THREE.Vector3().addVectors(lineSegmentGeometry.boundingBox.min,
             lineSegmentGeometry.boundingBox.max).divideScalar(2);
-          object.position = center.multiplyScalar(-1);
           copyPoint(currentPosition, nextAnimation[2]);
           copyPoint(updatedPosition, currentPosition);
+          console.log('center: ', center.x.toFixed(1), ',', center.y.toFixed(1), ',', center.z.toFixed(1));
+          object.position.set(-center.x, -center.y, object.position.z);
+          
+          // controls.target.set(center.x, center.y, center.z);
+          // camera.position.set(-center.x, -center.y, -center.z);
+          // controls.rotation.set(-center.x, -center.y, -center.z);
         }
 
 }
@@ -209,32 +219,23 @@ function onWindowResize() {
     renderer.setSize($('#top-half').width(), $('#top-half').height());
 }
 
-function drawTestPathFunction(){
-    points.push([[0,0,0], [10,0,0], [10,10,0], [0,10,0], [0,0,0], [0,0,10], [10,0,10], [10,0,0]]);
-    points.push([[0,0,10], [0,10,10], [0,10,0], [10,10,0], [10,10,10], [0,10,10]]);
-    points.push([[10,10,10], [10,0,10]]);
-    for (var t = 0; t <= 10; ){
-        var side = [];
-        for (var c = 0; c <= 10; ){
-            side.push([t,c,0]);
-            side.push([t,c,10]);
-            c += 0.5;
-        }
-        points.push(side);
-        t += 0.5;
-    }
-    path(points);
-}
-
 function resetViewFunction(){
+  // printViewInfo();
   camera.position.set(camToSave.position.x, camToSave.position.y,
     camToSave.position.z);
-  // camera.rotation.set(camToSave.rotation.x, camToSave.rotation.y,
-  //   camToSave.rotation.z);
+  camera.rotation.set(camToSave.rotation.x, camToSave.rotation.y,
+    camToSave.rotation.z);
   controls.target.set(camToSave.controlCenter.x,
     camToSave.controlCenter.y, camToSave.controlCenter.z);
   controls.update();
   render();
+}
+
+function printViewInfo(){
+  console.log('position: ', camera.position.x.toFixed(1), ',', camera.position.y.toFixed(1), ',', camera.position.z.toFixed(1));
+  console.log('rotation: ', camera.rotation.x.toFixed(1), ',', camera.rotation.y.toFixed(1), ',', camera.rotation.z.toFixed(1));
+  console.log('target: ', controls.target.x.toFixed(1), ',', controls.target.y.toFixed(1), ',', controls.target.z.toFixed(1));
+  console.log('object: ', object.position.x.toFixed(1), ',', object.position.y.toFixed(1), ',', object.position.z.toFixed(1));
 }
 
 // Mouse clicks to highlight segments of code
@@ -333,48 +334,61 @@ function init() {
     WIDTH = $('#top-half').width();
     HEIGHT = $('#top-half').height();
     camera = new THREE.PerspectiveCamera(FOV, WIDTH / HEIGHT, NEAR, FAR);
-    camera.position.set(39.704180277879885, -92.0561271479466, 88.48799305536456);
-    camera.rotation.set(0.9888453225621937, 0.015460853808581212, -0.02349288815691967);
 
-    //rotation 0.9888453225621937, 0.015460853808581212, -0.02349288815691967
-    //position 39.704180277879885, -92.0561271479466, 88.48799305536456
+
+// position 36.20299122492578, -39.349763786722036, 15.161038960941262
+// rotation 1.3506843868116034, 0.0005256909304279905, -0.002349588997465301
 
     // Lights
     ambientLight = new THREE.AmbientLight(0x505050, 2.5);
     scene.add(ambientLight);
 
+    // dirLight = new THREE.DirectionalLight(0x55505a, 1.0);
+    // dirLight.position.set(1, -10, 10);
+    // dirLight.castShadow = true;
+    // dirLight.shadow.camera.near = 1;
+    // dirLight.shadow.camera.far = 10;
+    // dirLight.shadow.camera.right = 1;
+    // dirLight.shadow.camera.left = -1;
+    // dirLight.shadow.camera.top = 1;
+    // dirLight.shadow.camera.bottom = -1;
+    // dirLight.shadow.mapSize.width = 1024;
+    // dirLight.shadow.mapSize.height = 1024; //figure these numbers out
+    // scene.add(dirLight);
+
     // Platform on which to 3d print
-    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(400, 400, 1, 1),
+    ground = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
         new THREE.MeshPhongMaterial({
             color: 0x3292F1, shininess: 150
         }));
     ground.receiveShadow = true;
     scene.add(ground);
 
-    front = new THREE.Mesh( new THREE.PlaneBufferGeometry(400, 400, 1, 1),
+    front = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
         new THREE.MeshPhongMaterial({
             color: 0x7AB8F6, shininess: 150
         }));
     front.receiveShadow = true;
-    front.position.y = 200;
-    front.position.z = 200;
+    front.position.y = 75;
+    front.position.z = 75;
     front.rotation.x = Math.PI / 2;
     scene.add(front);
 
-    right = new THREE.Mesh( new THREE.PlaneBufferGeometry(400, 400, 1, 1),
+    right = new THREE.Mesh( new THREE.PlaneBufferGeometry(150, 150, 1, 1),
         new THREE.MeshPhongMaterial({
             color: 0x0E6CC9, shininess: 150
         }));
     right.receiveShadow = true;
-    right.position.x = 200;
-    right.position.z = 200;
+    right.position.x = 75;
+    right.position.z = 75;
     right.rotation.y = -Math.PI/2;
     scene.add(right);
 
     //axes
-    axisHelper = new THREE.AxisHelper(150);
-    scene.add(axisHelper);
-
+    var axisLength = 75;
+    createAxis(new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0), 0xFF0000);
+    createAxis(new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0), 0x00FF00);
+    createAxis(new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength), 0x000000);
 
     // Renderer
     renderer = new THREE.WebGLRenderer();
@@ -395,7 +409,7 @@ function init() {
     document.addEventListener('mousedown', onMouseClick, false);
 
     red = new THREE.Color('red');
-    white = new THREE.Color('white');
+    white = new THREE.Color('yellow');
 
     // Controls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -404,11 +418,11 @@ function init() {
     controls.update();
 
     //Button Controls
-    var drawTestPathButton = $("#drawTestPath");
-    drawTestPathButton.click(drawTestPathFunction);
-
     var resetViewButton = $("#resetView");
     resetViewButton.click(resetViewFunction);
+
+    var printViewButton = $("#printView");
+    printViewButton.click(printViewInfo);
 
     var clearButton = $("#clear");
     clearButton.click(clear);
@@ -416,18 +430,29 @@ function init() {
     object = new THREE.Object3D();
     scene.add(object);
 
+    //position
+    controls.target.set(0, 0, 0);
+    camera.position.set(0.046360605938516715, -64.57763410143014, 74.36213434642659);
+    camera.rotation.set(0.7150916530910365, 0.00047072065637022867, -0.0004087836344610641);
     camToSave = {};
-
     camToSave.position = camera.position.clone();
-    // camToSave.rotation = camera.rotation.clone();
+    camToSave.rotation = camera.rotation.clone();
     camToSave.controlCenter = controls.target.clone();
 
     highlightGeometry = new THREE.BoxGeometry(70, 70, 70, 10, 10, 10);
     highlightMaterial = new THREE.MeshBasicMaterial({color: red, wireframe: true});
     highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
 
-
     if (DEBUG_PRINT) console.log('finished init');
+}
+
+//Create axis (point1, point2, colour)
+function createAxis(p1, p2, color){
+  var line, lineGeometry = new THREE.Geometry(),
+    lineMat = new THREE.LineBasicMaterial({color: color});
+  lineGeometry.vertices.push(p1, p2);
+  line = new THREE.Line(lineGeometry, lineMat);
+  scene.add(line);
 }
 
 function makeHighlightCube(point){

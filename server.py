@@ -48,6 +48,8 @@ def index():
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
+    print "stuff"
+    DRAWER = Drawer()
 
     def read_in_chunks(commands):
         while True:

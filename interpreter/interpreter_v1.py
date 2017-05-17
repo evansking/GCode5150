@@ -122,7 +122,7 @@ class Drawer:
         self.positioning = 'ABSOLUTE'
         self.extrude = True
         self.prevE = 0.
-        # print "Drawer initialized"
+        print "Drawer initialized"
 
 
     def parse_commands(self, gcode, num_lines):
@@ -176,7 +176,7 @@ class Drawer:
 
             if command is not a draw command (like any of the M commands), return None
         '''
-        # self.extrude = False
+        self.extrude = False
         l = l.strip()
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:

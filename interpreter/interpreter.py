@@ -122,7 +122,7 @@ class Drawer:
         self.positioning = 'ABSOLUTE'
         self.extrude = True
         self.prevE = 0.
-        # print "Drawer initialized"
+        print "Drawer initialized"
 
 
     def parse_commands(self, gcode, num_lines):
