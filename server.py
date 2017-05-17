@@ -10,7 +10,7 @@ from string import ascii_letters
 
 
 sys.path.append(os.getcwd() + "/interpreter")
-from interpreter_v1 import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
+from interpreter import Drawer, get_gcode_line_num_from_points, get_points_from_gcode_line_num
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'static/uploads/'
