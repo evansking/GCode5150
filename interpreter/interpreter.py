@@ -1,9 +1,7 @@
 import re
 import constants
 import json
-import sys
 import Gcode_exceptions
-from os.path import basename, splitext
 
 
 class Command:
@@ -158,6 +156,7 @@ class Drawer:
         '''
         self.extrude = False
         l = l.strip()
+        # parse string of Gcode
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:
                 l = Command(line=l)
