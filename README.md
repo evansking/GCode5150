@@ -26,7 +26,7 @@ The architecture is broadly defined as follows:
 > - Run the code with `[sudo] python server.py`
 > - Visit the site at http://127.0.0.1:5000/
 
-You may or may not need to use "sudo" before your commands depending on where you installed pip. If you can't get it working by next meeting Ishaan or Evan can help you.
+You may or may not need to use "sudo" before your commands depending on where you installed pip. If you have trouble installing requirements please contact rsb357@cornell.edu, iaj8@cornell.edu or esk79@cornell.edu.
 
 #### <i class="icon-folder-open"></i> Interpreter
 
