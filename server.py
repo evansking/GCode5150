@@ -30,21 +30,17 @@ async_mode = "threading"
 
 socketio = SocketIO(app, async_mode=async_mode)
 
-
-######################################################################
-#                        User Authentication                         #
-######################################################################
-
-
 ######################################################################
 #                        Routing Logic                               #
 ######################################################################
 
+#index page route
 @app.route('/')
 def index():
     return flask.make_response(flask.render_template('index.html'))
 
-
+# handle POSTs to /draw endpoint by returning points associated with
+# received GCode commands. Return points to client through socket.io
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
@@ -65,12 +61,7 @@ def draw_points():
     return "Done"
 
 
-@app.route('/points', methods=['POST'])
-def get_points():
-    line_num = int(request.data)
-    points = get_points_from_gcode_line_num(line_num)
-    return json.dumps({"points": points})
-
+# Download the content of the editor
 @app.route('/download', methods=['POST'])
 def download():
     content = request.data
@@ -81,7 +72,7 @@ def download():
         file.write(content)
     return 'static/uploads/' + title
 
-
+# return the line number associated with a point on the drawn structure.
 @app.route('/lineNumber', methods=['POST'])
 def get_gcode_line_num():
     two_points = json.loads(request.data)
@@ -89,6 +80,14 @@ def get_gcode_line_num():
         two_points[0][0], two_points[0][1], two_points[0][2],
         two_points[1][0], two_points[1][1], two_points[1][2])
     return json.dumps({"lineNum": line_num})
+
+# return the point associated with a given line of GCode
+# in order to highlight that point on a drawn structure
+@app.route('/points', methods=['POST'])
+def get_points():
+    line_num = int(request.data)
+    points = get_points_from_gcode_line_num(line_num)
+    return json.dumps({"points": points})
 
 
 ######################################################################
@@ -101,7 +100,7 @@ def get_gcode_line_num():
 def connect():
     print("[+] New Connection")
 
-
+# Socket IO session handler for when client joins a room
 @socketio.on('join')
 def on_join(data):
     room = data['room']
@@ -109,7 +108,7 @@ def on_join(data):
     print "[+] {} has entered room".format(room)
     send("You have entered the room!", room=room)
 
-
+# Removed client from room on disconnect
 @socketio.on('leave')
 def on_leave(data):
     room = data['room']

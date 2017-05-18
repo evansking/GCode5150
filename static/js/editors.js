@@ -1,7 +1,8 @@
 /**
  * Created by EvanKing on 4/8/17.
  *
- * This file defines the Javascipt functions necessary to construct the IDE style GCode editors at the bottom of the index page
+ * This file defines the Javascript functions necessary to construct the IDE style GCode editors at the bottom of the index page as well as
+ * send the appropriate POST back to the server per button editor button click.
  */
 
 // Function to allow for the IDE to be split into two divs and have width adjusted by drag
@@ -49,7 +50,8 @@ function disableBodyScroll() {
     });
 }
 
-
+// Function triggered when a user clicks the upload file button.
+// The file is read in chunks and rendered by the editor
 function uploadFile() {
     $('#upload-file').change(function () {
         var file = document.getElementById('upload-file').files[0];
@@ -70,6 +72,7 @@ function uploadFile() {
                     var chunk = e.target.result;
                     bytes += chunk.length;
 
+                    // concatenate each chunk to chunks list
                     chunks.push(chunk);
 
                     progress.html("Uploading: " + bytes + ' bytes...');
@@ -86,8 +89,10 @@ function uploadFile() {
                         console.log("content is ready!");
                         progress.html("Hang tight, displaying file...");
 
+                        // add content to editor
                         codeEditor.leftEditor.setValue(content);
 
+                        //adjust editor for usabilitu
                         codeEditor.leftEditor.clearSelection();
                         codeEditor.leftEditor.resize(true);
                         codeEditor.leftEditor.moveCursorTo(0, 0);
@@ -106,7 +111,8 @@ function uploadFile() {
     });
 }
 
-
+// function triggered upon user clicking the upload button
+// the content of the GCode in the editor is uploaded to the server
 function uploadDraw() {
     $('#draw-upload').click(function (e) {
         data = codeEditor.leftEditor.getValue();
@@ -131,6 +137,7 @@ function disableBodyScroll() {
     });
 }
 
+// returns the points associated with the line clicked on in the editor
 function getLineNumber() {
     $('body').click(function (e) {
         if ($(e.target).hasClass('ace_gutter-cell')) {
@@ -145,22 +152,7 @@ function getLineNumber() {
                 success: function (data) {
                     var two_points = JSON.parse(data).points;
                     if (two_points.length > 0) {
-                        // var material = new THREE.LineBasicMaterial({color: white, linewidth: 100});
-                        // var geometry = new THREE.Geometry();
-                        // var currentLine = new THREE.Line(geometry, material);
-                        //
-                        // var origin = new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]);
-                        // var destination = new THREE.Vector3(two_points[1][0], two_points[1][1], two_points[1][2]);
-                        // currentLine.geometry.vertices.push(origin);
-                        // currentLine.geometry.vertices.push(destination);
                         makeHighlightCube(new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]));
-                        // camera.position.x = two_points[0][0];
-                        // camera.position.y = two_points[0][1];
-                        // camera.position.z = two_points[0][2];
-                        // camera.rotation.set(1.4, 0, 0);
-                        // console.log(camera.position);
-                        // scene.add(currentLine);
-                        // renderer.render(scene, camera);
                     }
                 },
             });
@@ -168,6 +160,7 @@ function getLineNumber() {
     });
 }
 
+// Save the current contents of the G-Code editor by writing them to a file and downloading
 function download() {
     $('#download-file').click(function (e) {
         console.log("Downloading File")
@@ -187,6 +180,7 @@ function download() {
 }
 
 
+// Run the above functions when document is ready
 $(document).ready(function () {
     $('.hor-half').height(($(window).height() / 2) - ($('nav').height() / 2));
     $('#left_panel').height($('.hor-half').height() - $('#left_toolbar').height());
