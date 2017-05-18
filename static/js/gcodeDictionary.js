@@ -8,27 +8,27 @@
                 normal: 'Move (rapid linear)'
             },
             parameters: {
-                'e': {
+                'E': {
                     simple: ' extrude: ',
                     normal: ' extrude amount: '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' feed rate: '
                 },
-                's': {
+                'S': {
                     simple: ' flag: ',
                     normal: ' endstop flag: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' to Y axis pos: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' to X axis pos: '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' to Z axis pos: '
                 }
@@ -40,27 +40,27 @@
                 normal: 'Move (linear)'
             },
             parameters: {
-                'e': {
+                'E': {
                     simple: ' extrude: ',
                     normal: ' extrude amount: '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' feed rate: '
                 },
-                's': {
+                'S': {
                     simple: ' flag: ',
                     normal: ' endstop flag: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' to Y axis pos: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' to X axis pos: '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' to Z axis pos: '
                 }
@@ -72,27 +72,27 @@
                 normal: 'Move (controlled clockwise arc)'
             },
             parameters: {
-                'e': {
+                'E': {
                     simple: ' extrude: ',
                     normal: ' extrude amount: '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' feed rate: '
                 },
-                'i': {
+                'I': {
                     simple: ' X dist: ',
                     normal: ' distance to maintain from (X space): '
                 },
-                'j': {
+                'J': {
                     simple: ' Y dist: ',
                     normal: ' distance to maintain from (Y space): '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' to Y axis pos: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' to X axis pos: '
                 }
@@ -104,27 +104,27 @@
                 normal: 'Move (controlled counter-clockwise arc)'
             },
             parameters: {
-                'e': {
+                'E': {
                     simple: ' extrude: ',
                     normal: ' extrude amount: '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' feed rate: '
                 },
-                'i': {
+                'I': {
                     simple: ' X dist: ',
                     normal: ' distance to maintain from (X space): '
                 },
-                'j': {
+                'J': {
                     simple: ' Y dist: ',
                     normal: ' distance to maintain from (Y space): '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' to Y axis pos: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' to X axis pos: '
                 }
@@ -136,11 +136,11 @@
                 normal: 'Dwell (pause)'
             },
             parameters: {
-                'p': {
+                'P': {
                     simple: ' wait: ',
                     normal: ' wait time (in ms): '
                 },
-                's': {
+                'S': {
                     simple: ' wait: ',
                     normal: ' wait time (in s): '
                 }
@@ -152,19 +152,19 @@
                 normal: 'Move (direct stepper)'
             },
             parameters: {
-                'a': {
+                'A': {
                     simple: ' A: ',
                     normal: ' Stepper A pos/angle: '
                 },
-                'c': {
+                'C': {
                     simple: ' C: ',
                     normal: ' Stepper C pos/angle: '
                 },
-                'b': {
+                'B': {
                     simple: ' B: ',
                     normal: ' Stepper B pos/angle: '
                 },
-                'r': {
+                'R': {
                     simple: ' flag: ',
                     normal: ' relative move flag: '
                 }
@@ -176,31 +176,31 @@
                 normal: 'Tool Offset/Retract'
             },
             parameters: {
-                'e': {
+                'E': {
                     simple: ' Z: ',
                     normal: ' Z offset: '
                 },
-                'p': {
+                'P': {
                     simple: ' tool #: ',
                     normal: ' tool #: '
                 },
-                's': {
+                'S': {
                     simple: ' temp or length: ',
                     normal: ' active temperature(s) or retract length: '
                 },
-                'r': {
+                'R': {
                     simple: ' temp: ',
                     normal: ' standby temperature(s): '
                 },
-                'u': {
+                'U': {
                     simple: ' U, V and W: ',
                     normal: ' U, V and W axis offsets: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' Y offset: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' X offset: '
                 }
@@ -212,7 +212,7 @@
                 normal: 'Unretract'
             },
             parameters: {
-                's': {
+                'S': {
                     simple: ' length: ',
                     normal: ' retract length: '
                 }
@@ -252,15 +252,15 @@
                 normal: 'Move to Origin'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' flag ',
                     normal: ' flag to go back to the Y axis origin '
                 },
-                'x': {
+                'X': {
                     simple: ' flag ',
                     normal: ' flag to go back to the X axis origin '
                 },
-                'z': {
+                'Z': {
                     simple: ' flag ',
                     normal: ' flag to go back to the Z axis origin '
                 }
@@ -272,7 +272,7 @@
                 normal: 'Use Probe to level bed'
             },
             parameters: {
-                's': {
+                'S': {
                     simple: ' firmware-dependent behavior: ',
                     normal: ' firmware-dependent behavior: '
                 }
@@ -284,15 +284,15 @@
                 normal: 'Set Z probe head offset'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' Y offset: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' X offset: '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z offset: ',
                     normal: ' Z offset: '
                 }
@@ -304,7 +304,7 @@
                 normal: 'Set Z probe head offset (from toolhead position)'
             },
             parameters: {
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' Z offset: '
                 }
@@ -316,27 +316,27 @@
                 normal: 'Probes bed at current XY location'
             },
             parameters: {
-                'h': {
+                'H': {
                     simple: ' height: ',
                     normal: ' height correction: '
                 },
-                'p': {
+                'P': {
                     simple: ' probe point #: ',
                     normal: ' probe point #: '
                 },
-                's': {
+                'S': {
                     simple: ' set parameter: ',
                     normal: ' set parameter: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' Y coordinate: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' X coordinate: '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' Z coordinate: '
                 }
@@ -348,31 +348,31 @@
                 normal: 'Set or Report Current Probe status/Dock Z Probe sled'
             },
             parameters: {
-                'c': {
+                'C': {
                     simple: ' temp co: ',
                     normal: ' temperature coefficient: '
                 },
-                'p': {
+                'P': {
                     simple: ' trigger value: ',
                     normal: ' trigger value: '
                 },
-                's': {
+                'S': {
                     simple: ' temp: ',
                     normal: ' calibration temperature: '
                 },
-                't': {
+                'T': {
                     simple: ' type: ',
                     normal: ' Z probe type: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' probe Y offset: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' probe X offset: '
                 },
-                'z': {
+                'Z': {
                     simple: ' trigger Z height: ',
                     normal: ' trigger Z height: '
                 }
@@ -384,11 +384,11 @@
                 normal: 'Probe Z and calculate Z plane/Undock Z Probe sled'
             },
             parameters: {
-                'p': {
+                'P': {
                     simple: ' method: ',
                     normal: ' bed correction method: '
                 },
-                's': {
+                'S': {
                     simple: ' method: ',
                     normal: ' bed leveling method: '
                 }
@@ -400,23 +400,23 @@
                 normal: 'Measure/List/Adjust Distortion Matrix'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' Y correction: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' X correction: '
                 },
-                'r': {
+                'R': {
                     simple: ' reset R0: ',
                     normal: ' reset distortion matrix(R0): '
                 },
-                'l': {
+                'L': {
                     simple: ' list L0: ',
                     normal: ' list distortion matrix(L0): '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' Z correction: '
                 }
@@ -428,7 +428,7 @@
                 normal: 'save current position to slot'
             },
             parameters: {
-                's': {
+                'S': {
                     simple: ' memory slot #: ',
                     normal: ' memory slot #: '
                 }
@@ -440,27 +440,27 @@
                 normal: 'Apply/restore saved coordinates to the active extruder'
             },
             parameters: {
-                'e': {
+                'E': {
                     simple: ' E: ',
                     normal: ' E coordinate: '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' F set feedrate: '
                 },
-                's': {
+                'S': {
                     simple: ' memory slot #: ',
                     normal: ' memory slot #: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' Y coordinate: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' X coordinate: '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' Z coordinate: '
                 }
@@ -486,19 +486,19 @@
                 normal: 'Set Position'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' new Y: ',
                     normal: ' new Y axis pos: '
                 },
-                'x': {
+                'X': {
                     simple: ' new X: ',
                     normal: ' new X axis pos: '
                 },
-                'z': {
+                'Z': {
                     simple: ' new Z: ',
                     normal: ' new Z axis pos: '
                 },
-                'e': {
+                'E': {
                     simple: ' new extruder: ',
                     normal: ' new extruder pos: '
                 }
@@ -510,19 +510,19 @@
                 normal: 'Calibrate floor or rod radius'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' flag ',
                     normal: ' flag to set floor for Y axis '
                 },
-                'x': {
+                'X': {
                     simple: ' flag ',
                     normal: ' flag to set floor for X axis '
                 },
-                'r': {
+                'R': {
                     simple: ' radius: ',
                     normal: ' radius to add: '
                 },
-                'z': {
+                'Z': {
                     simple: ' flag ',
                     normal: ' flag to set floor for Z axis '
                 }
@@ -534,23 +534,23 @@
                 normal: 'Set digital potentiometer value'
             },
             parameters: {
-                'a': {
+                'A': {
                     simple: ' A: ',
                     normal: ' to A axis pos: '
                 },
-                'y': {
+                'Y': {
                     simple: ' Y: ',
                     normal: ' to Y axis pos: '
                 },
-                'b': {
+                'B': {
                     simple: ' B: ',
                     normal: ' to B axis pos: '
                 },
-                'z': {
+                'Z': {
                     simple: ' Z: ',
                     normal: ' to Z axis pos: '
                 },
-                'x': {
+                'X': {
                     simple: ' X: ',
                     normal: ' to X axis pos: '
                 }
@@ -583,19 +583,19 @@
                 normal: 'Home axes to minimum'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' flag ',
                     normal: ' flag to home Y axis to min '
                 },
-                'x': {
+                'X': {
                     simple: ' flag ',
                     normal: ' flag to home X axis to min '
                 },
-                'z': {
+                'Z': {
                     simple: ' flag ',
                     normal: ' flag to home Z axis to min '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' desired feedrate: '
                 }
@@ -607,19 +607,19 @@
                 normal: 'Home axes to maximum'
             },
             parameters: {
-                'y': {
+                'Y': {
                     simple: ' flag ',
                     normal: ' flag to home Y axis to max '
                 },
-                'x': {
+                'X': {
                     simple: ' flag ',
                     normal: ' flag to home X axis to max '
                 },
-                'z': {
+                'Z': {
                     simple: ' flag ',
                     normal: ' flag to home Z axis to max '
                 },
-                'f': {
+                'F': {
                     simple: ' feed: ',
                     normal: ' desired feedrate: '
                 }
@@ -630,10 +630,10 @@
                 normal: 'Stop'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' wait time (in ms): '
                 },
-                's': {
+                'S': {
                     normal: ' wait time (in s): '
                 }
             }
@@ -667,16 +667,16 @@
                 normal: 'Disable all stepper motors'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis: '
                 },
-                'e': {
+                'E': {
                     normal: ' extruder drive(s): '
                 }
             }
@@ -686,10 +686,10 @@
                 normal: 'List SD card'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' directory to list: '
                 },
-                's': {
+                'S': {
                     normal: ' output style: '
                 }
             }
@@ -699,7 +699,7 @@
                 normal: 'Initialize SD card'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' SD card #: '
                 }
             }
@@ -709,7 +709,7 @@
                 normal: 'Release SD card'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' SD card #: '
                 }
             }
@@ -737,7 +737,7 @@
                 normal: 'Set SD position'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' file pos (in bytes): '
                 }
             }
@@ -807,7 +807,7 @@
                 normal: 'Simulation mode'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' toggle mode ( S1 enters, S0 leaves) '
                 }
             }
@@ -835,10 +835,10 @@
                 normal: 'Switch I/O pin'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' pin #: '
                 },
-                's': {
+                'S': {
                     normal: ' pin value: '
                 }
             }
@@ -848,16 +848,16 @@
                 normal: 'Stand by on material exhausted/Pin report and debug'
             },
             parameters: {
-                'i': {
+                'I': {
                     normal: ' flag to ignore pin protection: '
                 },
-                'p': {
+                'P': {
                     normal: ' pin to read or watch: '
                 },
-                'e': {
+                'E': {
                     normal: ' toggle background endstop monitoring: '
                 },
-                'w': {
+                'W': {
                     normal: ' watch pins: '
                 }
             }
@@ -867,25 +867,25 @@
                 normal: 'Measure Z-Probe repeatability'
             },
             parameters: {
-                'e': {
+                'E': {
                     normal: ' engage '
                 },
-                'l': {
+                'L': {
                     normal: ' legs of travel: '
                 },
-                'p': {
+                'P': {
                     normal: ' # of points: '
                 },
-                's': {
+                'S': {
                     normal: ' schizoid '
                 },
-                'v': {
+                'V': {
                     normal: ' verbosity: '
                 },
-                'y': {
+                'Y': {
                     normal: ' pos on the Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' pos on the X axis: '
                 }
             }
@@ -901,7 +901,7 @@
                 normal: 'Play a tone or song'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' song ID: '
                 }
             }
@@ -911,7 +911,7 @@
                 normal: 'Set build percentage'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' percentage: '
                 }
             }
@@ -945,7 +945,7 @@
                 normal: 'Stop idle hold'
             },
             parameters: {
-                'i': {
+                'I': {
                     normal: ' reset flags: '
                 }
             }
@@ -955,7 +955,7 @@
                 normal: 'Set inactivity shutdown timer'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' seconds: '
                 }
             }
@@ -965,16 +965,16 @@
                 normal: 'Set axis_steps_per_unit'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y drive: '
                 },
-                'x': {
+                'X': {
                     normal: ' X drive: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z drive: '
                 },
-                'e': {
+                'E': {
                     normal: ' extruder drive(s): '
                 }
             }
@@ -990,7 +990,7 @@
                 normal: 'Call Macro/Subprogram/Get axis_hysteresis_mm'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' line #: '
                 }
             }
@@ -1024,7 +1024,7 @@
                 normal: 'Set Extruder Temperature'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' target temperature: '
                 }
             }
@@ -1034,10 +1034,10 @@
                 normal: 'Get Extruder Temperature'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' response type: '
                 },
-                'r': {
+                'R': {
                     normal: ' response sequence #: '
                 }
             }
@@ -1047,31 +1047,31 @@
                 normal: 'Fan On'
             },
             parameters: {
-                'b': {
+                'B': {
                     normal: ' blip time: '
                 },
-                'f': {
+                'F': {
                     normal: ' frequency (in Hz): '
                 },
-                'i': {
+                'I': {
                     normal: ' disable fan: '
                 },
-                'h': {
+                'H': {
                     normal: ' select heaters: '
                 },
-                'l': {
+                'L': {
                     normal: ' min fan speed: '
                 },
-                'p': {
+                'P': {
                     normal: ' fan #: '
                 },
-                's': {
+                'S': {
                     normal: ' fan speed: '
                 },
-                'r': {
+                'R': {
                     normal: ' restore speed: '
                 },
-                't': {
+                'T': {
                     normal: ' set thermostatic mode: '
                 }
             }
@@ -1093,10 +1093,10 @@
                 normal: 'Set Extruder Temperature and Wait'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' min target temp: '
                 },
-                'r': {
+                'R': {
                     normal: ' max/accurate target temp: '
                 }
             }
@@ -1112,10 +1112,10 @@
                 normal: 'Set Debug Level'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' debug module: '
                 },
-                's': {
+                'S': {
                     normal: ' debug on/off: '
                 }
             }
@@ -1131,7 +1131,7 @@
                 normal: 'Set Extruder PWM'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' value to set: '
                 }
             }
@@ -1147,7 +1147,7 @@
                 normal: 'Get Firmware Version and Capabilities'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' electronics type: '
                 }
             }
@@ -1157,13 +1157,13 @@
                 normal: 'Wait'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                'c': {
+                'C': {
                     normal: ' chamber #: '
                 },
-                'p': {
+                'P': {
                     normal: ' tool #: '
                 }
             }
@@ -1221,10 +1221,10 @@
                 normal: 'Open Valve'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' wait (in ms): '
                 },
-                't': {
+                'T': {
                     normal: ' toolhead: '
                 }
             }
@@ -1234,10 +1234,10 @@
                 normal: 'Close Valve'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' wait (in ms): '
                 },
-                't': {
+                'T': {
                     normal: ' toolhead: '
                 }
             }
@@ -1247,7 +1247,7 @@
                 normal: 'Extruder Pressure PWM'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' pressure: '
                 }
             }
@@ -1257,7 +1257,7 @@
                 normal: 'Extruder pressure off'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' wait (in ms): '
                 }
             }
@@ -1267,10 +1267,10 @@
                 normal: 'Set PID P value'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' proportional (Kp): '
                 }
             }
@@ -1280,10 +1280,10 @@
                 normal: 'Set PID I value'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' integral (Ki): '
                 }
             }
@@ -1293,25 +1293,25 @@
                 normal: 'Set PID D value'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: ' A axis offset: '
                 },
-                'b': {
+                'B': {
                     normal: ' B axis offset: '
                 },
-                'p': {
+                'P': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' derivative (Kd): '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y axis offset: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis offset: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis offset: '
                 }
             }
@@ -1321,13 +1321,13 @@
                 normal: 'Set PID I limit value'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' heater #/wait time: '
                 },
-                's': {
+                'S': {
                     normal: ' integral limit (Ki): '
                 },
-                't': {
+                'T': {
                     normal: ' extruder to wait for: '
                 }
             }
@@ -1337,10 +1337,10 @@
                 normal: 'Write PID values to EEPROM'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' time limit: '
                 },
-                't': {
+                'T': {
                     normal: ' platform to wait for: '
                 }
             }
@@ -1350,10 +1350,10 @@
                 normal: 'Set PID sample interval'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' heat sample time (in s): '
                 },
-                't': {
+                'T': {
                     normal: ' toolhead change: '
                 }
             }
@@ -1369,10 +1369,10 @@
                 normal: 'Set Bed Temperature (Fast)'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' target temperature: '
                 }
             }
@@ -1382,10 +1382,10 @@
                 normal: 'Set Chamber Temperature (Fast)'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' target temperature: '
                 }
             }
@@ -1395,7 +1395,7 @@
                 normal: 'Holding Pressure'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' holding pressure of the bed: '
                 }
             }
@@ -1405,10 +1405,10 @@
                 normal: 'Max heater temperature'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' max temp: '
                 }
             }
@@ -1424,7 +1424,7 @@
                 normal: 'Set Chamber Humidity'
             },
             parameters: {
-                'r': {
+                'R': {
                     normal: ' relative humidity (in percent): '
                 }
             }
@@ -1434,10 +1434,10 @@
                 normal: 'Set temperature units'
             },
             parameters: {
-                'c': {
+                'C': {
                     normal: ' Flag to treat temperature as Celsius '
                 },
-                'k': {
+                'K': {
                     normal: ' Flag to treat temperature as Kelvin '
                 }
             }
@@ -1447,13 +1447,13 @@
                 normal: 'Set display color'
             },
             parameters: {
-                'r': {
+                'R': {
                     normal: ' red: '
                 },
-                'b': {
+                'B': {
                     normal: ' blue: '
                 },
-                'u': {
+                'U': {
                     normal: ' green: '
                 }
             }
@@ -1463,7 +1463,7 @@
                 normal: 'Automatically send temperatures'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' enable(1)/disable(0): '
                 }
             }
@@ -1473,7 +1473,7 @@
                 normal: 'Number of mixed materials'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' # of materials: '
                 }
             }
@@ -1483,10 +1483,10 @@
                 normal: 'Set weight of mixed material'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' weight: '
                 },
-                's': {
+                'S': {
                     normal: ' extruder #: '
                 }
             }
@@ -1496,10 +1496,10 @@
                 normal: 'Store weights'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' store to eeprom (P0 = no, P1 = yes): '
                 },
-                's': {
+                'S': {
                     normal: ' virtual extruder#: '
                 }
             }
@@ -1509,22 +1509,22 @@
                 normal: 'Set multiple mix weights'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: ' mix factor for extruder stepper 1: '
                 },
-                'c': {
+                'C': {
                     normal: ' mix factor for extruder stepper 3: '
                 },
-                'b': {
+                'B': {
                     normal: ' mix factor for extruder stepper 2: '
                 },
-                'd': {
+                'D': {
                     normal: ' mix factor for extruder stepper 4: '
                 },
-                'i': {
+                'I': {
                     normal: ' mix factor for extruder stepper 6: '
                 },
-                'h': {
+                'H': {
                     normal: ' mix factor for extruder stepper 5: '
                 }
             }
@@ -1534,10 +1534,10 @@
                 normal: 'Wait for bed temp to reach target temp'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' min target temperature: '
                 },
-                'r': {
+                'R': {
                     normal: ' accurate target temperature: '
                 }
             }
@@ -1547,10 +1547,10 @@
                 normal: 'Wait for chamber temp to reach target temp'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' min target temperature: '
                 },
-                'r': {
+                'R': {
                     normal: ' accurate target temperature: '
                 }
             }
@@ -1560,7 +1560,7 @@
                 normal: 'Set filament diameter'
             },
             parameters: {
-                'd': {
+                'D': {
                     normal: ' filament diameter (in mm): '
                 }
             }
@@ -1570,16 +1570,16 @@
                 normal: 'Set max printing acceleration'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' acceleration for Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' acceleration for X axis: '
                 },
-                'z': {
+                'Z': {
                     normal: ' acceleration for Z axis: '
                 },
-                'e': {
+                'E': {
                     normal: ' acceleration for extruder drives: '
                 }
             }
@@ -1589,10 +1589,10 @@
                 normal: 'Set max travel acceleration'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' travel moves (in units/s^2): '
                 },
-                'x': {
+                'X': {
                     normal: ' travel moves (in units/s^2): '
                 }
             }
@@ -1602,16 +1602,16 @@
                 normal: 'Set maximum feedrate'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' max for Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' max for X axis: '
                 },
-                'z': {
+                'Z': {
                     normal: ' max for Z axis: '
                 },
-                'e': {
+                'E': {
                     normal: ' max for extruder drives: '
                 }
             }
@@ -1621,10 +1621,10 @@
                 normal: 'Set default acceleration'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' printing moves: '
                 },
-                't': {
+                'T': {
                     normal: '  travel moves: '
                 }
             }
@@ -1634,22 +1634,22 @@
                 normal: 'Advanced settings'
             },
             parameters: {
-                'b': {
+                'B': {
                     normal: ' min segment time: '
                 },
-                'e': {
+                'E': {
                     normal: ' max E jerk: '
                 },
-                's': {
+                'S': {
                     normal: ' min travel speed/min planner speed: '
                 },
-                't': {
+                'T': {
                     normal: ' travel only '
                 },
-                'x': {
+                'X': {
                     normal: ' max xy jerk/xy junction deviation: '
                 },
-                'z': {
+                'Z': {
                     normal: ' max Z jerk/z junction deviation: '
                 }
             }
@@ -1659,22 +1659,22 @@
                 normal: 'Offset axes/Set eeprom value'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' pos: '
                 },
-                's': {
+                'S': {
                     normal: ' int (long): '
                 },
-                't': {
+                'T': {
                     normal: ' type: '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y axis offset: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis offset/float: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis offset: '
                 }
             }
@@ -1684,19 +1684,19 @@
                 normal: 'Calibrate z axis/Set retract length'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' positive length to retract (in mm): '
                 },
-                'r': {
+                'R': {
                     normal: ' positive or negative additional length to un-retract (in mm): '
                 },
-                't': {
+                'T': {
                     normal: ' feedrate for un-retraction if different from retraction (in mm/min): '
                 },
-                'z': {
+                'Z': {
                     normal: ' additional zlift/hop: '
                 },
-                'f': {
+                'F': {
                     normal: ' retraction feedrate (in mm/min): '
                 }
             }
@@ -1706,19 +1706,19 @@
                 normal: 'Set axis max travel/Set unretract length'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis limit: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis limit: '
                 },
-                's': {
+                'S': {
                     normal: ' toggle set the axis min/positive length surplus to the M207: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis limit: '
                 },
-                'f': {
+                'F': {
                     normal: ' feedrate (in mm/sec): '
                 }
             }
@@ -1728,7 +1728,7 @@
                 normal: 'Enable automatic retract'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' 1=true or 0=false: '
                 }
             }
@@ -1738,10 +1738,10 @@
                 normal: 'Set homing feedrates'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' in mm per minute: '
                 },
-                'x': {
+                'X': {
                     normal: ' in mm per minute: '
                 }
             }
@@ -1751,16 +1751,16 @@
                 normal: 'Disable/Enable software endstops'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' 1=max endstop or 0=min endstop: '
                 },
-                'x': {
+                'X': {
                     normal: ' 1=max endstop or 0=min endstop: '
                 },
-                's': {
+                'S': {
                     normal: ' 1=enable or 0=disable: '
                 },
-                'z': {
+                'Z': {
                     normal: ' 1=max endstop or 0=min endstop: '
                 }
             }
@@ -1770,7 +1770,7 @@
                 normal: 'Set Bed Level Sensor Offset'
             },
             parameters: {
-                'z': {
+                'Z': {
                     normal: ' Z home: '
                 }
             }
@@ -1780,13 +1780,13 @@
                 normal: 'Set Hotend Offset'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' offset on Y: '
                 },
-                'x': {
+                'X': {
                     normal: ' offset on X: '
                 },
-                't': {
+                'T': {
                     normal: ' extruder #: '
                 }
             }
@@ -1796,7 +1796,7 @@
                 normal: 'Set speed factor override percentage/Turn off AUX V1.0.5'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' percentage: '
                 }
             }
@@ -1806,10 +1806,10 @@
                 normal: 'Set extrude factor override percentage/Turn on AUX V1.0.5'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' percentage: '
                 },
-                'd': {
+                'D': {
                     normal: ' drive #: '
                 }
             }
@@ -1843,10 +1843,10 @@
                 normal: 'Gcode Initiated Pause/Wait for pin state'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' pin #: '
                 },
-                's': {
+                'S': {
                     normal: ' pin state: '
                 }
             }
@@ -1856,10 +1856,10 @@
                 normal: 'Enable Automatic Reverse and Prime'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' steps: '
                 },
-                's': {
+                'S': {
                     normal: ' steps: '
                 }
             }
@@ -1875,10 +1875,10 @@
                 normal: 'Enable Automatic Reverse and Prime'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' extruder screw rotation: '
                 },
-                's': {
+                'S': {
                     normal: ' extruder screw rotation: '
                 }
             }
@@ -1888,7 +1888,7 @@
                 normal: ' Disable/Enable Wait for Temperature Change'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' 1=disable or 0=enable: '
                 }
             }
@@ -1898,19 +1898,19 @@
                 normal: 'Set OPS parameter'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' retract: '
                 },
-                'x': {
+                'X': {
                     normal: ' min distance: '
                 },
-                's': {
+                'S': {
                     normal: ' OPS_MODE: '
                 },
-                'z': {
+                'Z': {
                     normal: ' backslash: '
                 },
-                'f': {
+                'F': {
                     normal: ' ReatrctMove: '
                 }
             }
@@ -1950,7 +1950,7 @@
                 normal: 'Set LCD contrast'
             },
             parameters: {
-                'c': {
+                'C': {
                     normal: ' contrast value: '
                 }
             }
@@ -1960,7 +1960,7 @@
                 normal: 'Measure Z steps from homing stop'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' 0 =Reset, 1=Print, 2=Store to Z length: '
                 }
             }
@@ -1970,13 +1970,13 @@
                 normal: 'i2c Send Data'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: '  address: '
                 },
-                's': {
+                'S': {
                     normal: '  send and reset buffer '
                 },
-                'b': {
+                'B': {
                     normal: '  add to buffer: '
                 }
             }
@@ -1986,10 +1986,10 @@
                 normal: 'i2c Request Data'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: '  address: '
                 },
-                'b': {
+                'B': {
                     normal: '  bytes: '
                 }
             }
@@ -1999,13 +1999,13 @@
                 normal: 'Set servo position'
             },
             parameters: {
-                'i': {
+                'I': {
                     normal: ' 1=invert polarity: '
                 },
-                'p': {
+                'P': {
                     normal: ' servo index: '
                 },
-                's': {
+                'S': {
                     normal: ' angle or microseconds: '
                 }
             }
@@ -2015,7 +2015,7 @@
                 normal: 'Baby stepping'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' amount (in mm): '
                 }
             }
@@ -2025,10 +2025,10 @@
                 normal: 'Play beep sound'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' duration (in ms) '
                 },
-                's': {
+                'S': {
                     normal: ' frequency (in Hz) '
                 }
             }
@@ -2038,22 +2038,22 @@
                 normal: 'Set PID parameters'
             },
             parameters: {
-                'e': {
+                'E': {
                     normal: ' heater #: '
                 },
-                'd': {
+                'D': {
                     normal: ' derivative (Kd): '
                 },
-                'i': {
+                'I': {
                     normal: ' integral (Ki): '
                 },
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                'p': {
+                'P': {
                     normal: ' proportional (Kp): '
                 },
-                's': {
+                'S': {
                     normal: ' heater #: '
                 }
             }
@@ -2063,10 +2063,10 @@
                 normal: 'Allow cold extrudes'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' allow state: '
                 },
-                's': {
+                'S': {
                     normal: ' min temp: '
                 }
             }
@@ -2076,10 +2076,10 @@
                 normal: 'Run PID tuning'
             },
             parameters: {
-                'c': {
+                'C': {
                     normal: ' cycles: '
                 },
-                's': {
+                'S': {
                     normal: ' temperature: '
                 }
             }
@@ -2089,13 +2089,13 @@
                 normal: 'Set PID parameters-Bed'
             },
             parameters: {
-                'i': {
+                'I': {
                     normal: ' integral (Ki): '
                 },
-                'p': {
+                'P': {
                     normal: ' proportional (Kp): '
                 },
-                'd': {
+                'D': {
                     normal: ' derivative (Kd): '
                 }
             }
@@ -2105,28 +2105,28 @@
                 normal: 'Set thermistor and ADC parameters'
             },
             parameters: {
-                'c': {
+                'C': {
                     normal: ' Steinhart-Hart C coefficient: '
                 },
-                'b': {
+                'B': {
                     normal: ' beta value: '
                 },
-                'h': {
+                'H': {
                     normal: ' ADC high offset: '
                 },
-                'l': {
+                'L': {
                     normal: ' ADC low offset: '
                 },
-                'p': {
+                'P': {
                     normal: ' heater #: '
                 },
-                'r': {
+                'R': {
                     normal: ' series resistor value: '
                 },
-                't': {
+                'T': {
                     normal: ' thermistor resistance at 25C: '
                 },
-                'x': {
+                'X': {
                     normal: ' heater ADC channel: '
                 }
             }
@@ -2142,22 +2142,22 @@
                 normal: 'Set or report heating process parameters'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: ' gAin: '
                 },
-                'c': {
+                'C': {
                     normal: ' dominant time (in s): '
                 },
-                'b': {
+                'B': {
                     normal: ' Bang-bang control: '
                 },
-                'd': {
+                'D': {
                     normal: ' dead time (in s): '
                 },
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' max PWM: '
                 }
             }
@@ -2167,7 +2167,7 @@
                 normal: 'Activate autolevel'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' >0 activate and store persistently in EEPROM: '
                 }
             }
@@ -2177,7 +2177,7 @@
                 normal: 'Deactivate autolevel'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' >0 deactivate and store persistently in EEPROM: '
                 }
             }
@@ -2187,7 +2187,7 @@
                 normal: 'Reset autolevel matrix'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' >0 also reset the matrix values saved EEPROM: '
                 }
             }
@@ -2197,10 +2197,10 @@
                 normal: 'Distortion correction on/off'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' 1=store correction state persistently in EEPROM: '
                 },
-                's': {
+                'S': {
                     normal: ' 0=disable,1=enable: '
                 }
             }
@@ -2210,10 +2210,10 @@
                 normal: 'Control the servos'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' servoId: '
                 },
-                's': {
+                'S': {
                     normal: ' pulseInUS: '
                 }
             }
@@ -2223,25 +2223,25 @@
                 normal: 'Set microstepping mode'
             },
             parameters: {
-                'b': {
+                'B': {
                     normal: ' extruder 1: '
                 },
-                'e': {
+                'E': {
                     normal: ' extruder 0: '
                 },
-                'i': {
+                'I': {
                     normal: ' enable (nn=1) or disable (nn=0) interpolation: '
                 },
-                's': {
+                'S': {
                     normal: ' all drivers: '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis: '
                 }
             }
@@ -2257,7 +2257,7 @@
                 normal: 'Turn case lights on/off'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' 1=enable,0=disable: '
                 }
             }
@@ -2297,13 +2297,13 @@
                 normal: 'SCARA scaling factor'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y scaling: '
                 },
-                'x': {
+                'X': {
                     normal: ' X scaling: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z scaling: '
                 }
             }
@@ -2319,7 +2319,7 @@
                 normal: 'Morgan manual bed level-clear map'
             },
             parameters: {
-                'x': {
+                'X': {
                     normal: ' divisions: '
                 }
             }
@@ -2347,7 +2347,7 @@
                 normal: 'Save calibration grid'
             },
             parameters: {
-                'z': {
+                'Z': {
                     normal: ' save M206 Z homing offset into the grid file '
                 }
             }
@@ -2363,7 +2363,7 @@
                 normal: 'Set bed compensation taper'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' height (in mm): '
                 }
             }
@@ -2403,7 +2403,7 @@
                 normal: 'Filament width and nozzle diameter'
             },
             parameters: {
-                'd': {
+                'D': {
                     normal: ' nozzle diameter (in mm): '
                 }
             }
@@ -2431,10 +2431,10 @@
                 normal: 'Report JSON-style response'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' response type: '
                 },
-                'r': {
+                'R': {
                     normal: ' response sequence #: '
                 }
             }
@@ -2444,16 +2444,16 @@
                 normal: 'Set RGB Colors as PWM/Enable/Disable Mesh Leveling'
             },
             parameters: {
-                'r': {
+                'R': {
                     normal: ' red PWM: '
                 },
-                's': {
+                'S': {
                     normal: ' 1=enable,0=disable: '
                 },
-                'b': {
+                'B': {
                     normal: ' blue PWM: '
                 },
-                'e': {
+                'E': {
                     normal: ' green PWM: '
                 }
             }
@@ -2463,13 +2463,13 @@
                 normal: 'Set a Mesh Bed Leveling Z coordinate'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' index: '
                 },
-                'x': {
+                'X': {
                     normal: ' index: '
                 },
-                'z': {
+                'Z': {
                     normal: ' offset (in mm): '
                 }
             }
@@ -2503,10 +2503,10 @@
                 normal: ' Define temperature range for thermistor controlled fan'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' max temp: '
                 },
-                'x': {
+                'X': {
                     normal: ' min temp: '
                 }
             }
@@ -2522,7 +2522,7 @@
                 normal: 'Read parameters from EEPROM'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' enable auto-save: '
                 }
             }
@@ -2544,10 +2544,10 @@
                 normal: 'Enable printing mode'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' 1=started, 0=ended: '
                 },
-                'l': {
+                'L': {
                     normal: ' # of layers: '
                 }
             }
@@ -2563,10 +2563,10 @@
                 normal: 'Set print progress'
             },
             parameters: {
-                'x': {
+                'X': {
                     normal: ' print progress: '
                 },
-                'l': {
+                'L': {
                     normal: ' printed layer: '
                 }
             }
@@ -2576,10 +2576,10 @@
                 normal: 'Enable/Disable Stop SD Print on Endstop Hit/Set MAC address'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' MAC address: '
                 },
-                's': {
+                'S': {
                     normal: ' 1=enable, 0=disable: '
                 }
             }
@@ -2589,7 +2589,7 @@
                 normal: 'Set Name'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' machine name: '
                 }
             }
@@ -2599,7 +2599,7 @@
                 normal: 'Set Password'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' password: '
                 }
             }
@@ -2609,13 +2609,13 @@
                 normal: 'Set IP address, enable/disable network interface'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' IP address: '
                 },
-                's': {
+                'S': {
                     normal: ' disable/enable networking: '
                 },
-                'r': {
+                'R': {
                     normal: ' HTTP port: '
                 }
             }
@@ -2625,7 +2625,7 @@
                 normal: 'Set Netmask'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' net mask: '
                 }
             }
@@ -2635,7 +2635,7 @@
                 normal: 'Set Gateway'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' gateway: '
                 }
             }
@@ -2645,7 +2645,7 @@
                 normal: 'Set compatibility'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' emulation type: '
                 }
             }
@@ -2655,16 +2655,16 @@
                 normal: 'Axis compensation'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' deviation in Y: '
                 },
-                'x': {
+                'X': {
                     normal: ' deviation in X: '
                 },
-                's': {
+                'S': {
                     normal: ' height of distances: '
                 },
-                'z': {
+                'Z': {
                     normal: ' deviation in Z: '
                 }
             }
@@ -2674,13 +2674,13 @@
                 normal: 'Set Z probe point or define probing grid'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y coordinate: '
                 },
-                'p': {
+                'P': {
                     normal: ' probe point #: '
                 },
-                'x': {
+                'X': {
                     normal: ' X coordinate: '
                 }
             }
@@ -2690,34 +2690,34 @@
                 normal: 'Set Z probe type'
             },
             parameters: {
-                'f': {
+                'F': {
                     normal: ' feed rate: '
                 },
-                'i': {
+                'I': {
                     normal: ' invert (I1)/do not invert (I0) reading: '
                 },
-                'h': {
+                'H': {
                     normal: ' dive height (in mm): '
                 },
-                'p': {
+                'P': {
                     normal: ' Z probe type: '
                 },
-                's': {
+                'S': {
                     normal: ' extra for experimentation: '
                 },
-                'r': {
+                'R': {
                     normal: ' recovery time: '
                 },
-                't': {
+                'T': {
                     normal: ' travel speed: '
                 },
-                'y': {
+                'Y': {
                     normal: ' If nonzero, use probe for homing Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' If nonzero, use probe for homing X axis: '
                 },
-                'z': {
+                'Z': {
                     normal: ' If nonzero, use probe for homing Z axis: '
                 }
             }
@@ -2745,7 +2745,7 @@
                 normal: 'Reset temperature fault'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' heater #: '
                 }
             }
@@ -2755,19 +2755,19 @@
                 normal: 'Define or remove a tool'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' heater(s): '
                 },
-                'x': {
+                'X': {
                     normal: ' axis: '
                 },
-                'd': {
+                'D': {
                     normal: ' extruder drive(s): '
                 },
-                'p': {
+                'P': {
                     normal: ' tool #: '
                 },
-                'f': {
+                'F': {
                     normal: ' fan(s): '
                 }
             }
@@ -2777,7 +2777,7 @@
                 normal: 'Limit axes'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' axis boundaries: '
                 }
             }
@@ -2787,13 +2787,13 @@
                 normal: 'Set Z probe offset'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y offset: '
                 },
-                'x': {
+                'X': {
                     normal: ' X offset: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z offset: '
                 }
             }
@@ -2803,16 +2803,16 @@
                 normal: 'Set allowable instantaneous speed change'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis : '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis (mm/min) : '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis : '
                 },
-                'e': {
+                'E': {
                     normal: ' extruder drives : '
                 }
             }
@@ -2822,10 +2822,10 @@
                 normal: 'Set tool mix ratios'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' tool #: '
                 },
-                'e': {
+                'E': {
                     normal: ' mix ratios: '
                 }
             }
@@ -2835,10 +2835,10 @@
                 normal: 'Turn off/on tool mix ratios'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' tool #: '
                 },
-                's': {
+                'S': {
                     normal: ' 0=off,non-zero=on: '
                 }
             }
@@ -2848,16 +2848,16 @@
                 normal: 'Set axis direction and enable values'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' motor driver #: '
                 },
-                's': {
+                'S': {
                     normal: ' direction- 0=backwards,1=forwards: '
                 },
-                'r': {
+                'R': {
                     normal: ' driver enable polarity- 0=active low,1=active high: '
                 },
-                't': {
+                'T': {
                     normal: ' min driver step pulse width & interval (in micro s): '
                 }
             }
@@ -2867,16 +2867,16 @@
                 normal: 'Configure heater fault detection'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' heater #: '
                 },
-                's': {
+                'S': {
                     normal: ' heater timeout (in s): '
                 },
-                't': {
+                'T': {
                     normal: ' temp: '
                 },
-                'p': {
+                'P': {
                     normal: ' time (in s): '
                 }
             }
@@ -2886,13 +2886,13 @@
                 normal: 'Set output on extrude'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' logical pin #: '
                 },
-                's': {
+                'S': {
                     normal: ' output value: '
                 },
-                'f': {
+                'F': {
                     normal: ' output PWM frequency: '
                 }
             }
@@ -2902,10 +2902,10 @@
                 normal: 'Set or report extruder pressure advance'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' pressure advance amount (in s): '
                 },
-                'd': {
+                'D': {
                     normal: ' extruder #: '
                 }
             }
@@ -2915,7 +2915,7 @@
                 normal: 'Report heater PWM'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' heater #: '
                 }
             }
@@ -2925,19 +2925,19 @@
                 normal: 'Set endstop configuration'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis: '
                 },
-                's': {
+                'S': {
                     normal: ' logic level: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis: '
                 },
-                'e': {
+                'E': {
                     normal: ' extruder endstops (low/high): '
                 }
             }
@@ -2947,13 +2947,13 @@
                 normal: 'Set serial comms parameters'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' serial channel #: '
                 },
-                's': {
+                'S': {
                     normal: ' checksums: '
                 },
-                'b': {
+                'B': {
                     normal: ' baud rate: '
                 }
             }
@@ -2963,19 +2963,19 @@
                 normal: 'Wait until endstop is triggered'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis: '
                 },
-                's': {
+                'S': {
                     normal: ' endstop level: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis: '
                 },
-                'e': {
+                'E': {
                     normal: ' extruder drive: '
                 }
             }
@@ -2985,10 +2985,10 @@
                 normal: 'Fire inkjet bits'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' inkjet head #: '
                 },
-                's': {
+                'S': {
                     normal: ' bit pattern: '
                 }
             }
@@ -2998,13 +2998,13 @@
                 normal: 'Scale Cartesian axes'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis: '
                 }
             }
@@ -3014,10 +3014,10 @@
                 normal: 'Select Roland'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' initial text: '
                 },
-                'r': {
+                'R': {
                     normal: ' toggle activation: '
                 }
             }
@@ -3027,28 +3027,28 @@
                 normal: 'Configure external trigger'
             },
             parameters: {
-                'c': {
+                'C': {
                     normal: ' condition: '
                 },
-                'e': {
+                'E': {
                     normal: ' endstop input(s) to monitor: '
                 },
-                'p': {
+                'P': {
                     normal: ' reserved: '
                 },
-                's': {
+                'S': {
                     normal: ' rising/falling edge: '
                 },
-                't': {
+                'T': {
                     normal: ' logical trigger #: '
                 },
-                'y': {
+                'Y': {
                     normal: ' endstop input(s) to monitor: '
                 },
-                'x': {
+                'X': {
                     normal: ' endstop input(s) to monitor: '
                 },
-                'z': {
+                'Z': {
                     normal: ' endstop input(s) to monitor: '
                 }
             }
@@ -3058,7 +3058,7 @@
                 normal: 'Check external trigger'
             },
             parameters: {
-                't': {
+                'T': {
                     normal: ' trigger #: '
                 }
             }
@@ -3068,13 +3068,13 @@
                 normal: 'Wait for pin'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' pin #: '
                 },
-                's': {
+                'S': {
                     normal: ' state: '
                 },
-                'r': {
+                'R': {
                     normal: ' analog value: '
                 }
             }
@@ -3084,28 +3084,28 @@
                 normal: 'Set drive mapping'
             },
             parameters: {
-                'e': {
+                'E': {
                     normal: ' E motor(s): '
                 },
-                's': {
+                'S': {
                     normal: ' special functions: '
                 },
-                'u': {
+                'U': {
                     normal: ' U axes: '
                 },
-                'w': {
+                'W': {
                     normal: ' W axes: '
                 },
-                'v': {
+                'V': {
                     normal: ' V axes: '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y motor(s): '
                 },
-                'x': {
+                'X': {
                     normal: ' driver number(s) for X motor(s): '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z motor(s): '
                 }
             }
@@ -3115,13 +3115,13 @@
                 normal: 'Probe Tool'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y offset: '
                 },
-                'x': {
+                'X': {
                     normal: ' X offset: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z offset: '
                 }
             }
@@ -3131,16 +3131,16 @@
                 normal: 'Configure network protocols'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' protocol: '
                 },
-                's': {
+                'S': {
                     normal: ' 0=disable,1=enable: '
                 },
-                'r': {
+                'R': {
                     normal: ' TCP port #: '
                 },
-                't': {
+                'T': {
                     normal: " 0=don't use,1=use TLS: "}
                 }
             },
@@ -3149,19 +3149,19 @@
                 normal: 'Store WiFi host network in list, or list stored networks'
             },
             parameters: {
-                'i': {
+                'I': {
                     normal: ' IP address: '
                 },
-                'p': {
+                'P': {
                     normal: ' network password: '
                 },
-                'k': {
+                'K': {
                     normal: ' Netmask: '
                 },
-                'j': {
+                'J': {
                     normal: ' Gateway IP address: '
                 },
-                's': {
+                'S': {
                     normal: ' network SSID: '
                 }
             }
@@ -3171,7 +3171,7 @@
                 normal: 'Forget WiFi host network'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' SSID to remove: '
                 }
             }
@@ -3181,13 +3181,13 @@
                 normal: 'Configure access point parameters'
             },
             parameters: {
-                'i': {
+                'I': {
                     normal: ' IP address: '
                 },
-                'p': {
+                'P': {
                     normal: ' WiFi password: '
                 },
-                's': {
+                'S': {
                     normal: ' SSID: '
                 }
             }
@@ -3203,19 +3203,19 @@
                 normal: 'Set line cross section/Filament change pause'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y pos: '
                 },
-                'x': {
+                'X': {
                     normal: ' X pos: '
                 },
-                'z': {
+                'Z': {
                     normal: ' relative lift: '
                 },
-                'e': {
+                'E': {
                     normal: ' initial retract: '
                 },
-                'l': {
+                'L': {
                     normal: ' later retract distance for removal: '
                 }
             }
@@ -3225,13 +3225,13 @@
                 normal: 'Set dual x-carriage movement mode'
             },
             parameters: {
-                'x': {
+                'X': {
                     normal: ' duplication x-offset: '
                 },
-                's': {
+                'S': {
                     normal: ' mode: '
                 },
-                'r': {
+                'R': {
                     normal: ' duplication temp offset: '
                 }
             }
@@ -3241,28 +3241,28 @@
                 normal: ' Set delta configuration'
             },
             parameters: {
-                'b': {
+                'B': {
                     normal: ' safe probing radius: '
                 },
-                'h': {
+                'H': {
                     normal: ' delta height: '
                 },
-                'l': {
+                'L': {
                     normal: ' diagonal rod length: '
                 },
-                's': {
+                'S': {
                     normal: ' segments per second: '
                 },
-                'r': {
+                'R': {
                     normal: ' delta radius: '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y tower pos correction: '
                 },
-                'x': {
+                'X': {
                     normal: ' X tower pos correction: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z tower pos correction: '
                 }
             }
@@ -3272,19 +3272,19 @@
                 normal: 'Set delta endstop adjustment'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: ' X bed tilt %: '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y axis: '
                 },
-                'b': {
+                'B': {
                     normal: ' Y bed tilt %: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis: '
                 }
             }
@@ -3294,16 +3294,16 @@
                 normal: 'Select CoreXY mode'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y axis scale factor: '
                 },
-                'x': {
+                'X': {
                     normal: ' X axis scale factor: '
                 },
-                's': {
+                'S': {
                     normal: ' coreXY mode: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z axis scale factor: '
                 }
             }
@@ -3319,25 +3319,25 @@
                 normal: 'Set SCARA mode and arm parameters'
             },
             parameters: {
-                'a': {
+                'A': {
                     normal: ' proximal arm joint min/max angles: '
                 },
-                'c': {
+                'C': {
                     normal: ' proximal-to-distal crosstalk factor: '
                 },
-                'b': {
+                'B': {
                     normal: ' proximal-to-distal arm joint min/max angles: '
                 },
-                'd': {
+                'D': {
                     normal: ' distal arm length (mm): '
                 },
-                'l': {
+                'L': {
                     normal: ' min segment length (mm): '
                 },
-                'p': {
+                'P': {
                     normal: ' proximal arm length (mm): '
                 },
-                's': {
+                'S': {
                     normal: ' segments per second: '
                 }
             }
@@ -3389,10 +3389,10 @@
                 normal: 'Start 3D scan'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' filename: '
                 },
-                's': {
+                'S': {
                     normal: ' length/degrees: '
                 }
             }
@@ -3414,7 +3414,7 @@
                 normal: 'Set alignment mode for 3D scanner'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' turn on (> 0) or off (<= 0): '
                 }
             }
@@ -3442,7 +3442,7 @@
                 normal: 'Set Z-Probe Offset'
             },
             parameters: {
-                'z': {
+                'Z': {
                     normal: ' offset: '
                 }
             }
@@ -3452,19 +3452,19 @@
                 normal: 'Set Linear Advance Scaling Factors'
             },
             parameters: {
-                'h': {
+                'H': {
                     normal: ' height: '
                 },
-                'k': {
+                'K': {
                     normal: ' factor: '
                 },
-                'r': {
+                'R': {
                     normal: ' ratio: '
                 },
-                'd': {
+                'D': {
                     normal: ' diam: '
                 },
-                'w': {
+                'W': {
                     normal: ' width: '
                 }
             }
@@ -3474,10 +3474,10 @@
                 normal: 'Set local date and time'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' date: '
                 },
-                's': {
+                'S': {
                     normal: ' time: '
                 }
             }
@@ -3487,22 +3487,22 @@
                 normal: 'Set motor currents'
             },
             parameters: {
-                'e': {
+                'E': {
                     normal: ' E drive(s): '
                 },
-                'i': {
+                'I': {
                     normal: ' idle factor: '
                 },
-                'h': {
+                'H': {
                     normal: ' set/get motor currents for the downward Z-probe homing: '
                 },
-                'y': {
+                'Y': {
                     normal: ' Y drive: '
                 },
-                'x': {
+                'X': {
                     normal: ' X drive: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z drive: '
                 }
             }
@@ -3512,22 +3512,22 @@
                 normal: 'Set digital trimpot motor'
             },
             parameters: {
-                'b': {
+                'B': {
                     normal: ' axis code (in % or amps): '
                 },
-                'e': {
+                'E': {
                     normal: ' axis code (in % or amps): '
                 },
-                's': {
+                'S': {
                     normal: ' axis code (in % or amps): '
                 },
-                'y': {
+                'Y': {
                     normal: ' axis code (in % or amps): '
                 },
-                'x': {
+                'X': {
                     normal: ' axis code (in % or amps): '
                 },
-                'z': {
+                'Z': {
                     normal: ' axis code (in % or amps): '
                 }
             }
@@ -3537,10 +3537,10 @@
                 normal: 'Control digital trimpot directly'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' pin: '
                 },
-                's': {
+                'S': {
                     normal: ' current: '
                 }
             }
@@ -3550,16 +3550,16 @@
                 normal: 'Set microstepping'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y stepper: '
                 },
-                'x': {
+                'X': {
                     normal: ' X stepper: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z stepper: '
                 },
-                'e': {
+                'E': {
                     normal: ' E stepper: '
                 }
             }
@@ -3569,16 +3569,16 @@
                 normal: 'Set decay mode'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' Y stepper: '
                 },
-                'x': {
+                'X': {
                     normal: ' X stepper: '
                 },
-                'z': {
+                'Z': {
                     normal: ' Z stepper: '
                 },
-                'e': {
+                'E': {
                     normal: ' E stepper: '
                 }
             }
@@ -3588,13 +3588,13 @@
                 normal: 'Set power monitor threshold voltages'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' power monitor channel: '
                 },
-                's': {
+                'S': {
                     normal: ' undervoltage threshold: '
                 },
-                't': {
+                'T': {
                     normal: ' overvoltage threshold: '
                 }
             }
@@ -3604,10 +3604,10 @@
                 normal: 'Set electronics temperature monitor adjustment'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' temp monitor channel: '
                 },
-                's': {
+                'S': {
                     normal: ' value to add to temp (in C): '
                 }
             }
@@ -3617,16 +3617,16 @@
                 normal: 'Set motor percentage of normal current'
             },
             parameters: {
-                'y': {
+                'Y': {
                     normal: ' % current for Y motor: '
                 },
-                'x': {
+                'X': {
                     normal: ' % current for X motor: '
                 },
-                'z': {
+                'Z': {
                     normal: ' % current for Z motor: '
                 },
-                'e': {
+                'E': {
                     normal: ' % current for extruders: '
                 }
             }
@@ -3642,7 +3642,7 @@
                 normal: 'Perform in-application firmware update'
             },
             parameters: {
-                's': {
+                'S': {
                     normal: ' firmware module number(s): '
                 }
             }
@@ -3652,7 +3652,7 @@
                 normal: 'Request resend of line'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' line #: '
                 }
             }
@@ -3662,7 +3662,7 @@
                 normal: 'Restart after being stopped by error'
             },
             parameters: {
-                'p': {
+                'P': {
                     normal: ' reset flags: '
                 }
             }
