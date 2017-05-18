@@ -125,10 +125,15 @@
         var count = gcodeDictionary.count;
         count[command] = (command in count) ? count[command] + 1 : 1;
 
-        //var shortDescription = count[command] > 3;
-        var shortDescription = false
-        var expectsParams = Object.keys(dict[command].parameters).length > 0;
+        // TODO: Add to gcodeDictionary.js an optional entry for a command
+        // that says it needs its parameters
+        var parametersRequired = 'parametersRequired' in dict[command] && dict[command].parametersRequired;
+        var expectsParams = Object.keys(dict[command].parameters).length > 0 && parametersRequired;
         var foundParams = false;
+
+        var shortDescription = false;
+        shortDescription = count[command] > 3;
+
         var descr = dict[command].description;
 
         descr = (shortDescription && 'simple' in descr) ? descr.simple : descr.normal;

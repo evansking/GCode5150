@@ -1,6 +1,7 @@
 (function (gCodeCompleter, undefined) {
 
     function getRepRapSnippets() {
+        var dict = gcodeDictionary.dictionary;
         return [{
             name: "G0: Rapid Movement",
             content: "G0 ${1:_AxisPosition}",
