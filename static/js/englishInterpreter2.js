@@ -30,7 +30,7 @@
                 case 'N':
                     if (!foundLineNum && !checksum) {
                         foundLineNum = true;
-                        output += "Line number (can be used for checking): " + (tokens[i]).slice(1) + "; ";
+                        output += "Line number: " + token.slice(1) + "; ";
                     }
                     else if(checksum) {
                         output += "Error: Cannot have a command after checksum; ";
@@ -58,7 +58,7 @@
                 case '*':
                     if (!checksum){
                         checksum = true;
-                        output += "Checksum (can be used for checking): " + (commands[i]).slice(1) + "; ";
+                        output += "Checksum (can be used for checking): " + token.slice(1) + "; ";
                     } else {
                         output += "Error: Multiple checksums in one line; "
                     }
@@ -115,7 +115,7 @@
         }
 
         if (!command) {
-            if (foundLineNum) {
+            if (foundLineNum || checksum) {
                 return output;
             } else {
                 return "COMMAND NOT FOUND";
@@ -125,7 +125,6 @@
         var count = gcodeDictionary.count;
         count[command] = (command in count) ? count[command] + 1 : 1;
 
-        console.log(count[command])
         //var shortDescription = count[command] > 3;
         var shortDescription = false
         var expectsParams = Object.keys(dict[command].parameters).length > 0;
@@ -163,7 +162,7 @@
                                 return output;
                             }
                             checksum = true;
-                            output += "Checksum (can be used for checking): " + (commands[i]).slice(1) + "; ";
+                            output += " Checksum (can be used for checking): " + token.slice(1) + "; ";
                         } else {
                             output += "Error: Multiple checksums in one line; ";
                         }
