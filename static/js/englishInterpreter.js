@@ -301,27 +301,69 @@ var common_comm = {
 };
 
 var x_comm = {
-    "G0": " to X axis pos: ", "G1": " to X axis pos: ", "G2": " to X axis pos: ",
-    "G3": " to X axis pos: ", "G10": " X offset: ", "G28": " flag to go back to the X axis origin ",
-    "G29.1": " X offset: ", "G30": " X coordinate: ", "G31": " probe X offset: ", "G33": " X correction: ",
-    "G61": " X coordinate: ", "G92": " new X axis pos: ", "G100": " flag to set floor for X axis ",
-    "G130": " to X axis pos: ", "G161": " flag to home X axis to min ",
-    "G162": " flag to home X axis to max ", "M18": " X axis: ", "M48": " pos on the X axis: ",
-    "M92": " X drive: ", "M132": " X axis offset: ", "M201": " acceleration for X axis: ",
-    "M202": " travel moves (in units/s^2): ", "M203": " max for X axis: ",
-    "M205": " max xy jerk/xy junction deviation: ", "M206": " X axis offset/float: ", "M208": " X axis limit: ",
-    "M210": " in mm per minute: ", "M211": " 1=max endstop or 0=min endstop: ", "M218": " offset on X: ",
-    "M231": " min distance: ", "M305": " heater ADC channel: ", "M350": " X axis: ", "M365": " X scaling: ",
-    "M370": " divisions: ", "M421": " index: ", "M460": " min temp: ", "M532": " print progress: ",
-    "M556": " deviation in X: ", "M557": " X coordinate: ", "M558": " If nonzero, use probe for homing X axis: ",
-    "M563": " axis: ", "M565": " X offset: ", "M566": " X axis (mm/min) : ", "M574": " X axis: ", "M577": " X axis: ",
-    "M579": " X axis: ", "M581": " endstop input(s) to monitor: ", "M584": " driver number(s) for X motor(s): ",
-    "M585": " X offset: ", "M600": " X pos: ", "M605": " duplication x-offset: ", "M665": " X tower pos correction: ",
-    "M666": " X axis: ", "M667": " X axis scale factor: ", "M906": " X drive: ", "M907": " axis code (in % or amps): ",
-    "M909": " X stepper: ", "M910": " X stepper: ", "M913": " % current for X motor: "
+    "G0": " to X axis pos: ",
+    "G1": " to X axis pos: ",
+    "G2": " to X axis pos: ",
+    "G3": " to X axis pos: ",
+    "G10": " X offset: ",
+    "G28": " flag to go back to the X axis origin ",
+    "G29.1": " X offset: ",
+    "G30": " X coordinate: ",
+    "G31": " probe X offset: ",
+    "G33": " X correction: ",
+    "G61": " X coordinate: ",
+    "G92": " new X axis pos: ",
+    "G100": " flag to set floor for X axis ",
+    "G130": " to X axis pos: ",
+    "G161": " flag to home X axis to min ",
+    "G162": " flag to home X axis to max ",
+    "M18": " X axis: ",
+    "M48": " pos on the X axis: ",
+    "M92": " X drive: ",
+    "M132": " X axis offset: ",
+    "M201": " acceleration for X axis: ",
+    "M202": " travel moves (in units/s^2): ",
+    "M203": " max for X axis: ",
+    "M205": " max xy jerk/xy junction deviation: ",
+    "M206": " X axis offset/float: ",
+    "M208": " X axis limit: ",
+    "M210": " in mm per minute: ",
+    "M211": " 1=max endstop or 0=min endstop: ",
+    "M218": " offset on X: ",
+    "M231": " min distance: ",
+    "M305": " heater ADC channel: ",
+    "M350": " X axis: ",
+    "M365": " X scaling: ",
+    "M370": " divisions: ",
+    "M421": " index: ",
+    "M460": " min temp: ",
+    "M532": " print progress: ",
+    "M556": " deviation in X: ",
+    "M557": " X coordinate: ",
+    "M558": " If nonzero, use probe for homing X axis: ",
+    "M563": " axis: ",
+    "M565": " X offset: ",
+    "M566": " X axis (mm/min) : ",
+    "M574": " X axis: ",
+    "M577": " X axis: ",
+    "M579": " X axis: ",
+    "M581": " endstop input(s) to monitor: ",
+    "M584": " driver number(s) for X motor(s): ",
+    "M585": " X offset: ",
+    "M600": " X pos: ",
+    "M605": " duplication x-offset: ",
+    "M665": " X tower pos correction: ",
+    "M666": " X axis: ",
+    "M667": " X axis scale factor: ",
+    "M906": " X drive: ",
+    "M907": " axis code (in % or amps): ",
+    "M909": " X stepper: ",
+    "M910": " X stepper: ",
+    "M913": " % current for X motor: "
 };
 
-var y_comm = {
+var y_comm = 
+
     "G0": " to Y axis pos: ", "G1": " to Y axis pos: ", "G2": " to Y axis pos: ",
     "G3": " to Y axis pos: ", "G10": " Y offset: ", "G28": " flag to go back to the Y axis origin ",
     "G29.1": " Y offset: ", "G30": " Y coordinate: ", "G31": " probe Y offset: ", "G33": " Y correction: ",
@@ -425,7 +467,8 @@ var e_comm = {
     "M913": " % current for extruders: "
 };
 
-var f_comm = {
+var f_comm = 
+
     "G0": " feed rate: ", "G1": " feed rate: ", "G2": " feed rate: ", "G3": " feed rate: ",
     "G61": " F set feedrate: ", "G161": " desired feedrate: ", "G162": " desired feedrate: ",
     "M106": " frequency (in Hz): ", "M207": " retraction feedrate (in mm/min): ",
@@ -541,7 +584,8 @@ var s_comm = {
     "M997": " firmware module number(s): "
 };
 
-var i_comm = {
+var i_comm = 
+
     "G2": " distance to maintain from (X space): ", "G3": " distance to maintain from (X space): ",
     "M43": " flag to ignore pin protection: ", "M84": " reset flags: ", "M106": " disable fan: ",
     "M165": " mix factor for extruder stepper 6: ", "M280": " 1=invert polarity: ", "M301": " integral (Ki): ",
@@ -550,7 +594,8 @@ var i_comm = {
     "M906": " idle factor: "
 };
 
-var j_comm = {
+var j_comm = 
+
     "G2": " distance to maintain from (Y space): ", "G3": " distance to maintain from (Y space): ",
     "M587": " Gateway IP address: "
 };
@@ -635,80 +680,170 @@ var p_comm = {
 };
 
 var a_comm = {
-    "G6": " Stepper A pos/angle: ", "G130": " to A axis pos: ", "M132": " A axis offset: ",
-    "M165": " mix factor for extruder stepper 1: ", "M260": "  address: ", "M261": "  address: ", "M307": " gAin: ",
-    "M666": " X bed tilt %: ", "M669": " proximal arm joint min/max angles: "
+    "G6": " Stepper A pos/angle: ",
+    "G130": " to A axis pos: ",
+    "M132": " A axis offset: ",
+    "M165": " mix factor for extruder stepper 1: ",
+    "M260": "  address: ",
+    "M261": "  address: ",
+    "M307": " gAin: ",
+    "M666": " X bed tilt %: ",
+    "M669": " proximal arm joint min/max angles: "
 };
 
 var b_comm = {
-    "G6": " Stepper B pos/angle: ", "G130": " to B axis pos: ", "M106": " blip time: ",
-    "M132": " B axis offset: ", "M150": " blue: ", "M165": " mix factor for extruder stepper 2: ",
-    "M205": " min segment time: ", "M260": "  add to buffer: ", "M261": "  bytes: ",
-    "M305": " beta value: ", "M307": " Bang-bang control: ", "M350": " extruder 1: ", "M420": " blue PWM: ",
-    "M575": " baud rate: ", "M665": " safe probing radius: ", "M666": " Y bed tilt %: ",
-    "M669": " proximal-to-distal arm joint min/max angles: ", "M907": " axis code (in % or amps): "
+    "G6": " Stepper B pos/angle: ",
+    "G130": " to B axis pos: ",
+    "M106": " blip time: ",
+    "M132": " B axis offset: ",
+    "M150": " blue: ",
+    "M165": " mix factor for extruder stepper 2: ",
+    "M205": " min segment time: ",
+    "M260": "  add to buffer: ",
+    "M261": "  bytes: ",
+    "M305": " beta value: ",
+    "M307": " Bang-bang control: ",
+    "M350": " extruder 1: ",
+    "M420": " blue PWM: ",
+    "M575": " baud rate: ",
+    "M665": " safe probing radius: ",
+    "M666": " Y bed tilt %: ",
+    "M669": " proximal-to-distal arm joint min/max angles: ",
+    "M907": " axis code (in % or amps): "
 };
 
 var c_comm = {
-    "G6": " Stepper C pos/angle: ", "G31": " temperature coefficient: ", "M116": " chamber #: ",
-    "M149": " Flag to treat temperature as Celsius ", "M165": " mix factor for extruder stepper 3: ",
-    "M250": " contrast value: ", "M303": " cycles: ", "M305": " Steinhart-Hart C coefficient: ",
-    "M307": " dominant time (in s): ", "M581": " condition: ", "M669": " proximal-to-distal crosstalk factor: "
+    "G6": " Stepper C pos/angle: ",
+    "G31": " temperature coefficient: ",
+    "M116": " chamber #: ",
+    "M149": " Flag to treat temperature as Celsius ",
+    "M165": " mix factor for extruder stepper 3: ",
+    "M250": " contrast value: ",
+    "M303": " cycles: ",
+    "M305": " Steinhart-Hart C coefficient: ",
+    "M307": " dominant time (in s): ",
+    "M581": " condition: ",
+    "M669": " proximal-to-distal crosstalk factor: "
 };
 
 var r_comm = {
-    "G6": " relative move flag: ", "G10": " standby temperature(s): ",
-    "G33": " reset distortion matrix(R0): ", "G100": " radius to add: ", "M105": " response sequence #: ",
-    "M106": " restore speed: ", "M109": " max/accurate target temp: ", "M146": " relative humidity (in percent): ",
-    "M150": " red: ", "M190": " accurate target temperature: ", "M191": " accurate target temperature: ",
-    "M207": " positive or negative additional length to un-retract (in mm): ", "M305": " series resistor value: ",
-    "M408": " response sequence #: ", "M420": " red PWM: ", "M552": " HTTP port: ", "M558": " recovery time: ",
-    "M569": " driver enable polarity- 0=active low,1=active high: ", "M580": " toggle activation: ",
-    "M583": " analog value: ", "M586": " TCP port #: ", "M605": " duplication temp offset: ", "M665": " delta radius: ",
+    "G6": " relative move flag: ",
+    "G10": " standby temperature(s): ",
+    "G33": " reset distortion matrix(R0): ",
+    "G100": " radius to add: ",
+    "M105": " response sequence #: ",
+    "M106": " restore speed: ",
+    "M109": " max/accurate target temp: ",
+    "M146": " relative humidity (in percent): ",
+    "M150": " red: ",
+    "M190": " accurate target temperature: ",
+    "M191": " accurate target temperature: ",
+    "M207": " positive or negative additional length to un-retract (in mm): ",
+    "M305": " series resistor value: ",
+    "M408": " response sequence #: ",
+    "M420": " red PWM: ",
+    "M552": " HTTP port: ",
+    "M558": " recovery time: ",
+    "M569": " driver enable polarity- 0=active low,1=active high: ",
+    "M580": " toggle activation: ",
+    "M583": " analog value: ",
+    "M586": " TCP port #: ",
+    "M605": " duplication temp offset: ",
+    "M665": " delta radius: ",
     "M900": " ratio: "
 };
 
-var u_comm = {"G10": " U, V and W axis offsets: ", "M150": " green: ", "M584": " U axes: "};
+var u_comm = {
+    "G10": " U, V and W axis offsets: ",
+    "M150": " green: ",
+    "M584": " U axes: "
+};
 
 var h_comm = {
-    "G30": " height correction: ", "M106": " select heaters: ", "M116": " heater #: ",
-    "M140": " heater #: ", "M141": " heater #: ", "M143": " heater #: ",
-    "M165": " mix factor for extruder stepper 5: ", "M301": " heater #: ", "M305": " ADC high offset: ",
-    "M307": " heater #: ", "M376": " height (in mm): ", "M558": " dive height (in mm): ", "M563": " heater(s): ",
-    "M570": " heater #: ", "M665": " delta height: ", "M900": " height: ",
+    "G30": " height correction: ",
+    "M106": " select heaters: ",
+    "M116": " heater #: ",
+    "M140": " heater #: ",
+    "M141": " heater #: ",
+    "M143": " heater #: ",
+    "M165": " mix factor for extruder stepper 5: ",
+    "M301": " heater #: ",
+    "M305": " ADC high offset: ",
+    "M307": " heater #: ",
+    "M376": " height (in mm): ",
+    "M558": " dive height (in mm): ",
+    "M563": " heater(s): ",
+    "M570": " heater #: ",
+    "M665": " delta height: ",
+    "M900": " height: ",
     "M906": " set/get motor currents for the downward Z-probe homing: "
 };
 
 var t_comm = {
-    "G31": " Z probe type: ", "M106": " set thermostatic mode: ", "M126": " toolhead: ",
-    "M127": " toolhead: ", "M133": " extruder to wait for: ", "M134": " platform to wait for: ",
-    "M135": " toolhead change: ", "M204": "  travel moves: ", "M205": " travel only ", "M206": " type: ",
-    "M207": " feedrate for un-retraction if different from retraction (in mm/min): ", "M218": " extruder #: ",
-    "M305": " thermistor resistance at 25C: ", "M558": " travel speed: ",
-    "M569": " min driver step pulse width & interval (in micro s): ", "M570": " temp: ",
-    "M581": " logical trigger #: ", "M582": " trigger #: ", "M586": " 0=don't use,1=use TLS: ",
+    "G31": " Z probe type: ",
+    "M106": " set thermostatic mode: ",
+    "M126": " toolhead: ",
+    "M127": " toolhead: ",
+    "M133": " extruder to wait for: ",
+    "M134": " platform to wait for: ",
+    "M135": " toolhead change: ",
+    "M204": "  travel moves: ",
+    "M205": " travel only ",
+    "M206": " type: ",
+    "M207": " feedrate for un-retraction if different from retraction (in mm/min): ",
+    "M218": " extruder #: ",
+    "M305": " thermistor resistance at 25C: ",
+    "M558": " travel speed: ",
+    "M569": " min driver step pulse width & interval (in micro s): ",
+    "M570": " temp: ",
+    "M581": " logical trigger #: ",
+    "M582": " trigger #: ",
+    "M586": " 0=don't use,1=use TLS: ",
     "M911": " overvoltage threshold: "
 };
 
 var d_comm = {
-    "M165": " mix factor for extruder stepper 4: ", "M200": " filament diameter (in mm): ",
-    "M221": " drive #: ", "M301": " derivative (Kd): ", "M304": " derivative (Kd): ", "M307": " dead time (in s): ",
-    "M404": " nozzle diameter (in mm): ", "M563": " extruder drive(s): ", "M572": " extruder #: ",
-    "M669": " distal arm length (mm): ", "M900": " diam: "
+    "M165": " mix factor for extruder stepper 4: ",
+    "M200": " filament diameter (in mm): ",
+    "M221": " drive #: ",
+    "M301": " derivative (Kd): ",
+    "M304": " derivative (Kd): ",
+    "M307": " dead time (in s): ",
+    "M404": " nozzle diameter (in mm): ",
+    "M563": " extruder drive(s): ",
+    "M572": " extruder #: ",
+    "M669": " distal arm length (mm): ",
+    "M900": " diam: "
 };
 
 var l_comm = {
-    "G33": " list distortion matrix(L0): ", "M48": " legs of travel: ",
-    "M106": " min fan speed: ", "M305": " ADC low offset: ", "M530": " # of layers: ", "M532": " printed layer: ",
-    "M600": " later retract distance for removal: ", "M665": " diagonal rod length: ",
+    "G33": " list distortion matrix(L0): ",
+    "M48": " legs of travel: ",
+    "M106": " min fan speed: ",
+    "M305": " ADC low offset: ",
+    "M530": " # of layers: ",
+    "M532": " printed layer: ",
+    "M600": " later retract distance for removal: ",
+    "M665": " diagonal rod length: ",
     "M669": " min segment length (mm): "
 };
 
-var w_comm = {"M43": " watch pins: ", "M584": " W axes: ", "M900": " width: "};
+var w_comm = {
+    "M43": " watch pins: ",
+    "M584": " W axes: ",
+    "M900": " width: "
+};
 
-var v_comm = {"M48": " verbosity: ", "M584": " V axes: "};
+var v_comm = {
+    "M48": " verbosity: ",
+    "M584": " V axes: "
+};
 
-var k_comm = {"M149": " Flag to treat temperature as Kelvin ", "M587": " Netmask: ", "M900": " factor: "};
+var k_comm = {
+    "M149": " Flag to treat temperature as Kelvin ",
+    "M587": " Netmask: ",
+    "M900": " factor: "
+};
 
 var count = {
     "G0": 0,
@@ -781,15 +916,41 @@ var simp_comm = {
 };
 
 var s_x_comm = {
-    "G0": " X: ", "G1": " X: ", "G2": " X: ", "G3": " X: ", "G10": " X: ", "G28": " flag ",
-    "G29.1": " X: ", "G30": " X: ", "G31": " X: ", "G33": " X: ", "G61": " X: ", "G92": " new X: ", "G100": " flag ",
-    "G130": " X: ", "G161": " flag ", "G162": " flag "
+    "G0": " X: ",
+    "G1": " X: ",
+    "G2": " X: ",
+    "G3": " X: ",
+    "G10": " X: ",
+    "G28": " flag ",
+    "G29.1": " X: ",
+    "G30": " X: ",
+    "G31": " X: ",
+    "G33": " X: ",
+    "G61": " X: ",
+    "G92": " new X: ",
+    "G100": " flag ",
+    "G130": " X: ",
+    "G161": " flag ",
+    "G162": " flag "
 };
 
 var s_y_comm = {
-    "G0": " Y: ", "G1": " Y: ", "G2": " Y: ", "G3": " Y: ", "G10": " Y: ", "G28": " flag ",
-    "G29.1": " Y: ", "G30": " Y: ", "G31": " Y: ", "G33": " Y: ", "G61": " Y: ", "G92": " new Y: ", "G100": " flag ",
-    "G130": " Y: ", "G161": " flag ", "G162": " flag "
+    "G0": " Y: ",
+    "G1": " Y: ",
+    "G2": " Y: ",
+    "G3": " Y: ",
+    "G10": " Y: ",
+    "G28": " flag ",
+    "G29.1": " Y: ",
+    "G30": " Y: ",
+    "G31": " Y: ",
+    "G33": " Y: ",
+    "G61": " Y: ",
+    "G92": " new Y: ",
+    "G100": " flag ",
+    "G130": " Y: ",
+    "G161": " flag ",
+    "G162": " flag "
 };
 
 var s_z_comm = {
@@ -810,45 +971,94 @@ var s_z_comm = {
 };
 
 var s_e_comm = {
-    "G0": " extrude: ", "G1": " extrude: ", "G2": " extrude: ", "G3": " extrude: ", "G10": " Z: ",
-    "G61": " E: ", "G92": " new extruder: "
+    "G0": " extrude: ",
+    "G1": " extrude: ",
+    "G2": " extrude: ",
+    "G3": " extrude: ",
+    "G10": " Z: ",
+    "G61": " E: ",
+    "G92": " new extruder: "
 };
 
 var s_f_comm = {
-    "G0": " feed: ", "G1": " feed: ", "G2": " feed: ", "G3": " feed: ", "G61": " feed: ",
-    "G161": " feed: ", "G162": " feed: "
+    "G0": " feed: ",
+    "G1": " feed: ",
+    "G2": " feed: ",
+    "G3": " feed: ",
+    "G61": " feed: ",
+    "G161": " feed: ",
+    "G162": " feed: "
 };
 
 var s_s_comm = {
-    "G0": " flag: ", "G1": " flag: ", "G4": " wait: ", "G10": " temp or length: ", "G11": " length: ",
-    "G29": " firmware-dependent behavior: ", "G30": " set parameter: ", "G31": " temp: ", "G32": " method: ",
-    "G60": " memory slot #: ", "G61": " memory slot #: "
+    "G0": " flag: ",
+    "G1": " flag: ",
+    "G4": " wait: ",
+    "G10": " temp or length: ",
+    "G11": " length: ",
+    "G29": " firmware-dependent behavior: ",
+    "G30": " set parameter: ",
+    "G31": " temp: ",
+    "G32": " method: ",
+    "G60": " memory slot #: ",
+    "G61": " memory slot #: "
 };
 
-var s_i_comm = {"G2": " X dist: ", "G3": " X dist: "};
+var s_i_comm = {
+    "G2": " X dist: ",
+    "G3": " X dist: "
+};
 
-var s_j_comm = {"G2": " Y dist: ", "G3": " Y dist: "};
+var s_j_comm = {
+    "G2": " Y dist: ",
+    "G3": " Y dist: "
+};
 
 var s_p_comm = {
-    "G4": " wait: ", "G10": " tool #: ", "G30": " probe point #: ", "G31": " trigger value: ",
+    "G4": " wait: ",
+    "G10": " tool #: ",
+    "G30": " probe point #: ",
+    "G31": " trigger value: ",
     "G32": " method: "
 };
 
-var s_a_comm = {"G6": " A: ", "G130": " A: "};
+var s_a_comm = {
+    "G6": " A: ",
+    "G130": " A: "
+};
 
-var s_b_comm = {"G6": " B: ", "G130": " B: "};
+var s_b_comm = {
+    "G6": " B: ",
+    "G130": " B: "
+};
 
-var s_c_comm = {"G6": " C: ", "G31": " temp co: "};
+var s_c_comm = {
+    "G6": " C: ",
+    "G31": " temp co: "
+};
 
-var s_r_comm = {"G6": " flag: ", "G10": " temp: ", "G33": " reset R0: ", "G100": " radius: "};
+var s_r_comm = {
+    "G6": " flag: ",
+    "G10": " temp: ",
+    "G33": " reset R0: ",
+    "G100": " radius: "
+};
 
-var s_u_comm = {"G10": " U, V and W: "};
+var s_u_comm = {
+    "G10": " U, V and W: "
+};
 
-var s_h_comm = {"G30": " height: "};
+var s_h_comm = {
+    "G30": " height: "
+};
 
-var s_t_comm = {"G31": " type: "};
+var s_t_comm = {
+    "G31": " type: "
+};
 
-var s_l_comm = {"G33": " list L0: "};
+var s_l_comm = {
+    "G33": " list L0: "
+};
 
 (function (codeEditor, undefined) {
     /**
@@ -1258,9 +1468,7 @@ var s_l_comm = {"G33": " list L0: "};
         if (found == false) {
             return "COMMAND NOT FOUND"
         }
-        //if (comment==true) {
-        //  return output+" comment: "+comments+";";
-        //}
+        
         return output;
     };
 }(window.codeEditor = window.codeEditor || {}));
