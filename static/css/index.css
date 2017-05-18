@@ -87,3 +87,20 @@ body, html {
 .ace_gutter-layer{
     background: #01172c;
 }
+
+#progress{
+    color: white;
+    padding-top: 7px;
+}
+
+/*#visualization {
+    color: white;
+    background: white;
+    background-color: white;
+}
+
+canvas{
+    color: white;
+    background: white;
+    background-color: white;
+}*/

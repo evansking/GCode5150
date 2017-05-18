@@ -1,9 +1,7 @@
 import re
 import constants
 import json
-import sys
 import Gcode_exceptions
-from os.path import basename, splitext
 
 
 class Command:
@@ -38,7 +36,7 @@ class Command:
                 self.command = self.parse_command(line)
                 self.arguments = self.parse_arguments(line)
             except:
-                raise Gcode_exceptions.InvalidLine
+                raise Gcode_exceptions.GcodeError()
         else:
             self.command = str(command)
             self.arguments = arguments
@@ -71,7 +69,7 @@ class Command:
         if re.match(r'[A-Z][0-9]+', command):
             return command
         else:
-            raise Gcode_exceptions.CommandError('invalid command')
+            raise Gcode_exceptions.GcodeError()
 
     def parse_arguments(self, line):
         '''
@@ -86,28 +84,11 @@ class Command:
         args = line.split()[1:]
         for arg in args:
             try:
-                letter, number = re.findall(r'([A-Z])([0-9.-]*)', arg)[
-                    0]  # TODO check if Gcode only contains alphanumeric and .-
+                letter, number = re.findall(r'([A-Z])([0-9.-]*)', arg)[0] 
             except:
-                raise Gcode_exceptions.SyntaxError('arguments')
+                raise Gcode_exceptions.GcodeError()
             arguments[letter] = number
         return arguments
-
-    def get_english(self):
-        '''
-        return the english description of this command
-        '''
-        try:
-            eng_desc = ''
-            eng_desc += constants.common_comm[self.command]
-            for argument in self.arguments:
-                eng_desc += ';' + constants.arguments[argument.lower()][self.command] + self.arguments[argument]
-            return eng_desc
-        except KeyError:
-            # invalid command
-            raise Gcode_exceptions.CommandError
-
-        # TODO: handle multiple commands on same line
 
 
 class Drawer:
@@ -118,16 +99,15 @@ class Drawer:
         self.current_line_list = []
         self.current_progress = 0
         self.total_lines = 0
-        self.current_head = [0.0,0.0,0.0]
+        self.current_head = [0.0,0.0,0.0,False]
         self.positioning = 'ABSOLUTE'
-        self.extrude = True
+        self.extrusion_type = 'ABSOLUTE'
+        self.extrude = False
         self.prevE = 0.
-        # print "Drawer initialized"
+        print "Drawer initialized"
 
 
     def parse_commands(self, gcode, num_lines):
-        # point_list_to_send = [[[0,0,0],[10,10,10]], [[5,5,5],[45,45,45]]]
-        # return json.dumps(point_list_to_send), False
         '''
         input:
             gcode: text string of entire Gcode file
@@ -138,7 +118,7 @@ class Drawer:
             self.total_lines = len(self.current_line_list)
             for i in range(1, self.total_lines + 1):
                 constants.gcodeline_point[i] = None
-            self.current_head = [0.0,0.0,0.0]
+            self.current_head = [0.0,0.0,0.0,False]
 
         i = self.current_progress
         point_list_to_send = [[self.current_head]]
@@ -154,16 +134,11 @@ class Drawer:
             interpretation = self.interpret_gcode(line)
             if interpretation:
                 p, extrude = interpretation
-                #figure out whether to start a new list or append the point to the
-                #current list
-                if extrude:
-                    point_list_to_send[current_list_of_points].append(p)
-                else:
-                    point_list_to_send.append([p])
-                    current_list_of_points += 1
+                next_command = [p[0],p[1],p[2],extrude];
+                point_list_to_send[current_list_of_points].append(next_command)
                 constants.gcodeline_point[i+1] = (self.current_head[0], self.current_head[1], self.current_head[2] ,p[0], p[1], p[2])
                 constants.point_gcodeline[(self.current_head[0], self.current_head[1], self.current_head[2] ,p[0], p[1], p[2])] = i+1
-                self.current_head = p
+                self.current_head = next_command
             i += 1
         self.current_progress += num_lines
         return json.dumps(point_list_to_send), True
@@ -179,17 +154,19 @@ class Drawer:
 
             if command is not a draw command (like any of the M commands), return None
         '''
-        # self.extrude = False
+        self.extrude = False
         l = l.strip()
+        # parse string of Gcode
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:
                 l = Command(line=l)
-            except Gcode_exceptions.GcodeError:
+            except Gcode_exceptions.GcodeError():
                 return None
         else:
             return None
         # movement
         if l.letter == 'G' and (l.number == '1' or l.number == '0'):
+            self.extrude = False
             if self.positioning == 'RELATIVE':
                 offset = self.current_head
             else:
@@ -204,12 +181,12 @@ class Drawer:
                     try:
                         p[2] = offset[2] + float(l.arguments[key])
                     except:
-                        p[2] = offset[2] + 0.0
+                        p[2] = 0.0
                 elif key == 'E':
-                    if self.positioning == 'ABSOLUTE':
-                        self.extrude = float(l.arguments[key]) - self.prevE > 0
+                    if self.extrusion_type == 'ABSOLUTE':
+                        self.extrude = (float(l.arguments[key]) - self.prevE) > 0
                         self.prevE = float(l.arguments[key])
-                    elif self.positioning == 'RELATIVE':
+                    elif self.extrusion_type == 'RELATIVE':
                         self.extrude = float(l.arguments[key]) > 0
                         self.prevE = float(l.arguments[key])
             # if a coordinate is not given, use previous point to fill in missing component
@@ -249,18 +226,18 @@ class Drawer:
                 elif key == 'Z':
                     p[2] = float(l.arguments[key])
                 elif key == 'E':
-                    if self.positioning == 'ABSOLUTE':
-                        self.extrude = float(l.arguments[key]) - self.prevE > 0
-                        self.prevE = float(l.arguments[key])
-                    elif self.positioning == 'RELATIVE':
-                        self.extrude = float(l.arguments[key]) > 0
-                        self.prevE = float(l.arguments[key])
+                    self.extrude = float(l.arguments[key]) > 0
             # if a coordinate is not given, use previous point to fill in missing component
             for i in range(3):
                 if p[i] == None:
                     p[i] = self.current_head[i]
             return (p, False)
-
+        # set extruder to absolute mode
+        elif l.letter == 'M' and l.number == '82':
+            self.extrusion_type = 'ABSOLUTE'
+        # set extruder to relative mode
+        elif l.letter == 'M' and l.number == '83':
+            self.extrusion_type = 'RELATIVE'
         return None
 
 
@@ -279,14 +256,6 @@ def get_points_from_gcode_line_num(line_num):
         return []
 
 
-##########################################################
-
-# with open(outfilename , 'w') as outfile:
-# 	json.dump(point_list, outfile, indent=4,separators=(',',': '))
 
 if __name__ == '__main__':
-    # main function for testing purposes
-    with open(sys.argv[1]) as f:
-        parse_commands(f.read())
-    print constants.gcodeline_point
-    print "done"
+    pass
