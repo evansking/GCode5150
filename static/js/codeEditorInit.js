@@ -104,7 +104,6 @@
 
                 var startLine = doc1FullLine.slice(0, startCol);
                 var endLine = doc1FullLine.slice(startCol);
-                console.log([startLine, endLine])
 
                 for (var i = 0; i < e.lines.length; i++) {
                     var lineNum = startRow + i;
