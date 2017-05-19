@@ -1,7 +1,10 @@
 (function (codeEditor, undefined) {
     var Range = ace.require('ace/range').Range;
 
+    // GCode text editor
     codeEditor.leftEditor;
+
+    // English translation display
     codeEditor.rightEditor;
 
     var session1,
@@ -12,6 +15,7 @@
     codeEditor.count = {};
 
     codeEditor.init = function () {
+        // Initialize the GCode input editor & English translation display
         var editor1, editor2;
         editor1 = ace.edit("left_panel");
         editor1.resize(true);
@@ -42,89 +46,108 @@
         session2 = editor2.getSession();
         doc2 = session2.getDocument();
 
+        // Lock the scrolling if the two text editors together
         session1.on('changeScrollTop', function () {
             session2.setScrollTop(session1.getScrollTop())
         });
-
         session2.on('changeScrollTop', function () {
             session1.setScrollTop(session2.getScrollTop())
         });
 
-        editor1.on("change", function (e) {
-            //console.log(e);
-            if (e.action == "insert") {
-                var startCol = e.start.column;
-                var startRow = e.start.row;
-                var endCol = e.end.column;
-                var endRow = e.end.row;
+        // Update English translation when GCode changes
+        editor1.on("change", function (delta) {
+            handleCodeChanges(delta)
+        });
 
-                for (var i = 0; i < e.lines.length; i++) {
-                    var lineNum = startRow + i;
-                    var line = e.lines[i];
-                    if (i < e.lines.length - 1 && e.lines.length > 1) {
-                        // This is a new line
-                        doc2.insert({row: lineNum, column: (i == 0 ? startCol : 0)}, doc2.getNewLineCharacter());
-                    }
+        codeEditor.leftEditor = editor1;
+        codeEditor.rightEditor = editor2;
+    }
 
-                    var doc1FullLine = doc1.getLine(lineNum);
+    // Update the English translation when GCode changes
+    // @param delta: changes to the text in this update
+    function handleCodeChanges(delta) {
+        if (delta.action == "insert") {
+            var startCol = delta.start.column;
+            var startRow = delta.start.row;
+            var endCol = delta.end.column;
+            var endRow = delta.end.row;
 
-                    var [newLine, command] = codeEditor.interpretLine(doc1FullLine);
-                    session2.replace(new Range(lineNum, 0, lineNum, Number.MAX_VALUE), newLine);
-
-                    if (line.length > 0) {
-                        var count = codeEditor.count;
-
-                        if (command.length > 0) {
-                            count[command] = (command in count) ? count[command] + 1 : 1;
-                        }
-
-                        var _startCol = (lineNum > startRow) ? 0 : startCol;
-                        var _endCol = (endRow > lineNum) ? doc1FullLine.length : endCol;
-                        var oldLine = doc1FullLine.slice(0, _startCol) + doc1FullLine.slice(_endCol);
-                        var [_, command] = codeEditor.interpretLine(oldLine);
-                        if (command.length > 0) {
-                            count[command] -= 1;
-                        }
-                    }
-                }
-            }
-            else if (e.action == "remove") {
-                var startCol = e.start.column;
-                var startRow = e.start.row;
-                var endCol = e.end.column;
-                var endRow = e.end.row;
-
-                doc2.remove(new Range(startRow, startCol, endRow, endCol));
-                var doc1FullLine = doc1.getLine(startRow);
-                var [newLine, command] = codeEditor.interpretLine(doc1FullLine);
-                session2.replace(new Range(startRow, 0, startRow, Number.MAX_VALUE), newLine);
-
-                var count = codeEditor.count;
-                if (command.length > 0) {
-                    count[command] = (command in count) ? count[command] + 1 : 1;
+            for (var i = 0; i < delta.lines.length; i++) {
+                var lineNum = startRow + i;
+                var line = delta.lines[i];
+                if (i < delta.lines.length - 1 && delta.lines.length > 1) {
+                    // This is a new line. Insert a new line in the English translation
+                    doc2.insert({
+                            row: lineNum, 
+                            column: (i == 0 ? startCol : 0)
+                        }, 
+                        doc2.getNewLineCharacter());
                 }
 
-                var startLine = doc1FullLine.slice(0, startCol);
-                var endLine = doc1FullLine.slice(startCol);
+                var updatedLine = doc1.getLine(lineNum);
 
-                for (var i = 0; i < e.lines.length; i++) {
-                    var lineNum = startRow + i;
-                    var oldLine = e.lines[i];
-                    if (lineNum == startRow) {
-                        oldLine = startLine + oldLine;
+                // Translate the updated line, then update the displayed translation
+                var [translation, command] = codeEditor.interpretLine(updatedLine);
+                session2.replace(new Range(lineNum, 0, lineNum, Number.MAX_VALUE), translation);
+
+                if (line.length > 0) {
+                    var count = codeEditor.count;
+
+                    // If the updated line contains a command, increment the number of times
+                    // that command shows up
+                    if (command.length > 0) {
+                        count[command] = (command in count) ? count[command] + 1 : 1;
                     }
-                    if (lineNum == endRow) {
-                        oldLine = oldLine + endLine;
-                    }
+
+
+                    // Figure out what the old line was and translate it.
+                    // If it contained a command, decrement the number of times
+                    // that command shows up
+                    var _startCol = (lineNum > startRow) ? 0 : startCol;
+                    var _endCol = (endRow > lineNum) ? updatedLine.length : endCol;
+                    var oldLine = updatedLine.slice(0, _startCol) + updatedLine.slice(_endCol);
                     var [_, command] = codeEditor.interpretLine(oldLine);
                     if (command.length > 0) {
                         count[command] -= 1;
                     }
                 }
             }
-        });
+        }
+        else if (delta.action == "remove") {
+            var startCol = delta.start.column;
+            var startRow = delta.start.row;
+            var endCol = delta.end.column;
+            var endRow = delta.end.row;
 
-        codeEditor.leftEditor = editor1;
-        codeEditor.rightEditor = editor2;
+
+            // Translate the updated line, then update the displayed translation
+            var updatedLine = doc1.getLine(startRow);
+            var [translation, command] = codeEditor.interpretLine(updatedLine);
+            doc2.remove(new Range(startRow, 0, endRow, Number.MAX_VALUE));
+            session2.replace(new Range(startRow, 0, startRow, Number.MAX_VALUE), translation);
+
+            var count = codeEditor.count;
+            if (command.length > 0) {
+                count[command] = (command in count) ? count[command] + 1 : 1;
+            }
+
+            var startLine = updatedLine.slice(0, startCol);
+            var endLine = updatedLine.slice(startCol);
+
+            for (var i = 0; i < delta.lines.length; i++) {
+                var lineNum = startRow + i;
+                var oldLine = delta.lines[i];
+                if (lineNum == startRow) {
+                    oldLine = startLine + oldLine;
+                }
+                if (lineNum == endRow) {
+                    oldLine = oldLine + endLine;
+                }
+                var [_, command] = codeEditor.interpretLine(oldLine);
+                if (command.length > 0) {
+                    count[command] -= 1;
+                }
+            }
+        }
     }
 }(window.codeEditor = window.codeEditor || {}));

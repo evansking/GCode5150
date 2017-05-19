@@ -4,7 +4,7 @@
 
      @param gCodeLine: line of GCode to translate
 
-     @return: English version of GCode line.
+     @return: English version of GCode line, and the main command (if any).
      If this is not a valid line of GCode, this will be an error message.
      **/
     codeEditor.interpretLine = function (gCodeLine) {
@@ -18,17 +18,21 @@
         var comment = false;
         var dict = gcodeDictionary.dictionary;
         var command = '';
-        var i = 0;
-        var foundLineNum = false;
+        var lineNum = false;
         var checksum = false;
         var commandError = false;
 
+        /*
+         Attempt to find a command in a line of GCode.
+         Handles finding comments and secondary commands 
+        (checksums and line number commands) as well.
+         */
         while (tokens.length > 0) {
             token = tokens.shift();
             switch (token.charAt(0)) {
                 case 'N':
-                    if (!foundLineNum && !checksum) {
-                        foundLineNum = true;
+                    if (!lineNum && !checksum) {
+                        lineNum = true;
                         output += "Line number: " + token.slice(1) + "; ";
                     }
                     else if(checksum) {
@@ -51,7 +55,6 @@
                     }
                     else {
                         commandError = true;
-                        output += "COMMAND NOT FOUND: " + token;
                     }
                     break;
                 case '*':
@@ -68,36 +71,36 @@
                 case '-':
                     if (token.length > 1 && token[1] == '>') {
                         comment = true;
-                        break;
                     }
-                    // no break here- want to fall through to default
+                    else {
+                        commandError = true;
+                    }
+                    break;
                 case '/':
                     if (token.length > 1 && token[1] == '/') {
                         comment = true;
-                        break;
                     }
-                    // no break here- want to fall through to default
+                    else {
+                        commandError = true;
+                    }
+                    break;
                 default:
                     commandError = true;
-                    output += "Invalid token: " + token;
             }
             if (commandError) {
+                output += "COMMAND NOT FOUND: " + token;
+                return [output, command];
+            }
+            else if (comment) {
                 return [output, command];
             }
             else if (command) {
                 break;
             }
-            else if (comment) {
-                break;
-            }
-        }
-
-        if (comment) {
-            return [output, command];
         }
 
         if (!command) {
-            if (foundLineNum || checksum) {
+            if (lineNum || checksum) {
                 return [output, command];
             } else {
                 return ["COMMAND NOT FOUND", command];
@@ -119,6 +122,10 @@
         descr = (shortDescription && 'simple' in descr) ? descr.simple : descr.normal;
         output += descr + (expectsParams? ' - ' : ' ');
 
+        /*
+         Parses parameters to the command, and handles comments
+         and the checksum command
+         */
         while (tokens.length > 0) {
             token = tokens.shift()
             var c0 = token.charAt(0);
@@ -151,18 +158,28 @@
                     case '-':
                         if (token.length > 1 && token[1] == '>') {
                             comment = true;
-                            break;
                         }
-                        // no break here- want to fall through to default
+                        else {
+                            commandError = true;
+                        }
+                        break;
                     case '/':
                         if (token.length > 1 && token[1] == '/') {
                             comment = true;
                             break;
                         }
-                        // no break here- want to fall through to default
+                        else {
+                            commandError = true;
+                        }
+                        break;
                     default:
-                        output += "Invalid parameter: " + token;
-                        return [output, command];
+                        commandError = true;
+                }
+                if (commandError) {
+                    if (token.length > 0) {
+                        output += "Invalid parameter: " + token + token.length;
+                    }
+                    return [output, command];
                 }
             }
         }
