@@ -9,6 +9,8 @@
         doc1,
         doc2;
 
+    codeEditor.count = {};
+
     codeEditor.init = function () {
         var editor1, editor2;
         editor1 = ace.edit("left_panel");
@@ -70,7 +72,7 @@
                     session2.replace(new Range(lineNum, 0, lineNum, Number.MAX_VALUE), newLine);
 
                     if (line.length > 0) {
-                        var count = gcodeDictionary.count;
+                        var count = codeEditor.count;
 
                         if (command.length > 0) {
                             count[command] = (command in count) ? count[command] + 1 : 1;
@@ -97,7 +99,7 @@
                 var [newLine, command] = codeEditor.interpretLine(doc1FullLine);
                 session2.replace(new Range(startRow, 0, startRow, Number.MAX_VALUE), newLine);
 
-                var count = gcodeDictionary.count;
+                var count = codeEditor.count;
                 if (command.length > 0) {
                     count[command] = (command in count) ? count[command] + 1 : 1;
                 }

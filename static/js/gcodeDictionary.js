@@ -1,6 +1,4 @@
 (function (gcodeDictionary, undefined) {
-    gcodeDictionary.count = {}
-
     gcodeDictionary.dictionary = {
         'G0': {
             description: {

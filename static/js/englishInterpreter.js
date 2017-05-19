@@ -112,7 +112,7 @@
         var foundParams = false;
 
         var shortDescription = false;
-        shortDescription = gcodeDictionary.count[command] > 3;
+        shortDescription = codeEditor.count[command] > 3;
 
         var descr = dict[command].description;
 
