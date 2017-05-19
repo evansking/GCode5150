@@ -49,7 +49,7 @@
         });
 
         editor1.on("change", function (e) {
-            //console.log(e);
+            console.log(e);
             if (e.action == "insert") {
                 var startCol = e.start.column;
                 var startRow = e.start.row;
@@ -65,8 +65,25 @@
                     }
 
                     var doc1FullLine = doc1.getLine(lineNum);
-                    var newLine = codeEditor.interpretLine(doc1FullLine);
+
+                    var [newLine, command] = codeEditor.interpretLine(doc1FullLine);
                     session2.replace(new Range(lineNum, 0, lineNum, Number.MAX_VALUE), newLine);
+
+                    if (line.length > 0) {
+                        var count = gcodeDictionary.count;
+
+                        if (command.length > 0) {
+                            count[command] = (command in count) ? count[command] + 1 : 1;
+                        }
+
+                        var _startCol = (lineNum > startRow) ? 0 : startCol;
+                        var _endCol = (endRow > lineNum) ? doc1FullLine.length : endCol;
+                        var oldLine = doc1FullLine.slice(0, _startCol) + doc1FullLine.slice(_endCol);
+                        var [_, command] = codeEditor.interpretLine(oldLine);
+                        if (command.length > 0) {
+                            count[command] -= 1;
+                        }
+                    }
                 }
             }
             else if (e.action == "remove") {
@@ -77,8 +94,32 @@
 
                 doc2.remove(new Range(startRow, startCol, endRow, endCol));
                 var doc1FullLine = doc1.getLine(startRow);
-                var newLine = codeEditor.interpretLine(doc1FullLine);
+                var [newLine, command] = codeEditor.interpretLine(doc1FullLine);
                 session2.replace(new Range(startRow, 0, startRow, Number.MAX_VALUE), newLine);
+
+                var count = gcodeDictionary.count;
+                if (command.length > 0) {
+                    count[command] = (command in count) ? count[command] + 1 : 1;
+                }
+
+                var startLine = doc1FullLine.slice(0, startCol);
+                var endLine = doc1FullLine.slice(startCol);
+                console.log([startLine, endLine])
+
+                for (var i = 0; i < e.lines.length; i++) {
+                    var lineNum = startRow + i;
+                    var oldLine = e.lines[i];
+                    if (lineNum == startRow) {
+                        oldLine = startLine + oldLine;
+                    }
+                    if (lineNum == endRow) {
+                        oldLine = oldLine + endLine;
+                    }
+                    var [_, command] = codeEditor.interpretLine(oldLine);
+                    if (command.length > 0) {
+                        count[command] -= 1;
+                    }
+                }
             }
         });
 

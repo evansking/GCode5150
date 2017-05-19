@@ -10,7 +10,7 @@
     codeEditor.interpretLine = function (gCodeLine) {
 
         if (gCodeLine == "") {
-            return "";
+            return ["", ''];
         }
 
         var tokens = gCodeLine.split(/ +/);
@@ -100,7 +100,7 @@
                     }
             }
             if (commandError) {
-                return output;
+                return [output, command];
             }
             else if (command) {
                 break;
@@ -111,19 +111,16 @@
         }
 
         if (comment) {
-            return output;
+            return [output, command];
         }
 
         if (!command) {
             if (foundLineNum || checksum) {
-                return output;
+                return [output, command];
             } else {
-                return "COMMAND NOT FOUND";
+                return ["COMMAND NOT FOUND", command];
             }
         }
-
-        var count = gcodeDictionary.count;
-        count[command] = (command in count) ? count[command] + 1 : 1;
 
         // TODO: Add to gcodeDictionary.js an optional entry for a command
         // that says it needs its parameters
@@ -133,7 +130,7 @@
         var foundParams = false;
 
         var shortDescription = false;
-        shortDescription = count[command] > 3;
+        shortDescription = gcodeDictionary.count[command] > 3;
 
         var descr = dict[command].description;
 
@@ -165,7 +162,7 @@
                         if (!checksum){
                             if (expectsParams && !foundParams) {
                                 output += "Error: Parameters required for " + command + ";";
-                                return output;
+                                return [output, command];
                             }
                             checksum = true;
                             output += " Checksum (can be used for checking): " + token.slice(1) + "; ";
@@ -191,7 +188,7 @@
                         break;
                     default:
                         output += "Invalid parameter: " + token;
-                        return output;
+                        return [output, command];
                 }
             }
             if (comment && !slash) {
@@ -203,6 +200,6 @@
             output += "Error: Parameters required for " + command + ";";
         }
         
-        return output;
+        return [output, command];
     };
 }(window.codeEditor = window.codeEditor || {}));
