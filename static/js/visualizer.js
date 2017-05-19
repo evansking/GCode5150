@@ -7,7 +7,7 @@ var count_false = 0;
 
 var axisLength;
 
-var highlightCube, highlightGeometry, highlightMaterial;
+var highlightGeometry, highlightBeam;
 
 //Three.js rendering variables
 var renderer, scene, camera, WIDTH, HEIGHT, object, controls;
@@ -29,7 +29,7 @@ var currentPosition;
 var updatedPosition;
 
 //Colors
-var highlight_color, color_one, color_two, current_color;
+var origin_color, dest_color, color_one, color_two, current_color;
 
 // The mouse object
 var raycaster, projector, mouse;
@@ -38,7 +38,7 @@ var points = []; // List of lists of lists - determines points of current visual
 
 var onScreenObjects = []; // as we draw lines add them to this
 
-var progress;
+var progress, mode;
 
 var object, lineGeometry;
 
@@ -113,13 +113,15 @@ function clear(){
     scene.add(front);
     scene.add(right);
     scene.add(object);
-    createAxis(new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0), 0xFF0000);
-    createAxis(new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0), 0x00FF00);
-    createAxis(new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength), 0x000000);
+    createAxis(new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0), 0xff0000);
+    createAxis(new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0), 0x00ff00);
+    createAxis(new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength), 0xffffff);
 }
 
 /* Three.js functions */
 function render() {
+    if (modeSlider.checked) controls.enabled = false;
+    else controls.enabled = true;
     controls.update();
     renderer.render(scene, camera);
 }
@@ -183,7 +185,7 @@ function animate() {
         }
 
 } else {
-  if (progress.html()[0] == 'D') progress.html('');
+  if (progress.html()[0] == 'D') progress.html('Ready!');
 }
   render();
 }
@@ -210,7 +212,6 @@ function onWindowResize() {
 }
 
 function resetViewFunction(){
-  // printViewInfo();
   camera.position.set(camToSave.position.x, camToSave.position.y,
     camToSave.position.z);
   camera.rotation.set(camToSave.rotation.x, camToSave.rotation.y,
@@ -221,32 +222,94 @@ function resetViewFunction(){
   render();
 }
 
-function printViewInfo(){
-  console.log('position: ', camera.position.x.toFixed(1), ',', camera.position.y.toFixed(1), ',', camera.position.z.toFixed(1));
-  console.log('rotation: ', camera.rotation.x.toFixed(1), ',', camera.rotation.y.toFixed(1), ',', camera.rotation.z.toFixed(1));
-  console.log('target: ', controls.target.x.toFixed(1), ',', controls.target.y.toFixed(1), ',', controls.target.z.toFixed(1));
-  console.log('object: ', object.position.x.toFixed(1), ',', object.position.y.toFixed(1), ',', object.position.z.toFixed(1));
+function update(){
+  $('#draw-upload').click();
+  clear();
+}
+
+function rotateUp(){
+  if (object.children.length > 0) {
+    object.rotation.z = 0;
+    lineGeometry.computeBoundingBox();
+    var center = new THREE.Vector3().addVectors(lineGeometry.boundingBox.min, 
+      lineGeometry.boundingBox.max).divideScalar(2);
+    object.rotation.x -= Math.PI/2;
+    var rotateState = object.rotation.x/(Math.PI/2);
+    rotateState %= 4;
+    rotateState = rotateState.toFixed(1);
+    console.log(rotateState);
+    if (rotateState == -2.0) {
+      object.position.set(-center.x, lineGeometry.boundingBox.max.y, 0);
+      console.log('rotated up 1');
+    } else if (rotateState == -3.0){
+      object.position.set(-center.x, lineGeometry.boundingBox.max.z, -center.y);
+      console.log('rotated up 2');
+    } else if (rotateState == 0.0){
+      object.position.set(-center.x, -lineGeometry.boundingBox.min.y, 0);
+      console.log('rotated up 3'); 
+    } else {
+      object.position.set(-center.x, 0, center.y);
+      console.log(center);
+      console.log(lineGeometry.boundingBox.min);
+      console.log(lineGeometry.boundingBox.max);
+      console.log('rotated up 4');
+    }
+  }
+}
+
+function rotateRight(){
+  if (object.children.length > 0) {
+    object.rotation.x = -Math.PI/2;
+    lineGeometry.computeBoundingBox();
+    var center = new THREE.Vector3().addVectors(lineGeometry.boundingBox.min, 
+      lineGeometry.boundingBox.max).divideScalar(2);
+    object.rotation.z -= Math.PI/2;
+    var rotateState = object.rotation.z/(Math.PI/2);
+    rotateState %= 4;
+    rotateState = rotateState.toFixed(1);
+    if (rotateState == -1.0) {
+      object.position.set(-center.x, 0, -center.y);
+      console.log('rotated right 1');
+    } else if (rotateState == -2.0){
+      object.position.set(center.x, 0, -center.y);
+      console.log('rotated right 2');
+    } else if (rotateState == -3.0){
+      object.position.set(center.x, 0, center.y);
+      console.log('rotated right 3');      
+    } else {
+      object.position.set(-center.x, 0, center.y);
+      console.log('rotated right 4');
+    }
+  }
+}
+
+function modeChange(){
+  if (modeSlider.checked) mode.html('Mode: Highlight');
+  else mode.html('Mode: Pan/Zoom');
+
 }
 
 // Mouse clicks to highlight segments of code
+//This section of code is a little buggy, and so for now has been left commented out.
+//We address this in the report
 function onMouseClick(event) {
     // the following line would stop any other event handler from firing
-    event.preventDefault();
+    // event.preventDefault();
 
     // update the mouse variable
     mouse.x = ( event.clientX / WIDTH ) * 2 - 1;
     mouse.y = - ( event.clientY / HEIGHT ) * 2 + 1;
-    // console.log(mouse.x, mouse.y);
-
-    var highlight_range = [10000000,0];
-    var lineNum;
+    console.log(mouse.x, mouse.y);
+    
+    // var lineNum;
 
     // look for intersections
-    raycaster.setFromCamera(mouse, camera);
-    var intersects = raycaster.intersectObjects(onScreenObjects);
-    if (intersects.length > 0) {
+    // raycaster.setFromCamera(mouse, camera);
+    // var intersects = raycaster.intersectObjects(onScreenObjects);
+    // if (intersects.length > 0) {
       // console.log(intersects);
-        addLine(intersects[0]);
+        // addLine(intersects[0]);
+        // console.log(intersects[0]);
         // intersects.forEach(function (workingLine){
           // addLine(workingLine);
           // lineNum = addLine(workingLine);
@@ -260,60 +323,63 @@ function onMouseClick(event) {
         // r.start.row = lineNum;
         // r.end.row = lineNum;
         // codeEditor.leftEditor.selection.setSelectionRange(r, false);
-    } else {
-        // console.log("No intersections");
-    }
-}
-
-function addLine(workingLine){
-  // console.log(workingLine);
-  makeHighlightCube(workingLine.point);
-  $('#x_coord').html(workingLine.point.x.toFixed(2));
-  $('#y_coord').html(workingLine.point.y.toFixed(2));
-  $('#z_coord').html(workingLine.point.z.toFixed(2));
-
-  var r = codeEditor.leftEditor.selection.getRange();
-  r.start.row = workingLine.index;
-  r.end.row = workingLine.index;
-  r.start.column = 0;
-  r.end.column = 100;
-  codeEditor.leftEditor.selection.setSelectionRange(r, true);
-  codeEditor.leftEditor.getSession().setScrollTop(16*workingLine.index);
-
-
-  // $.ajax({
-  //     type: 'POST',
-  //     url: '/lineNumber',
-  //     data: JSON.stringify(two_points),
-  //     contentType: false,
-  //     cache: false,
-  //     processData: false,
-  //     success: function (data) {
-  //         lineNum = JSON.parse(data).lineNum;
-  //         var r = codeEditor.leftEditor.selection.getRange();
-  //         r.start.row = lineNum;
-  //         r.end.row = lineNum;
-  //         codeEditor.leftEditor.selection.setSelectionRange(r, false);
-  //     },
-  // });
-    // if (workingLine.object.material.color.equals(color_one)){
-    //     workingLine.object.material.color = red;
-    //     two_points = [[workingLine.object.geometry.vertices[0].x,
-    //       workingLine.object.geometry.vertices[0].y,
-    //       workingLine.object.geometry.vertices[0].z],
-    //       [workingLine.object.geometry.vertices[1].x,
-    //       workingLine.object.geometry.vertices[1].y,
-    //       workingLine.object.geometry.vertices[1].z]];
-    //     console.log(two_points);
-    //
-    //
-    //
     // } else {
-    //     workingLine.object.material.color = color_one;
+        // console.log("No intersections");
     // }
-
-    renderer.render(scene, camera);
 }
+
+//This section of code is a little buggy, and so for now has been left commented out.
+//We address this in the report
+
+// function addLine(workingLine){
+//   // console.log(workingLine);
+//   makeHighlightCube(workingLine.point);
+//   $('#x_coord').html(workingLine.point.x.toFixed(2));
+//   $('#y_coord').html(workingLine.point.y.toFixed(2));
+//   $('#z_coord').html(workingLine.point.z.toFixed(2));
+
+//   var r = codeEditor.leftEditor.selection.getRange();
+//   r.start.row = workingLine.index;
+//   r.end.row = workingLine.index;
+//   r.start.column = 0;
+//   r.end.column = 100;
+//   codeEditor.leftEditor.selection.setSelectionRange(r, true);
+//   codeEditor.leftEditor.getSession().setScrollTop(16*workingLine.index);
+
+
+//   // $.ajax({
+//   //     type: 'POST',
+//   //     url: '/lineNumber',
+//   //     data: JSON.stringify(two_points),
+//   //     contentType: false,
+//   //     cache: false,
+//   //     processData: false,
+//   //     success: function (data) {
+//   //         lineNum = JSON.parse(data).lineNum;
+//   //         var r = codeEditor.leftEditor.selection.getRange();
+//   //         r.start.row = lineNum;
+//   //         r.end.row = lineNum;
+//   //         codeEditor.leftEditor.selection.setSelectionRange(r, false);
+//   //     },
+//   // });
+//     // if (workingLine.object.material.color.equals(color_one)){
+//     //     workingLine.object.material.color = red;
+//     //     two_points = [[workingLine.object.geometry.vertices[0].x,
+//     //       workingLine.object.geometry.vertices[0].y,
+//     //       workingLine.object.geometry.vertices[0].z],
+//     //       [workingLine.object.geometry.vertices[1].x,
+//     //       workingLine.object.geometry.vertices[1].y,
+//     //       workingLine.object.geometry.vertices[1].z]];
+//     //     console.log(two_points);
+//     //
+//     //
+//     //
+//     // } else {
+//     //     workingLine.object.material.color = color_one;
+//     // }
+
+//     renderer.render(scene, camera);
+// }
 
 function init() {
     if (DEBUG_PRINT) console.log('beginning init');
@@ -382,7 +448,8 @@ function init() {
     mouse = { x: 0, y: 0 };
     document.addEventListener('mousedown', onMouseClick, false);
 
-    highlight_color = new THREE.Color('red');
+    origin_color = new THREE.Color('red');
+    dest_color = new THREE.Color('orange');
     color_one = new THREE.Color('#5b5959');
     color_two = new THREE.Color('#2b2727');
     current_color = color_one;
@@ -397,11 +464,19 @@ function init() {
     var resetViewButton = $("#resetView");
     resetViewButton.click(resetViewFunction);
 
-    var printViewButton = $("#printView");
-    printViewButton.click(printViewInfo);
+    var updateButton = $("#update");
+    updateButton.click(update);
+
+    var rotateRightButton = $("#rotate_right");
+    rotateRightButton.click(rotateRight);
+
+    var rotateUpButton = $("#rotate_up");
+    rotateUpButton.click(rotateUp);
 
     var clearButton = $("#clear");
     clearButton.click(clear);
+
+    var modeSlider = $("#modeSlider")[0];
 
     object = new THREE.Object3D();
     lineGeometry = new THREE.Geometry();
@@ -418,11 +493,12 @@ function init() {
     camToSave.rotation = camera.rotation.clone();
     camToSave.controlCenter = controls.target.clone();
 
-    highlightGeometry = new THREE.BoxGeometry(70, 70, 70, 10, 10, 10);
-    highlightMaterial = new THREE.MeshBasicMaterial({color: highlight_color, wireframe: true});
-    highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
-
     progress = jQuery('#progress');
+    mode = jQuery('#mode');
+
+    highlightGeometry = new THREE.BoxGeometry(0.15, 0.15, 0.15, 0.01, 0.01, 0.01);
+    highlightBeam = new THREE.Object3D();
+
 
     if (DEBUG_PRINT) console.log('finished init');
 }
@@ -436,15 +512,51 @@ function createAxis(p1, p2, color){
   scene.add(line);
 }
 
-function makeHighlightCube(point){
-  scene.remove(highlightCube);
-  highlightGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.3, 0.05, 0.05, 0.05);
-  highlightMaterial = new THREE.MeshBasicMaterial({color: highlight_color, wireframe: true});
-  highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
-  highlightCube.position.x = point.x;
-  highlightCube.position.y = point.y;
-  highlightCube.position.z = point.z;
-  scene.add(highlightCube);
+function makeHighlightCube(two_points){
+  object.remove(highlightBeam);
+
+  highlightBeam = new THREE.Object3D();
+
+  var highlightColor, highlightMaterial, highlightCube;
+  var current_point = two_points[0];
+  var g = 0, b = 0;
+  var step = 0.1;
+  var x_up = two_points[1][0] > two_points[0][0];
+  var y_up = two_points[1][1] > two_points[0][1];
+  var z_up = two_points[1][2] > two_points[0][2];
+  while (current_point[0].toFixed(1) != two_points[1][0].toFixed(1) || 
+    current_point[1].toFixed(1) != two_points[1][1].toFixed(1) || 
+    current_point[2].toFixed(1) != two_points[1][2].toFixed(1)){
+
+    highlightMaterial = new THREE.MeshBasicMaterial({color: new THREE.Color(1,g,b), wireframe: true});
+    highlightCube = new THREE.Mesh(highlightGeometry, highlightMaterial);
+
+    highlightCube.position.set(current_point[0], current_point[1], current_point[2]);
+
+    g += step;
+    b += step;
+
+    if (current_point[0].toFixed(1) != two_points[1][0].toFixed(1)) {
+      if (x_up) current_point[0] += step;
+      else current_point[0] -= step;
+    }
+    
+    if (current_point[1].toFixed(1) != two_points[1][1].toFixed(1)){
+      if (y_up) current_point[1] += step;
+      else current_point[1] -= step;
+    }
+
+    if (current_point[2].toFixed(1) != two_points[1][2].toFixed(1)) {
+      if (z_up) current_point[2] += step;
+      else current_point[2] -= step;      
+    }
+
+    highlightBeam.add(highlightCube);
+
+  }
+
+  object.add(highlightBeam);
+
 }
 
 /* ###################################### SCRIPT ######################################*/

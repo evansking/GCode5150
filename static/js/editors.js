@@ -151,8 +151,9 @@ function getLineNumber() {
                 processData: false,
                 success: function (data) {
                     var two_points = JSON.parse(data).points;
+                    console.log(two_points);
                     if (two_points.length > 0) {
-                        makeHighlightCube(new THREE.Vector3(two_points[0][0], two_points[0][1], two_points[0][2]));
+                        makeHighlightCube(two_points);
                     }
                 },
             });
