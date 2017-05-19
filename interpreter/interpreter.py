@@ -40,7 +40,11 @@ class Command:
         else:
             self.command = str(command)
             self.arguments = arguments
-        self.letter, self.number = re.findall(r'([A-Z])([0-9]*)', self.command)[0]
+        try:
+            self.letter, self.number = re.findall(r'([A-Z])([0-9]*)', self.command)[0]
+        except:
+            self.letter = None
+            self.number = None
 
 
     def remove_comments(self, line):
@@ -160,7 +164,7 @@ class Drawer:
         if l and not l[0] in constants.comment_delimiter and not l.isspace():
             try:
                 l = Command(line=l)
-            except Gcode_exceptions.GcodeError():
+            except:
                 return None
         else:
             return None
