@@ -3,6 +3,9 @@
 //var startTime, object, mouse;
 //var objects = []
 
+var current_highlight = [0,0,0];
+var isCurrentHighlightShown = false;
+
 var count_false = 0;
 
 var axisLength;
@@ -299,7 +302,7 @@ function onMouseClick(event) {
     // update the mouse variable
     mouse.x = ( event.clientX / WIDTH ) * 2 - 1;
     mouse.y = - ( event.clientY / HEIGHT ) * 2 + 1;
-    console.log(mouse.x, mouse.y);
+    // console.log(mouse.x, mouse.y);
     
     // var lineNum;
 
@@ -478,6 +481,9 @@ function init() {
 
     var modeSlider = $("#modeSlider")[0];
 
+    var currentHighlightButton = $("#current_highlight");
+    currentHighlightButton.click(focusCurrentHighlight);
+
     object = new THREE.Object3D();
     lineGeometry = new THREE.Geometry();
     scene.add(object);
@@ -496,7 +502,7 @@ function init() {
     progress = jQuery('#progress');
     mode = jQuery('#mode');
 
-    highlightGeometry = new THREE.BoxGeometry(0.15, 0.15, 0.15, 0.01, 0.01, 0.01);
+    highlightGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5, 0.01, 0.01, 0.01);
     highlightBeam = new THREE.Object3D();
 
 
@@ -524,6 +530,15 @@ function makeHighlightCube(two_points){
   var x_up = two_points[1][0] > two_points[0][0];
   var y_up = two_points[1][1] > two_points[0][1];
   var z_up = two_points[1][2] > two_points[0][2];
+
+  current_highlight[0] = two_points[0][0];
+  current_highlight[1] = two_points[0][1];
+  current_highlight[2] = two_points[0][2];
+
+  $('#x_coord').html(two_points[0][0].toFixed(2));
+  $('#y_coord').html(two_points[0][1].toFixed(2));
+  $('#z_coord').html(two_points[0][2].toFixed(2));
+
   while (current_point[0].toFixed(1) != two_points[1][0].toFixed(1) || 
     current_point[1].toFixed(1) != two_points[1][1].toFixed(1) || 
     current_point[2].toFixed(1) != two_points[1][2].toFixed(1)){
@@ -555,8 +570,27 @@ function makeHighlightCube(two_points){
 
   }
 
+  console.log(two_points[0][0], two_points[0][1], two_points[0][2]);
+
+
+  // object.position.set(-two_points[0][0], 0, two_points[0][1]);
+  // object.position.set(-center.x, 0, center.y);
+  // camera.position.set(two_points[0][0], two_points[0][1], two_points[0][2]);
+
   object.add(highlightBeam);
 
+}
+
+function focusCurrentHighlight(){
+  temp = [object.position.x, object.position.y, object.position.z];
+  if (isCurrentHighlightShown){
+    isCurrentHighlightShown = !isCurrentHighlightShown;
+    object.position.set(current_highlight[0], current_highlight[1], current_highlight[2]);
+  } else {
+    isCurrentHighlightShown = !isCurrentHighlightShown;
+    object.position.set(-current_highlight[0], 0, current_highlight[1]);
+  }
+  current_highlight = temp;
 }
 
 /* ###################################### SCRIPT ######################################*/
