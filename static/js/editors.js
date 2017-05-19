@@ -116,7 +116,7 @@ function uploadFile() {
 function uploadDraw() {
     $('#draw-upload').click(function (e) {
         data = codeEditor.leftEditor.getValue();
-        console.log('draw clicked');
+        if (DEBUG_PRINT) console.log('draw clicked');
         $.ajax({
             type: 'POST',
             url: '/draw',
@@ -153,7 +153,7 @@ function getLineNumber() {
                     var two_points = JSON.parse(data).points;
                     console.log(two_points);
                     if (two_points.length > 0) {
-                        makeHighlightCube(two_points);
+                        makeHighlightBeam(two_points);
                     }
                 },
             });
