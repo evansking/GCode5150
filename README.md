@@ -12,13 +12,6 @@ GCode Interpreter for Dimitri!
 
 ----------
 
-
-Architecture
--------------
-
-The architecture is broadly defined as follows:
-
-
 > **Startup Notes:**
 
 > - The server requires python 2.7
@@ -26,47 +19,16 @@ The architecture is broadly defined as follows:
 > - Run the code with `[sudo] python server.py`
 > - Visit the site at http://127.0.0.1:5000/
 
-You may or may not need to use "sudo" before your commands depending on where you installed pip. If you can't get it working by next meeting Ishaan or Evan can help you.
-
-#### <i class="icon-folder-open"></i> Interpreter
-
 ##### Description
 
-The Interpreter is the beginning of the pipeline for this project. When a GCode file is uploaded onto the server, the Interpreter first parses the file, ensures that it is valid GCode and then renders it in a form understandable by the Visualizer.
+This is a basic GCode visualizer. The website takes as input a GCode file and then both interprets said GCode into english and also visualizes the object that would be drawn by a 3D printer.
 
 ##### Techonologies
 
-- Python 2.7.
-
-#### <i class="icon-desktop"></i> Website/UI
-
-##### Description
-
-##### Techonologies
-
+ - Python 2.7.
  - Flask - the server.
  - Socket.io - the Websockets for realtime communication between server and graphics components.
  - Bootstrap 3 - Website UI templating.
-
-
-#### <i class="icon-pencil"></i> Graphics Component
-##### Description
-##### Techonologies
-
- - three.js - This is the JavaScript plugin that will be used to render the graphics of the 3d printed visualization.
-
-## Evan Work
-Hey guys, just in case I do not make it to the meeting here is a synapses:
-1. If you run master you will see the screen split into the three components we discussed
-2. The text editors can be adjusted in size by grabbing and dragging the vertical bar between them
-3. The visualizer and IDE area do not have a drag bar between them, I will do this next
-4. The button bar is in the "correct" place as discussed. However, it is obviously no where near styled. I just added generic bootstrap buttons for you guys to get the idea of placement. 
-        I should have it looking presentable by the demo.
-5. The upload button does work (crudely). It uploads a file and shows the corresponding GCode in the left editor. The backend currently does not check file type of misformed file etc.
-
-Paul, I didnt see that you had worked on integrating an editor until today. We can either stick with the one i have in there or switch to yours. You and I can discuss the pros and cons.
-
-Also Paul, what sort of state is the interpreter in? Would be nice to be able to demo some of that and I can hook it up to the front end. We can move this conversation to slack (of which I promise I will see and respond this time lol).
 
 
 License
