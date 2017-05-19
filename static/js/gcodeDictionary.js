@@ -1,3 +1,23 @@
+/**
+ Container class for GCode commands. The English translation and 
+ automatic suggestions rely on this dictionary.
+ The structure is:
+
+    command_name
+        description
+            simple
+                -> Short description of the command
+            normal
+                -> Full-length description of the command
+        parameters
+            parameter_name
+                simple
+                    -> Short description of what the parameter is for
+                normal
+                    -> Full-length description of what the parameter is for
+
+ **/
+
 (function (gcodeDictionary, undefined) {
     gcodeDictionary.dictionary = {
         'G0': {

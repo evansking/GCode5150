@@ -1,11 +1,17 @@
+/**
+ Class to handle automatic suggestions in the GCode editor. 
+ When users type, they will be presented with a list
+ of commands & descriptions that match what they've been typing.
+ This means the user can type in a command or the description of
+ a command, and be prompted with relevant suggestions.
+ **/
 (function (gCodeCompleter, undefined) {
 
-    function getRepRapSnippets() {
+    function getSnippets() {
         var dict = gcodeDictionary.dictionary;
         var snippets = []
         for (var cmd in dict) {
             snippet = {
-                tabTrigger: cmd, 
                 content: cmd,
                 name: cmd + ': ' + dict[cmd].description.normal
             };
@@ -21,7 +27,7 @@
         ace.config.loadModule("ace/snippets/gcode", function(m) {
             if (m) {
                 snippetManager.files.xml = m;
-                m.snippets =  getRepRapSnippets();
+                m.snippets =  getSnippets();
                 snippetManager.register(m.snippets, m.scope);
             }
         });
