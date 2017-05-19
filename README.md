@@ -15,7 +15,7 @@ GCode Interpreter for Dimitri!
 > **Startup Notes:**
 
 > - The server requires python 2.7
-> - Install requirement with `[sudo] pip install -r requirements`
+> - Install requirement with `[sudo] pip install -r requirements.txt`
 > - Run the code with `[sudo] python server.py`
 > - Visit the site at http://127.0.0.1:5000/
 
@@ -29,7 +29,7 @@ This is a basic GCode visualizer. The website takes as input a GCode file and th
  - Flask - the server.
  - Socket.io - the Websockets for realtime communication between server and graphics components.
  - Bootstrap 3 - Website UI templating.
-
+ - three.js - This is the JavaScript plugin that will be used to render the graphics of the 3d printed visualization.
 
 License
 -------------
