@@ -1,12 +1,13 @@
 import os
 import sys
-
+sys.path.append('interpreter')
 import flask
 import json
 from flask import request, Flask, render_template, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from random import choice
 from string import ascii_letters
+from constants import DEBUG_PRINT
 
 
 sys.path.append(os.getcwd() + "/interpreter")
@@ -44,7 +45,6 @@ def index():
 @app.route('/draw', methods=['POST'])
 def draw_points():
     commands = request.data
-    print "stuff"
     DRAWER = Drawer()
 
     def read_in_chunks(commands):
@@ -98,14 +98,16 @@ def get_points():
 # Socket IO connection handler
 @socketio.on('connect')
 def connect():
-    print("[+] New Connection")
+    if DEBUG_PRINT:
+        print("[+] New Connection")
 
 # Socket IO session handler for when client joins a room
 @socketio.on('join')
 def on_join(data):
     room = data['room']
     join_room(room)
-    print "[+] {} has entered room".format(room)
+    if DEBUG_PRINT:
+        print "[+] {} has entered room".format(room)
     send("You have entered the room!", room=room)
 
 # Removed client from room on disconnect
@@ -113,7 +115,8 @@ def on_join(data):
 def on_leave(data):
     room = data['room']
     leave_room(room)
-    print "[-] {} has left room".format(room)
+    if DEBUG_PRINT:
+        print "[-] {} has left room".format(room)
     send('You have left the room.', room=room)
 
 

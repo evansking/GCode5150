@@ -86,7 +86,7 @@ function uploadFile() {
                     } else {
                         var content = chunks.join("");
 
-                        console.log("content is ready!");
+                        if (DEBUG_PRINT) console.log("content is ready!");
                         progress.html("Hang tight, displaying file...");
 
                         // add content to editor

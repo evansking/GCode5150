@@ -108,7 +108,8 @@ class Drawer:
         self.extrusion_type = 'ABSOLUTE'
         self.extrude = False
         self.prevE = 0.
-        print "Drawer initialized"
+        if constants.DEBUG_PRINT:
+            print "Drawer initialized"
 
 
     def parse_commands(self, gcode, num_lines):
@@ -246,12 +247,20 @@ class Drawer:
 
 
 def get_gcode_line_num_from_points(x1, y1, z1, x2, y2, z2):
+    '''
+    input : six points that correspond to a line in the visualization
+    output: line number of corresponding line of gcode
+    '''
     try:
         return constants.point_gcodeline[(x1, y1, z1, x2, y2, z2)]
     except:
         return 0
 
 def get_points_from_gcode_line_num(line_num):
+    '''
+    input: line number of line of gcode
+    output : six points that encode the corresponding line in the visualization
+    '''
     try:
         six_ints = constants.gcodeline_point[line_num]
         return [[six_ints[0], six_ints[1], six_ints[2]],
