@@ -12,13 +12,6 @@ GCode Interpreter for Dimitri!
 
 ----------
 
-
-Architecture
--------------
-
-The architecture is broadly defined as follows:
-
-
 > **Startup Notes:**
 
 > - The server requires python 2.7
@@ -26,35 +19,17 @@ The architecture is broadly defined as follows:
 > - Run the code with `[sudo] python server.py`
 > - Visit the site at http://127.0.0.1:5000/
 
-You may or may not need to use "sudo" before your commands depending on where you installed pip. If you have trouble installing requirements please contact rsb357@cornell.edu, iaj8@cornell.edu or esk79@cornell.edu.
-
-#### <i class="icon-folder-open"></i> Interpreter
-
 ##### Description
 
-The Interpreter is the beginning of the pipeline for this project. When a GCode file is uploaded onto the server, the Interpreter first parses the file, ensures that it is valid GCode and then renders it in a form understandable by the Visualizer.
+This is a basic GCode visualizer. The website takes as input a GCode file and then both interprets said GCode into english and also visualizes the object that would be drawn by a 3D printer.
 
 ##### Techonologies
 
-- Python 2.7.
-
-#### <i class="icon-desktop"></i> Website/UI
-
-##### Description
-
-##### Techonologies
-
+ - Python 2.7.
  - Flask - the server.
  - Socket.io - the Websockets for realtime communication between server and graphics components.
  - Bootstrap 3 - Website UI templating.
-
-
-#### <i class="icon-pencil"></i> Graphics Component
-##### Description
-##### Techonologies
-
  - three.js - This is the JavaScript plugin that will be used to render the graphics of the 3d printed visualization.
-
 
 License
 -------------
