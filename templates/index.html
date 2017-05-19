@@ -18,13 +18,42 @@
 
     <div class="btn-toolbar">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary sharp" id="printView"> Print View Info </button>
+            <div class="btn-group">
+                <fieldset>
+                    <label class="btn btn-primary btn-block btn-file sharp">
+                    Upload File <input id="upload-file" name="file" type="file" style="display: none;">
+                    </label>
+                </fieldset>
+            </div>
 
-            <button type="button" class="btn btn-secondary sharp" id="clear"> Clear</button>
-            <button type="button" class="btn btn-secondary sharp">Last Click: <span id="x_coord">-</span>,<span
-                    id="y_coord">-</span>,<span id="z_coord">-</span></button>
-            <button type="button" class="btn btn-secondary sharp" id="resetView"> Reset View</button>
             <button type="button" class="btn btn-secondary sharp" id="draw-upload"> Draw</button>
+
+            <button type="button" class="btn btn-primary sharp" id="clear"> Clear</button>
+
+            <button type="button" class="btn btn-secondary sharp" id="current_highlight">Highlight: 
+            <span id="x_coord">-</span>,<span id="y_coord">-</span>,<span id="z_coord">-</span>
+            </button>
+
+            <button type="button" class="btn btn-primary sharp" id="resetView"> Reset View</button>
+
+            <button type="button" class="btn btn-secondary sharp" id="update"> Update </button>
+
+
+            <label class="switch"> <input id="modeSlider" type="checkbox" onchange="modeChange()">  <div class="slider round"></div> </label>
+
+            <button type="button" class="btn btn-primary sharp" id="rotate_up" style="white-space: normal;"> Rotate &uarr;</button>
+
+            <button type="button" class="btn btn-secondary sharp" id="rotate_right"> Rotate &rarr;</button>
+
+            <div class="btn-group" style="width: 80px; max-width: 80px;">
+                <label id='mode'> Mode: Pan/Zoom </label>
+            </div>
+        
+        </div>
+
+        
+        <div class="btn-group" style="width: 80px; max-width: 80px;">
+            <label id='progress'> Ready! </label>
         </div>
 
         <div class="btn-group">
@@ -33,16 +62,6 @@
                     Download File <input id="download-file" style="display: none;">
                 </label>
             </fieldset>
-        </div>
-        <div class="btn-group">
-            <fieldset>
-                <label class="btn btn-primary btn-block btn-file sharp">
-                    Upload File <input id="upload-file" name="file" type="file" style="display: none;">
-                </label>
-            </fieldset>
-        </div>
-        <div class="btn-group">
-            <label id='progress'/>
         </div>
 
     </div>

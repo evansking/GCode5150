@@ -21,9 +21,9 @@ GCode Interpreter for Dimitri!
 
 ##### Description
 
-This is a basic GCode visualizer. The website takes as input a GCode file and then both interprets said GCode into english and also visualizes the object that would be drawn by a 3D printer.
+This is a basic GCode visualizer. The website takes as input a GCode file and then both interprets said GCode into english and also visualizes the object that would be drawn by a 3D printer. If you have trouble installing requirements please contact rsb357@cornell.edu, iaj8@cornell.edu or esk79@cornell.edu.
 
-##### Techonologies
+##### Technologies
 
  - Python 2.7.
  - Flask - the server.
