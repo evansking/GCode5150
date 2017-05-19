@@ -16,7 +16,6 @@
         var tokens = gCodeLine.split(/ +/);
         var output = "";
         var comment = false;
-        var slash = false;
         var dict = gcodeDictionary.dictionary;
         var command = '';
         var i = 0;
@@ -73,31 +72,14 @@
                     }
                     // no break here- want to fall through to default
                 case '/':
-                    if (slash == true) {
-                        comment = false;
-                        slash = false;
-                    }
-                    else {
-                        slash = true;
+                    if (token.length > 1 && token[1] == '/') {
                         comment = true;
+                        break;
                     }
-                    if (token.length > 1) {
-                        tokens.unshift(token.slice(1));
-                    }
-                    break;
+                    // no break here- want to fall through to default
                 default:
-                    if (comment && slash && token.indexOf('/') > -1) {
-                        comment = false;
-                        slash = false;
-                        slashIndex = token.indexOf('/');
-                        if (token.length > slashIndex+1) {
-                            tokens.unshift(token.slice(slashIndex+1));
-                        }
-                    }
-                    else {
-                        commandError = true;
-                        output += "Invalid token: " + token;
-                    }
+                    commandError = true;
+                    output += "Invalid token: " + token;
             }
             if (commandError) {
                 return [output, command];
@@ -105,7 +87,7 @@
             else if (command) {
                 break;
             }
-            else if (comment && !slash) {
+            else if (comment) {
                 break;
             }
         }
@@ -141,14 +123,7 @@
             token = tokens.shift()
             var c0 = token.charAt(0);
             if (comment) {
-                if (slash && token.indexOf('/') > -1) {
-                    comment = false;
-                    slash = false;
-                    slashIndex = token.indexOf('/');
-                    if (token.length > slashIndex+1) {
-                        tokens.unshift(token.slice(slashIndex+1));
-                    }
-                }
+                break;
             }
             else if (c0 in dict[command].parameters) {
                 foundParams = true
@@ -180,19 +155,15 @@
                         }
                         // no break here- want to fall through to default
                     case '/':
-                        slash = true;
-                        comment = true;
-                        if (token.length > 1) {
-                            tokens.unshift(token.slice(1));
+                        if (token.length > 1 && token[1] == '/') {
+                            comment = true;
+                            break;
                         }
-                        break;
+                        // no break here- want to fall through to default
                     default:
                         output += "Invalid parameter: " + token;
                         return [output, command];
                 }
-            }
-            if (comment && !slash) {
-                break;
             }
         }
 
