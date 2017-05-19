@@ -49,7 +49,7 @@
         });
 
         editor1.on("change", function (e) {
-            console.log(e);
+            //console.log(e);
             if (e.action == "insert") {
                 var startCol = e.start.column;
                 var startRow = e.start.row;
