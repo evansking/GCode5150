@@ -1,0 +1,56 @@
+//for 3d arcs:
+//
+// http://xboxforums.create.msdn.com/forums/t/97112.aspx
+
+
+/// <summary>
+/// and atan 3 would just be two floats for y/x and z/x and return
+/// a vector 2 bering or two angles
+///
+/// ok so this would be atan4 i guess
+/// ...
+/// messed up thing is the vector3 you get back xyz is angle wise opposite
+/// logically like for example
+/// e.g.
+/// q = atan4(..)  then result would be q.X is the z Axis angle and q.Y is the Y axis angle and q.Z would be the X axis angle
+/// but i guess that would be atan4
+/// </summary>
+/// <param name="x"></param>
+/// <param name="y"></param>
+/// <param name="z"></param>
+/// <returns></returns>
+//public static Vector3   atan4(float x,float y,float z)
+//{
+//    return new Vector3(
+//        (float)Math.Atan2(y, x) , // z axis from x //y/x forms z angle
+//    (float)Math.Atan2(z, x) , // y axis from x //? forms y angle
+//    (float)Math.Atan2(z, y) // x axis from y  //? forms x angle
+//);
+//    // now if this was standardized already i would know what the standard order is
+//    // for the part were you read z from y you could instead by like Y from Z and still get the x axis angle just reversed
+//    // so how would i base the standardization i guess on proper quadrants but i dunno
+//    // i guess as long as the method defines the operation its ok
+//}
+
+//for above control buttons:
+//var inp = document.createElement("input");
+//inp.setAttribute("type", "number");
+//inp.setAttribute("value", "40");
+//document.getElementById("controls").appendChild(inp);
+
+
+// Obsolete Functions
+////function drawMeshLine(p1, p2) {
+////    var MeshLine = require('three.meshline');
+////    var material = new MeshLineMaterial({linewidth: 300});
+////    var geometry = new THREE.Geometry()
+////    geometry.vertices.push(new THREE.Vector3(p1.x,p1.y,p1.z))
+////    geometry.vertices.push(new THREE.Vector3(p2.x,p2.y,p2.z))
+////    var currentLine = new MeshLine();
+////    currentLine.setGeometry(geometry, function( p ) { return 2; } ); // makes width 2 * lineWidth;
+////    var mesh = new THREE.Mesh( currentLine.geometry, material ); // this syntax could definitely be improved!
+////    scene.add(mesh);
+////    renderer.render(scene, camera);
+////}
+//
+//
